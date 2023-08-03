@@ -9,8 +9,8 @@ int main(void)
     int res = 0;
     for (int i = 1; i < 1000; i++)
     {
-        if (i%3 == 0 || i%5 == 0) res = res + i;
+        if (i%3 == 0 || i%5 == 0) res += i;        
     }
-    printf("Сумма всех чисел меньше 1000, кратных 3 или 5: %d", res);   //ответ 233168
+    printf("%d", res);                          //ответ 233168
     return 0;
 }
