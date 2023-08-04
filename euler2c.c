@@ -7,17 +7,18 @@
 
 int main(void)
 {
-    int fib1 = 1;
+    int fib1 = 1;                           
     int fib2 = 2;
     int fib_next = 0;
     int evens_summ = 0;
     while (fib_next < 4000000)
     {
-        fib_next = fib1 + fib2;
+        fib_next = fib1 + fib2;                 //следующее число Фибоначчи - сумма двух предыдущих
         fib1 = fib2;
-        if (fib2%2 == 0) evens_summ = evens_summ + fib2;
+        if (fib2%2 == 0) 
+            evens_summ += fib2;
         fib2 = fib_next;    
     }
-    printf("%d",evens_summ);
+    printf("%d",evens_summ);                    //4613732
     return 0;
 }
