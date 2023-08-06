@@ -18,7 +18,8 @@ int isPolinom(int num_arg)
 
     if (num6 != 0)
     {
-        if (num6 != num1 || num5 != num2 || num4 != num3) return 0;
+        if (num6 != num1 || num5 != num2 || num4 != num3) 
+            return 0;
         return 1;
     }
     else if (num5 != 0)
@@ -60,6 +61,7 @@ int main(void)
             }
         }
     }
-    return answ;
+    printf("%d",answ);                          //906609
+    return 0;
 }
 
