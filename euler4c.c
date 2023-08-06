@@ -4,45 +4,52 @@
 //Найдите самый большой палиндром, полученный умножением двух трехзначных чисел.
 
 #include <stdio.h>
+#include <stdbool.h>
 
-int isPolinom(int num_arg)
-//если число полином, то возвращает 1, иначе - 0
+bool isPolinom(int num_arg)
+//если число полином, то возвращает true, иначе - false
 {
     //выделяем отдельные цифры из числа 123456
-    int num6 = num_arg/100000;          //1
-    int num5 = num_arg%100000/10000;    //2
-    int num4 = num_arg%10000/1000;      //3...
-    int num3 = num_arg%1000/100;
-    int num2 = num_arg%100/10;
-    int num1 = num_arg%10;
+    char num6 = num_arg/100000;          //1
+    char num5 = num_arg%100000/10000;    //2
+    char num4 = num_arg%10000/1000;      //3...
+    char num3 = num_arg%1000/100;
+    char num2 = num_arg%100/10;
+    char num1 = num_arg%10;
 
-    if (num6 != 0)
+    if (num6 != 0)                      //если число - шестизначное
     {
         if (num6 != num1 || num5 != num2 || num4 != num3) 
-            return 0;
-        return 1;
+            return false;
+        return true;
     }
-    else if (num5 != 0)
+    else if (num5 != 0)                 //если число - пятизначное
     {
-        if (num5 != num1 || num4 != num2) return 0;        
-        return 1;
+        if (num5 != num1 || num4 != num2) 
+            return false;        
+        return true;
+;
     }
-    else if (num4 != 0)
+    else if (num4 != 0)                 //если число - четырехзначное
     {
-        if (num4 != num1 || num3 != num2) return 0;
-        return 1;
+        if (num4 != num1 || num3 != num2) 
+            return false;
+        return true;
     }
-    else if (num3 != 0)
+    else if (num3 != 0)                 //если число - трехзначное
     {
-        if (num3 != num1) return 0;
-        return 1;
+        if (num3 != num1) 
+            return false;
+        return true;
     }
-    else if (num2 != 0)
+    else if (num2 != 0)                 //если число - двузначное
     {
-        if (num2 != num1) return 0;
-        return 1;
+        if (num2 != num1) 
+            return false;
+        return true;
     }
-    else return 0;
+    else 
+        return false;
 }
 
 int main(void)
@@ -54,9 +61,10 @@ int main(void)
         for (int j = 999; j > 99; j--)
         {
             num = i*j;
-            if (isPolinom(num) == 1)            //находим полином
+
+            if (answ < num && isPolinom(num))  //находим полином
             {
-                if (answ < num) answ = num;     //сохраняем если он максимален 
+                answ = num;                     //сохраняем если он максимален 
                 continue;                       //пропускаем цикл т.к последующие числа заведомо меньше
             }
         }
