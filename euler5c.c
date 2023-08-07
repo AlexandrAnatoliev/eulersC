@@ -3,21 +3,25 @@
 //Какое самое маленькое число делится нацело на все числа от 1 до 20?
 
 #include <stdio.h>
+#include <stdbool.h>
 
-int isDiv(int num_arg)
+bool isDiv(int num_arg)
 //если число делится без остатка на весь ряд чисел, то возвращает 1, иначе - 0
 {
     for (int i = 2; i < 20; i++)
     {
-        if (num_arg%i != 0) return 0;
+        if (num_arg%i != 0) 
+            return false;
     }
-    return 1;
+    return true;
 }
 
 int main(void)
 {
     int num = 10;
-    while (isDiv(num) == 0) num++;
-    return num;  
+    while (isDiv(num) == false) 
+        num++;
+    printf("%d",num);
+    return 0;  
 }
 
