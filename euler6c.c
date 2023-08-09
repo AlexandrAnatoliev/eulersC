@@ -17,6 +17,7 @@ int main(void)
         sq_sum += i;
     }
     answer = sq_sum*sq_sum - sum_sq;
+    printf("%d",answer);                                //25164150
     return 0;  
 }
 
