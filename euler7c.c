@@ -4,22 +4,23 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include<math.h>
+#include <math.h>
 
 bool isSimpleNum(int num_arg)
 {
-    int num = sqrt(num_arg) + 1;                //не нужно доходить до числа A A=a*a. Достаточно дойти до a
+    int num = sqrt(num_arg) + 1;    //не нужно доходить до числа A A=a*a. Достаточно дойти до a
     for (int i = 2; i < num; i++) 
     {        
-        if (num_arg % i == 0) return false;     //% может работать только с целочисленными значениями
+        if (num_arg % i == 0) 
+            return false;           //% может работать только с целочисленными значениями
     }
     return true;
 }
 
 int main(void)
 {
-    int count = 0;          //10001
-    int answ = 0;           //104743
+    int count = 0;                  
+    int answ = 0;                   //104743
     int num = 1;
     while (count < 10001)    
     {
@@ -30,6 +31,7 @@ int main(void)
             count++;
         }
     }
+    printf("%d",answ);
     return 0;  
 }
 
