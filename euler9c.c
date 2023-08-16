@@ -21,12 +21,15 @@ bool is_correct(int *a_arg, int *b_arg, int *c_arg)
 
 int main(void)
 {    
-    for (int c = 998; c > 0; c--)
+    int a, b, c, ab;
+    for (c = 998; c > 0; c--)
     {
-        int ab = 1000 - c;
-        for (int b = ab; b > 0; b--)
+        ab = 1000 - c;
+        for (b = ab; b > 0; b--)
         {
-            int a = ab - b;
+            a = ab - b;
+            if(a>b)
+                break;
             if (is_triple(&a, &b, &c) && is_correct(&a, &b, &c))
             {
                 printf("a*b*c = %d",a*b*c);
