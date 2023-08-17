@@ -4,25 +4,30 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <math.h>
 
-bool is_simple(int num_arg)
+bool is_simple(int *num_arg)
+//true - если число простое
 {
-    int i_arg = sqrt(num_arg) + 1;
+    int i_arg = sqrt(*num_arg) + 1;
+    
     for (int i = 2; i < i_arg; i++)
     {
-        if (num_arg%i == 0) return false;
+        if (*num_arg%i == 0) 
+            return false;
     }
     return true;
 }
 
 int main(void)
 {    
-    int answ = 0;                       //1179908154
-    int num = 0;
+    long long answ = 0;                      
     for (int i = 2; i < 2000000; i++)
     {
-        if (is_simple(i)) num += i;
-    }    
+        if (is_simple(&i)) 
+            answ += i;
+    }  
+    printf("%lld",answ);                     //142913828922
     return 0;  
 }
 
