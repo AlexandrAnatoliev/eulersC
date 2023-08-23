@@ -26,11 +26,16 @@ int main(void)
         int cnt = 0;
         for (int j = 1; j < sqrt(triple_number) + 1; j++)
         {
-            if (triple_number % j  == 0) cnt += 2;
+            if (triple_number % j  == 0) 
+                cnt += 2;                                   //получаем сразу два делителя (максимальный и минимальный)
         }
-        if (max_cnt < cnt) max_cnt = cnt;
-        if (max_cnt > 500) 
+        if (max_cnt < cnt) 
+            max_cnt = cnt;
+        if (max_cnt > 500)
+        {       
+            printf("%ld",triple_number);
             return 0;
-    }
+        }            
+    }    
     return 0;
 }
