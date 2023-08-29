@@ -21,14 +21,13 @@ int main(void)
     // важно использовать тип unsigned long long т.к в процессе вычислений цепочки получаются огромные числа
     int first_n;                                    // 837799
     int max_count = 0;                              // 525
-    for (int i = 1000000; i > 1; i--)
+    for (int i = 1; i < 1000000; i++)
     {
         n = i;
         int count = 1;
         while (n != 1)
         {
-            if (n%2 == 0)n = n / 2;
-            else n = 3 * n + 1;
+            n = (n%2 == 0) ? n/2 : 3*n+1;
             count++;
         }
         if (max_count < count)
@@ -37,6 +36,6 @@ int main(void)
             first_n = i;
         }
     }
-  
+    printf("%d",first_n);
     return 0;
 }
