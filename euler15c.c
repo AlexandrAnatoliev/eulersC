@@ -7,26 +7,27 @@
 
 #include <stdio.h>
 
-unsigned long long prev[21] = {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-unsigned long long next[21] = {0};
-unsigned long long num;
-
 int main(void)
 {
+    unsigned long long prev[22] = {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    unsigned long long next[22] = {0};
+    unsigned long long num;
 
-    for (int j=0; j<20; j++)
+    for (int row = 0; row < 21; row++)
     {
-        for (int i=1; i<21; i++)
+        //считаем количество маршрутов до каждой ячейки в сетке
+        for (int column = 1; column < 22; column++)        
         {
-            num = prev[i] + next[i-1];
-            next[i] = num;
+            num = prev[column] + next[column-1];
+            next[column] = num;
         }
-        for (int i=0; i<21; i++)
+        //обновляем состояние предыдущего ряда
+        for (int column = 0; column < 22; column++)
         {
-            prev[i] = next[i];
+            prev[column] = next[column];
         }
     }
-    unsigned long long answ = prev[20];                 //35345263800
- 
+    unsigned long long answ = prev[21];                 //137846528820
+    printf("%llu",answ);
     return 0;
 }
