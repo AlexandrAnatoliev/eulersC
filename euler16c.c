@@ -8,34 +8,36 @@
 
 int main(void)
 {
-    int count = 1;
-    int num = 0;
+    int count = 1;                      //степень числа
+    int num = 0;                        
     int dex_num = 0;
-    int arr[304] = {2};
-    int answ[306] = {};
+    int arr[304] = {2};                 //массив для записи числа до возведения в степень
+    int answ[306] = {0};                //массив для записи числа после возведения в степень
     int sum_num = 0;
 
     while (count < 1000)
     {
         for (int i = 0; i < 304; i++)
+        //записываем цифры составляющие число в массив
         {
             num = arr[i];
-            num *= 2;
-            dex_num = num/10;
-            answ[i+1] += dex_num;
-            num = num%10;
-            answ[i] += num;               
+            num *= 2;                   //умножаем каждую цифру числа в массиве
+            dex_num = num/10;           //отделяем десятки, если число более 9
+            answ[i+1] += dex_num;       //переносим десятки на следующий разряд
+            num = num%10;               //отделяем числа до 10
+            answ[i] += num;             //заносим остаток числа в массив 
         }
         for (int i = 0; i < 304; i++)
         {
-            arr[i] = answ[i];
-            answ[i] = 0;
+            arr[i] = answ[i];           //переносим массив
+            answ[i] = 0;                //обнуляем
         }
-    count++;   
+        count++;   
     } 
     for (int i = 0; i < 304; i++)
-    {
+        //складываем цифры числа
         sum_num += arr[i];                              //1366
-    }  
+    
+    printf("%d",sum_num);  
     return 0;
 }
