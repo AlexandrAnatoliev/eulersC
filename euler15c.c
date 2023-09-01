@@ -9,11 +9,11 @@
 
 int main(void)
 {
-    unsigned long long prev[22] = {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    unsigned long long prev[22] = {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
     unsigned long long next[22] = {0};
     unsigned long long num;
 
-    for (int row = 0; row < 21; row++)
+    for (int row = 1; row < 21; row++)
     {
         //считаем количество маршрутов до каждой ячейки в сетке
         for (int column = 1; column < 22; column++)        
