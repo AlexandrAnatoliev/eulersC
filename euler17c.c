@@ -39,7 +39,7 @@
 // 80		eighty	                6
 // 90		ninety	                6
 // 100		one hundred	            [3] + 7
-// 101	 	one hundred and one	    [3] + 7 + 3! + [3]
+// 101	 	one hundred and one	    [3] + 7 + 3? + [3]
 // 1000		one thousand            11
 
 int main(void)
@@ -51,12 +51,13 @@ int main(void)
     {
         int len_numb = 0;
         
-        if(numb <= 19) len_numb = numb_arr_1_19[numb - 1];
+        if(numb <= 19) 
+            len_numb = numb_arr_1_19[numb - 1];
         
         else if(numb < 100)
         {
-            int simpl_numb = numb%10;        //цифры до десяти
-            int dec_numb = numb/10;          //десятки
+            int simpl_numb = numb%10;           //цифры до десяти
+            int dec_numb = numb/10;             //десятки
             if(simpl_numb != 0)
                 len_numb = numb_arr_20_90[dec_numb - 2] + numb_arr_1_19[simpl_numb - 1];
             else
