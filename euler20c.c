@@ -7,13 +7,14 @@
 
 // Найдите сумму цифр в числе 100!.
 
+ 
 #include <stdio.h>
 
 int main(void)
 {
     int count = 0;
-    int arr[200] = {1};
-    int answ[200] = {};
+    int arr[200] = {1};                         //число до умножения
+    int answ[200] = {};                         //число после умножения
     for(int j = 1; j <= 100; j++)
     {
         for(int i = 0; i < 190; i++)
@@ -23,23 +24,23 @@ int main(void)
             int hndr = 0;
             int int_num = 0;
 
-            num = arr[i] * j;
+            num = arr[i] * j;                   //умножаю каждую цифру числа
 
-            int_num = num%10 + answ[i]; 
+            int_num = num%10 + answ[i];         //отделяю единицы
             if(int_num >= 10)
             {
                 answ[i + 1] += int_num/10;
                 int_num = int_num%10;
             }      
             
-            dec = num%100/10 + answ[i + 1];
+            dec = num%100/10 + answ[i + 1];     //отделяю десятки
             if(dec >= 10)
             {
                 answ[i + 2] += dec/10;
                 dec = dec%10;
             }
 
-            hndr = num/100 + answ[i + 2];
+            hndr = num/100 + answ[i + 2];       //отделяю сотни
             if(hndr >= 10)
             {
                 answ[i + 3] += hndr/10;
@@ -50,7 +51,7 @@ int main(void)
             answ[i + 1] = dec;
             answ[i + 2] = hndr;
 
-            if(answ[i + 3] >= 10)
+            if(answ[i + 3] >= 10)               //отделяю тысячи
             {
                 answ[i + 4] += answ[i + 3]/10;
                 answ[i + 4] = answ[i + 4]%10;
@@ -58,6 +59,7 @@ int main(void)
 
         }
         for(int i = 0; i < 200;i++)
+        //обновляю факторивл
         {
             arr[i] = answ[i];
             answ[i] = 0;
@@ -65,7 +67,8 @@ int main(void)
         }
     for(int i = 0; i < 200; i++)
     {
-        count +=arr[i];                                             //648
+        count +=arr[i];
     }
+    printf("%d",count);                         //648
     return 0;
 }
