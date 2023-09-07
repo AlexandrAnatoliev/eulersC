@@ -13,55 +13,48 @@
 
 int main(void)
 {
-    int div_arr[100] = {};
-    int div_cnt = 0;
-    int num = 220;
-    int sum_div = 0;
-    int fr_num;
-    int sum_fr_num = 0;                                         //80568
+    int div_arr[100] = {0};                 //массив для делителей числа
+    int div_cnt = 0;                 
+    int sum_div = 0;                        
+    int fr_num;                             //дружественное число
+    int sum_fr_num = 0;                     //сумма всех дружественных чисел                  
 
-    for(int j = 1; j < 10000; j ++)
+    for(int num = 1; num < 10000; num++)    //перебираем числа
     {
-        num = j;
-        for(int i = 1; i < num; i++)
-        {
-            if(num%i == 0)
-            {
-                div_arr[div_cnt] = i;
-                div_cnt++;
-            }
-        }
+        for(int i = 1; i < num; i++)        
+            if(num%i == 0)            
+                div_arr[div_cnt++] = i;     //делители заносим в массив         
 
-        for(int i = 0; i <= div_cnt; i++)
+        for(int i = 0; i < div_cnt; i++)
         {
-            sum_div += div_arr[i];
-            div_arr[i] = 0;
+            sum_div += div_arr[i];          //сумма делителей числа
+            div_arr[i] = 0;                 //обнуляем массив
         }    
         
-        div_cnt = 0;
-        fr_num = sum_div;
+        div_cnt = 0;                        //обнуляем счетчик массива
+        fr_num = sum_div;                   //дружественное число?
         sum_div = 0;
-        for(int i = 1; i < fr_num; i++)
+        for(int i = 1; i < fr_num; i++)     //проверяем на дружественность
         {
             if(fr_num%i == 0)
             {
-                div_arr[div_cnt] = i;
+                div_arr[div_cnt] = i;       //определяем делители
                 div_cnt++;
             }
         }
 
         for(int i = 0; i <= div_cnt; i++)
         {
-            sum_div += div_arr[i];
+            sum_div += div_arr[i];          //сумма делителей числа
             div_arr[i] = 0;
         }    
 
-        if(sum_div == num)
-            sum_fr_num = sum_fr_num + num + fr_num;
+        if(sum_div == num && num != fr_num) //если d(a) = b и d(b) = a, где a ≠ b     
+            sum_fr_num += (num + fr_num);      
 
         div_cnt = 0;
         sum_div = 0;
     }    
-    
+    printf("%d",sum_fr_num/2);                              //31626
     return 0;
 }

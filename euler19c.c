@@ -15,20 +15,21 @@
 int main(void)
 {
     int year = 1901;
-    int day = -5;
-    int month_days[] = {31,28,31,30,31,30,31,31,30,31,30,31};
-    int count_sundays = 0;                                      //171
+    int day = 2;                                                //1 января 1901 года - вторник
+    int month_days[] = {31,28,31,30,31,30,31,31,30,31,30,31};   //количество дней в месяце
+    int count_sundays = 0;                                      
 
-    for(year = 1901; year <= 2000; year++)
+    for(year = 1901; year <= 2000; year++)                      //перебираем года
     {
-        for(int i = 0; i < 12; i++)
+        for(int i = 0; i < 12; i++)                             //перебираем месяца в году
         {
-            if(i == 1 && year%4 == 0)
+            if(i == 1 && year%4 == 0)                           //29 дней в Феврале
                 day++;
             day += month_days[i];
             if(day % 7 == 0)
                 count_sundays++;
         }
-    }   
+    }  
+    printf("%d", count_sundays); 
     return 0;
 }
