@@ -12,65 +12,44 @@
 #include <stdio.h>
 #include <math.h>
 
-int main(void)
+int get_sum_div(int num_arg)
+//возвращает сумму делителей числа
 {
-    int div_arr[100] = {0};                             //массив для делителей числа
+    int div_arr[100] = {0};                         //массив для делителей числа
     int div_cnt = 0;                 
     int sum_div = 0;                        
+    for(int i = 1; i < (int)sqrt(num_arg) + 1; i++)
+    //определяем делители числа
+    {
+        if(num_arg%i == 0)
+        {
+            if(i == 1)
+                div_arr[div_cnt++] = i;
+            else if(i != num_arg/i)
+            {
+                div_arr[div_cnt++] = i;             //добавляем меньший делитель числа 
+                div_arr[div_cnt++] = num_arg/i;     //добавляем больший делитель числа
+            }
+        }
+    }
+    for(int i = 0; i < div_cnt; i++)
+        sum_div += div_arr[i];                      //сумма делителей числа    
+    return sum_div;          
+}
+
+int main(void)
+{
+    int sum_div;                        
     int fr_num;                                         //дружественное число
     int sum_fr_num = 0;                                 //сумма всех дружественных чисел                  
 
     for(int num = 1; num < 10000; num++)                //перебираем числа
     {
-        for(int i = 1; i < (int)sqrt(num) + 1; i++)
-        //определяем делители числа
-        {
-            if(num%i == 0)
-            {
-                if(i == 1)
-                    div_arr[div_cnt++] = i;
-                else if(i != num/i)
-                {
-                    div_arr[div_cnt++] = i;             //добавляем меньший делитель числа 
-                    div_arr[div_cnt++] = num/i;         //добавляем больший делитель числа
-                }
-            }
-        }         
-
-        for(int i = 0; i < div_cnt; i++)
-        {
-            sum_div += div_arr[i];                      //сумма делителей числа
-            div_arr[i] = 0;                             //обнуляем массив
-        }    
-        
-        div_cnt = 0;                                    //обнуляем счетчик массива
-        fr_num = sum_div;                               //дружественное число?
-        sum_div = 0;
-        for(int i = 1; i < (int)sqrt(fr_num) + 1; i++)  //проверяем на дружественность
-        {
-            if(fr_num%i == 0)
-            {
-                if(i == 1)
-                    div_arr[div_cnt++] = i;
-                else if(i != fr_num/i)
-                {
-                    div_arr[div_cnt++] = i;             //добавляем меньший делитель числа 
-                    div_arr[div_cnt++] = fr_num/i;      //добавляем больший делитель числа
-                }
-            }
-        }
-
-        for(int i = 0; i <= div_cnt; i++)
-        {
-            sum_div += div_arr[i];                      //сумма делителей числа
-            div_arr[i] = 0;
-        }    
+        fr_num = get_sum_div(num);                      //потенциальное дружественное число
+        sum_div = get_sum_div(fr_num);                  //сумма множителей потенциального дружественного числа
 
         if(sum_div == num && num != fr_num)             //если d(a) = b и d(b) = a, где a ≠ b     
-            sum_fr_num += (num + fr_num);      
-
-        div_cnt = 0;
-        sum_div = 0;
+            sum_fr_num += (num + fr_num);    
     }    
     printf("%d",sum_fr_num/2);                          //31626
     return 0;
