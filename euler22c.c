@@ -10,94 +10,34 @@
 
 // Какова сумма очков имен в файле?
 
+//второй вариант
+
 #include <stdio.h>
 
 #define LEN_WORD 12
 #define VAL_WORDS 5163
 
 int get_reiting(char symb_arg)
-{
-    switch (symb_arg)
-    {
-    case 'A':
-        return 1;
-    case 'B':
-        return 2;
-    case 'C':
-        return 3;    
-    case 'D':
-        return 4;
-    case 'E':
-        return 5;
-    case 'F':
-        return 6;
-    case 'G':
-        return 7;
-    case 'H':
-        return 8;
-    case 'I':
-        return 9;
-    case 'J':
-        return 10;
-    case 'K':
-        return 11;
-    case 'L':
-        return 12;
-    case 'M':
-        return 13;    
-    case 'N':
-        return 14;
-    case 'O':
-        return 15;
-    case 'P':
-        return 16;
-    case 'Q':
-        return 17;
-    case 'R':
-        return 18;
-    case 'S':
-        return 19;
-    case 'T':
-        return 20;
-    case 'U':
-        return 21;
-    case 'V':
-        return 22;
-    case 'W':
-        return 23;    
-    case 'X':
-        return 24;
-    case 'Y':
-        return 25;
-    case 'Z':
-        return 26;
-    case 0:
-        return 0;
-    default:
-        return 30;
-    }
+//возвращает рейтинг буквы от 1 до 26, '0' = 0
+{    
+    return (symb_arg == 0)? 0 : (symb_arg - 64);
 }
 
 int main() 
 {
-    char text[VAL_WORDS][LEN_WORD] = {};    //[количество слов][количество букв]
-    char sort_arr[VAL_WORDS][LEN_WORD] = {};
-    char sort_buff[LEN_WORD] ={};
+    char text[VAL_WORDS][LEN_WORD] = {0};           //[количество слов][количество букв]    
+    char sort_buff[LEN_WORD] ={};                   //буфер
 
     int i_indx = 0;
     int j_indx = 0;
     int iteration = 0;
 
-    int name_point = 0;
-    unsigned long long sum_point = 0;                           //874943365
+    int name_point = 0;                             //очки имени
+    unsigned long long sum_point = 0;               //сумма очков          
 
     FILE *file;
     char ch;
-
-    //заполняем массив 'Z'
-    for(int i = 0; i < VAL_WORDS; i++)
-        text[i][0] = 'Z';
-    
+   
     //преобразуем текст из файла во вложенный двумерный массив
     file = fopen("euler22text.txt", "r");
     if (file == NULL) 
@@ -134,98 +74,55 @@ int main()
     while (iteration < VAL_WORDS)
     {
         //заносим в буфер первое имя
-        for(int j = 0; j < LEN_WORD; j++)
-            sort_buff[j] = text[0][j];
-        //сортируем
-        for(int i = 1; i < VAL_WORDS; i++)
-        {
-            if(get_reiting(sort_buff[0]) > get_reiting(text[i][0]))
-            {            
-                for(int j = 0; j < LEN_WORD; j++)
-                    sort_arr[i - 1][j] = text[i][j];    
-            } 
-            else
-            {
-                for(int j = 0; j < LEN_WORD; j++)
-                {
-                    sort_arr[i - 1][j] = sort_buff[j];
-                    sort_buff[j] = text[i][j];  
-                }        
-            }
-        }
-        //заносим в последний элемент массива данные из буфера
-        for(int j = 0; j < LEN_WORD; j++)
-            sort_arr[VAL_WORDS - 1][j] = sort_buff[j];
-        //переносим отсортированный список в массив text
-        for(int i = 0; i < VAL_WORDS; i++)
-        {
-            for(int j = 0; j < LEN_WORD; j++)
-                text[i][j] = sort_arr[i][j];
-        }
-    iteration++;    
-    }
+        for(int ch = 0; ch < LEN_WORD; ch++)        
+            sort_buff[ch] = text[0][ch];
 
-    //сортируем методом пузырька по двум буквам
-    for(int lt = 0; lt < LEN_WORD - 2; lt++)
-    {
-        iteration = 0;
-        while (iteration < VAL_WORDS)
+        //сортируем
+        for(int name = 1; name < VAL_WORDS; name++)
         {
-            //заносим в буфер первое имя
-            for(int j = 0; j < LEN_WORD; j++)
-                sort_buff[j] = text[0][j];
-            //сортируем
-            for(int i = 1; i < VAL_WORDS; i++)
+            for(int ch = 0; ch < LEN_WORD; ch++)
+            //сверяем слова побуквенно
             {
-                if(get_reiting(sort_buff[lt]) == get_reiting(text[i][lt]))
-                //если первые буквы совпадают...
+                if(get_reiting(sort_buff[ch]) == get_reiting(text[name][ch]))
+                //если буквы равны - проверяем следующую
+                    continue;
+                else if(get_reiting(sort_buff[ch]) > get_reiting(text[name][ch]))
                 {
-                    if(get_reiting(sort_buff[lt + 1]) > get_reiting(text[i][lt + 1]))            
-                    {            
-                        for(int j = 0; j < LEN_WORD; j++)
-                            sort_arr[i - 1][j] = text[i][j];    
-                    } 
-                    else
-                    {
-                        for(int j = 0; j < LEN_WORD; j++)
-                        {
-                            sort_arr[i - 1][j] = sort_buff[j];
-                            sort_buff[j] = text[i][j];  
-                        }        
-                    }
+                    //заносим слово из текста
+                    for(int j = 0; j < LEN_WORD; j++)
+                        text[name - 1][j] = text[name][j];  
+                    break;  
                 }
                 else
-                //заносим в текущий элемент массива данные из буфера
+                {
+                    //заносим слово из буфера, обновляем буфер
                     for(int j = 0; j < LEN_WORD; j++)
                     {
-                        sort_arr[i - 1][j] = sort_buff[j];
-                        sort_buff[j] = text[i][j]; 
-                    }                   
+                        text[name - 1][j] = sort_buff[j];
+                        sort_buff[j] = text[name][j];  
+                    }
+                     break;     
+                }
             }
-
-            //переносим отсортированный список в массив text
-            for(int i = 0; i < VAL_WORDS; i++)
-            {
-                for(int j = 0; j < LEN_WORD; j++)
-                    text[i][j] = sort_arr[i][j];
-            }
-        iteration++;    
         }
+              
+        //заносим в последний элемент массива данные из буфера
+        for(int ch = 0; ch < LEN_WORD; ch++)
+            text[VAL_WORDS - 1][ch] = sort_buff[ch];        
+ 
+    iteration++;    
     }
-
+ 
     for(int i = 0; i < VAL_WORDS; i++)
+    //считаем сумму очков
     {
         name_point = 0;
         for(int j = 0; j < LEN_WORD; j++)        
             name_point += get_reiting(text[i][j]);
-        sum_point += name_point*(i + 1);                        //874943365
-        
+        sum_point += name_point*(i + 1);
     }
-    char h;
-    for(int j = 0; j < LEN_WORD; j++)
-    {
-        h = text[5162][j];
-        printf("%c",h);
-    }        
+
+    printf("%llu ",sum_point);                                   //верный ответ - 871198282
+  
     return 0;
 }
