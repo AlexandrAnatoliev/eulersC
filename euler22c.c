@@ -28,8 +28,8 @@ int main()
     char text[VAL_WORDS][LEN_WORD] = {0};           //[количество слов][количество букв]    
     char sort_buff[LEN_WORD] ={};                   //буфер
 
-    int i_indx = 0;
-    int j_indx = 0;
+    int name_indx = 0;
+    int ch_indx = 0;
     int iteration = 0;
 
     int name_point = 0;                             //очки имени
@@ -39,33 +39,30 @@ int main()
     char ch;
    
     //преобразуем текст из файла во вложенный двумерный массив
-    file = fopen("euler22text.txt", "r");
+    file = fopen("euler22text.txt", "r");           //открываем файл на чтение
     if (file == NULL) 
     {
         printf("Failed to open file.\n");
         return 1;
     }
-    while ((ch = fgetc(file)) != EOF) 
-    {
-        if(i_indx == VAL_WORDS)
-            i_indx = 0;            
-        if(j_indx == LEN_WORD)
+    while ((ch = fgetc(file)) != EOF)               //пока не достигли конца файла
+    {         
+        if(ch_indx == LEN_WORD)                     //если достигли конца вложенного массива
         {
-            j_indx = 0;
-            i_indx++;            
+            ch_indx = 0;
+            name_indx++;            
         }  
 
-        if(ch == ',')
+        if(ch == ',')                               //слова разделены запятыми
         {
-            //fl = false;
-            j_indx = 0;
-            i_indx++;
+            ch_indx = 0;
+            name_indx++;
         }
             
-        else if(ch != '\"')
+        else if(ch != '\"')                         //игнорируем кавычки
             {
-                text[i_indx][j_indx] = ch;
-                j_indx++;
+                text[name_indx][ch_indx] = ch;
+                ch_indx++;
             } 
     }
     fclose(file);
