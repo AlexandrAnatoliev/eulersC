@@ -17,7 +17,6 @@ bool is_right_angle(int a_arg, int b_arg, int c_arg)
 	return a_arg * a_arg + b_arg * b_arg == c_arg * c_arg;
 }
 
-
 int main(void)
 {
 	int answ = 0;
