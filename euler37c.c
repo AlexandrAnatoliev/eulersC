@@ -44,12 +44,12 @@ char get_dec(char arr_arg[], int num_arg)
 //раскладывает число на цифры в десятичном формате и заносит их в массив, возвращает количество цифр в числе
 {
 	char cnt = 0;
-	while (num_arg)									//раскладываем число на цифры и заносим в массив
+	while (num_arg)											//раскладываем число на цифры и заносим в массив
 	{
 		arr_arg[++cnt] = num_arg % 10;
 		num_arg /= 10;
 	}
-	arr_arg[0] = cnt;								//заносим количество цифр в числе
+	arr_arg[0] = cnt;										//заносим количество цифр в числе
 	return cnt;
 }
 
@@ -59,16 +59,18 @@ bool del_left_num(char arr_arg[], int num_arg)
 //				int num_arg: проверяемое число
 // return:		true - если все числа простые, иначе - false
 {
-	char arr[7] = { 0 };							//пока проверяю цифры до 1000000
+	char arr[7] = { 0 };									//пока проверяю цифры до 1000000
 	get_dec(arr, num_arg);
 	int cnt = arr[0];
 	int num;
+	int pow_ten[] = {1,10,100,1000,10000,100000,100000};	//массив значений 10^i
 	for (int i = cnt; i >= 1; i--)
 	{
 		num = 0;
-		for (int j = i; j >= 1; j--)		
-			num += arr[j] * pow(10, j - 1);
-		if (!arr_arg[num])								//arr[num] == 0 - число не является простым
+		for (int j = i; j >= 1; j--)
+			num += arr[j] * pow_ten[j-1];
+
+		if (!arr_arg[num])									//arr[num] == 0 - число не является простым
 			return false;
 	}
 	return true;
@@ -76,10 +78,10 @@ bool del_left_num(char arr_arg[], int num_arg)
 
 int main(void)
 {
-	static char prime_arr[1000000] = { 0 };			//массив[простое число] = 1 - static писать обязательно!
+	static char prime_arr[1000000] = { 0 };					//массив[простое число] = 1 - static писать обязательно!
 	int answ = 0;
 	int cnt = 0;
-	for (int i = 2; i < 1000000; i++)				//заполняем массив простыми числами
+	for (int i = 2; i < 1000000; i++)						//заполняем массив простыми числами
 	{
 		if (is_simple(i))
 			prime_arr[i] = 1;
@@ -96,7 +98,7 @@ int main(void)
 			}
 		}
 	}
-	printf("%d", answ);								//748317
+	printf("%d", answ);										//748317
 
 	return 0;	
 }
