@@ -60,7 +60,7 @@ int main(void)
 			
 			for (int j = 0; j < len; j++)								//делаем 2 перестановки
 			{
-				num2 = (num % 10) * pow(10,len) + num / 10;				//(7 * 10^2) + 19 = 719
+				num2 = (num % 10) * (int)round(pow(10,len)) + num / 10;	//(7 * 10^2) + 19 = 719
 				if (prime_arr[num2])									//если 719 - простое число
 					num = num2;											//num = 719
 				else
@@ -73,6 +73,7 @@ int main(void)
 				answ++;				
 		}
 	}
-	printf("%d", answ);													//55
+	printf("%d\n", answ);												//55
+
 	return 0;	
 }
