@@ -103,7 +103,7 @@ int get_concatenated_product(int num_arg)
 	}
 
 	for (int i = 1, j = 0; i < 10; i++, j++)			// преобразуем массив в число [3,2,1] -> 123
-		answ += arr[i] * pow(10, j);
+		answ += arr[i] * round(pow(10, j));				// без round() функция pow() врет! 
 	return answ;
 }
 
