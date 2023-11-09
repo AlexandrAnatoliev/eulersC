@@ -14,7 +14,6 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <math.h>											// для работы функции sqrt()
 
 int get_triangle_num(int num_arg)
 // возвращает треугольное число по номеру

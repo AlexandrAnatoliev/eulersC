@@ -68,7 +68,8 @@ bool del_left_num(char arr_arg[], int num_arg)
 	{
 		num = 0;
 		for (int j = i; j >= 1; j--)
-			num += arr[j] * pow_ten[j-1];
+			//num += arr[j] * pow_ten[j-1];
+			num += arr[j] * (int)round(pow((float)10, (float)(j - 1)));
 
 		if (!arr_arg[num])									//arr[num] == 0 - число не является простым
 			return false;
