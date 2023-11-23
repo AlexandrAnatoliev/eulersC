@@ -80,9 +80,9 @@ long long get_num(int pandig_num[])
 // return:                      - десятизначное число
 {
     long long num = 0;
-    long long div = 1000000000;
-    for(int i = 0; i < 10; i++, div /= 10)
-        num += pandig_num[i] * div;
+    long long fact = 1000000000;
+    for(int i = 0; i < 10; i++, fact /= 10)
+        num += pandig_num[i] * fact;
     return num;
 }
 
