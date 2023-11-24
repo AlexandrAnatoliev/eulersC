@@ -15,7 +15,7 @@ int main(void)
     {
         fib_next = fib1 + fib2;     // следующее число Фибоначчи - сумма двух предыдущих
         fib1 = fib2;
-        if (!(fib2%2))              // fib2%2 == 0
+        if ( !(fib2 & 1) )          // fib2%2 == 0
             evens_summ += fib2;
         fib2 = fib_next;    
     }
