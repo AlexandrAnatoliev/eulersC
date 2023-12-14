@@ -18,7 +18,7 @@
 #include <stdbool.h>
 #include <math.h>								        // для работы функции sqrt()
 
-#define LEN_ARR 200000
+#define LEN_ARR 200000                                  // длина массивов - зависит от размера искомого числа
 
 bool is_simple(char prime_ar[], int num)
 // функция принимает число и возвращает true - если число простое
@@ -33,6 +33,7 @@ bool is_simple(char prime_ar[], int num)
 		if (prime_ar[div] && !(num % div))              // пропускаем составные делители и срабатываем при num % i == 0
 			return false;
 	}
+
 	return true;
 }
 
@@ -49,26 +50,30 @@ int add_primes(char prime_ar[], int len, int value)
     return value;
 }
 
+
 int count_prime_factor(char prime_ar[], int num, int cnt_break, int *len_prime_arr)
-// функция раскладывает число на простые множители
+// функция раскладывает число на простые множители и считает их
 // параметры:	prime_ar[]      - массив с ранее вычисленными простыми числами
 //              num             - раскладываемое число 
 //              cnt_break       - количество множителей, при котором можно прервать вычисление
 //              *len_prime_arr  - указатель на количество уже определенных чисел   
 // return:                      - количество простых множителей
 {
-    char factor_arr[LEN_ARR] ={0};                         // массив для хранения множителей по индексу
+    char factor_arr[LEN_ARR] ={0};                      // массив для хранения множителей по индексу
     int cnt = 0;
     int len_pr_arr = *len_prime_arr;
+    int div_max;
 
+    div_max = sqrt(num) + 1;                            // выносим вычисление квадратного корня из цикла for
 	while(num != 1)
     {
-        for (int div = 2; div <= num; div++)             
+        
+        for (int div = 2; div <= div_max; div++)             
 	    {
-		    if(div >= len_pr_arr)
+		    if(div >= len_pr_arr)                       // если необходимо
             {
-                add_primes(prime_ar, len_pr_arr, 100);               // определяем статус еще 100 чисел
-                len_pr_arr += 100;
+                add_primes(prime_ar, len_pr_arr, 1000); // определяем статус еще 1000 чисел
+                len_pr_arr += 1000;
                 *len_prime_arr = len_pr_arr;
             }
 
@@ -81,7 +86,9 @@ int count_prime_factor(char prime_ar[], int num, int cnt_break, int *len_prime_a
                 }
                 num /= div;
                 break;                               
-            }	
+            }
+            if(div == div_max)                          // если больше не делится
+                return ++cnt;	                        
 	    }
     if(cnt >= cnt_break)
         return cnt_break;
@@ -96,8 +103,8 @@ bool is_diff_numbers(char prime_ar[], char factors_arr[], int add_num)
 //              add_num         - добавляемое в массив число 
 // return:      true            - если множители не совпадают
 {
-    char f_arr[LEN_ARR] ={0};                              // массив для хранения множителей по индексу
-    int factor;
+    char f_arr[LEN_ARR] ={0};                           // массив для хранения множителей по индексу
+    int factor;                                         // множитель (для преобразований 2^2 -> 4)
 
 	while(add_num != 1)                                 // раскладываем число на множители
     {
@@ -115,7 +122,7 @@ bool is_diff_numbers(char prime_ar[], char factors_arr[], int add_num)
     for(int fact = 0; fact < LEN_ARR; fact++)              
     {
         if(f_arr[fact])                                 // множитель из массива
-        {                                               // возводим в степень если нужно
+        {                                               // возводим в степень, если нужно
             factor = (f_arr[fact] == 1) ? fact : pow(fact, f_arr[fact]);
             if(factors_arr[factor])                     // если такой множитель уже был
                 return false;
@@ -131,16 +138,16 @@ int main(void)
     int answ = 9;                                       // первое составное нечетное число
     int cnt_consecutive  = 0;
     
-
     static char prime_arr[LEN_ARR] = { 0 };		        // массив[простое число] = 1 - static писать обязательно!
     
-    prime_arr[1] = 1;                                   // определяем статус первых 10 чисел в массиве
+    prime_arr[1] = 1;                                   
     prime_arr[2] = 1;
     int len_prime_arr = 2;                              // в массиве определен статус двух чисел
 
-    len_prime_arr += add_primes(prime_arr, 2, 10);
+    len_prime_arr += add_primes(prime_arr, 2, 1000);    // определяем статус первых 1000 чисел в массиве
+
     
-    while (cnt_consecutive < 4)    // проверяем числа в добавленном диапазоне (+100)
+    while (cnt_consecutive < 4)
     {
         if(count_prime_factor(prime_arr, answ, 5, &len_prime_arr) == 4)
             cnt_consecutive++;
@@ -150,13 +157,15 @@ int main(void)
     }
 
     int answ2 = answ - 4;                                   // проверка
-    char factors_ar[LEN_ARR] = {0};
+    char factors_ar[LEN_ARR] = {0};                         // массив для хранения множителей всех 4 чисел
+
     for(int i = 0; i < 4; i++)
-        if(is_diff_numbers(prime_arr, factors_ar, answ2))
+        if(is_diff_numbers(prime_arr, factors_ar, answ2))   // если в массиве таких множетелей нет
             answ2++;
 
     if(answ2 == answ)
         printf("%d\n", answ - 4);                           // 134043
+
 
 	return 0;	
 }
