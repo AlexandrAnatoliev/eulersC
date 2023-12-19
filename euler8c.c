@@ -36,9 +36,140 @@
 //Найдите наибольшее произведение тринадцати последовательных цифр в данном числе   
 
 //Продвинутый алгоритм
+// #include <stdio.h>
+// #include <string.h>
+// #include <stdlib.h>
+
+// int main (void)
+// {
+//     //объявил 1000-значное число из задания в виде строки
+//     char num_str[] =    "73167176531330624919225119674426574742355349194934"
+//                         "96983520312774506326239578318016984801869478851843"
+//                         "85861560789112949495459501737958331952853208805511"
+//                         "12540698747158523863050715693290963295227443043557"
+//                         "66896648950445244523161731856403098711121722383113"
+//                         "62229893423380308135336276614282806444486645238749"
+//                         "30358907296290491560440772390713810515859307960866"
+//                         "70172427121883998797908792274921901699720888093776"
+//                         "65727333001053367881220235421809751254540594752243"
+//                         "52584907711670556013604839586446706324415722155397"
+//                         "53697817977846174064955149290862569321978468622482"
+//                         "83972241375657056057490261407972968652414535100474"
+//                         "82166370484403199890008895243450658541227588666881"
+//                         "16427171479924442928230863465674813919123162824586"
+//                         "17866458359124566529476545682848912883142607690042"
+//                         "24219022671055626321111109370544217506941658960408"
+//                         "07198403850962455444362981230987879927244284909188"
+//                         "84580156166097919133875499200524063689912560717606"
+//                         "05886116467109405077541002256983155200055935729725"
+//                         "71636269561882670428252483600823257530420752963450";
+//     //printf("%d",strlen(num_str));
+    
+//     char num_array[1000];
+//     long long answ = 0;
+//     long long prod = 1;
+//     //разбиваем строку на массив цифр
+//     for(int i = 0; i < 1000; i++)
+//     {
+//         char symb[] = {num_str[i],'\0'};
+//         num_array[i] = atoi(symb);
+//     }
+//     //перемножаем последовательно 13 цифр      
+//     for (int i = 0; i  < 987; i++)
+//     {
+//         prod = 1;
+//         for( int j = 0; j < 13; j++)
+//              prod *= num_array[i + j];        
+//         // prod *= num_array[i] * num_array[i + 1] * num_array[i + 2] * num_array[i + 3] * num_array[i + 4] * num_array[i + 5] * num_array[i + 6] * num_array[i + 7] * num_array[i + 8] * num_array[i + 9] * num_array[i + 10] * num_array[i + 11] * num_array[i + 12];
+//         if (prod > answ) answ = prod;
+//     }    
+//     printf("%lld",answ);              //2091059712 - неверно , верно 23514624000
+//     return 0;
+// }
+
+// продвинутый вариант со структурой "змея"
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <stdbool.h>
+
+#define LEN_ARR 1000                                // длина массива с числами
+#define LEN_SERIES 13                               // длина искомой серии чисел
+
+typedef struct tip                                  // создаем структуру для хранения "оконечностей змеи"
+{
+    int value;                                      // текущее значение 
+    int indx;                                       // текущий индекс положения в массиве
+} TIP;                                              // меняем название типа данных для красоты struct tip -> TIP
+
+typedef struct snake                                // создаем структуру для хранения "змеи" - серии чисел
+{
+    long long product;                              // текущее значение произведения серии чисел - "тело змеи" 
+    TIP head;                                       // значение и индекс "головы змеи"
+    TIP tail;                                       // значение и индекс "хвоста змеи"
+    int len_snake;                                  // длина змеи
+} SNAKE;                                            // меняем название типа данных для красоты struct snake -> SNAKE
+
+bool snake_growth(SNAKE *snake, char num_arr[])
+// "змея" растет - увеличивает длину, пока не достигнет длины 13 чисел или не встретит 0
+// параметры:	*snake      - указатель структуру - "змея"
+//              num_arr[]   - указатель на массив с числами
+// return:      true        - змея успешно выросла до длины 13 чисел
+//              false       - змея встретила ноль
+{
+    while(snake->len_snake < LEN_SERIES)
+    {
+        snake->head.indx++;                         // перемещаем "голову" на шаг вперед
+        snake->head.value = num_arr[snake->head.indx];
+
+        if(!snake->head.value)                      // snake.head.value == 0
+            return false;                           // встретили ноль - "змея" не выросла
+
+        snake->product *= snake->head.value;        // изменяем "тело змеи" - произведение серии чисел
+        snake->len_snake++;                         // увеличисваем длину змеи
+    }
+    return true;                                    // "змея" успешно выросла до 13 чисел
+}
+
+bool snake_crawl(SNAKE *snake, char num_arr[])
+// "змея" ползет - пока не встретит 0
+// параметры:	*snake      - указатель структуру - "змея"
+//              num_arr[]   - указатель на массив с числами
+// return:      true        - "змея" успешно проползла один шаг
+//              false       - "змея" встретила ноль
+{
+    snake->head.indx++;                             // перемещаем "голову" на шаг вперед
+    snake->head.value = num_arr[snake->head.indx];
+
+    if(!snake->head.value)                          // snake.head.value == 0
+        return false;                               // встретили ноль
+
+    snake->product /= snake->tail.value;            // обрезаем "хвост"
+    snake->tail.indx++;                             // перемещаем "хвост" на шаг вперед
+    snake->tail.value = num_arr[snake->tail.indx];
+
+    snake->product *= snake->head.value;            // изменяем "тело змеи" - произведение серии чисел
+    
+    return true;                                    // "змея" успешно проползла один шаг
+}
+
+void snake_jump(SNAKE *snake, char num_arr[])
+// "змея" перепрыгивает 0
+// параметры:	*snake      - указатель структуру - "змея"
+//              num_arr[]   - указатель на массив с числами
+{
+    int jump = snake->len_snake;                    // длина прыжка
+
+    while(!num_arr[snake->tail.indx + jump])        // num_arr[snake->tail.indx + jump] == 0
+        jump++;                                     // изменяем длину прыжка, чтобы не попадать на ноль
+
+    snake->tail.indx += jump;                       // перемещаем "хвост" вперед
+    snake->tail.value = num_arr[snake->tail.indx];
+
+    snake->head.indx = snake->tail.indx;            // перемещаем "голову" вперед
+    snake->head.value = num_arr[snake->head.indx];
+
+    snake->product = snake->tail.value;             // обновляем значение "тела" змеи
+    snake->len_snake = 1;                           // "змея" занимает только одно число
+}
 
 int main (void)
 {
@@ -63,26 +194,35 @@ int main (void)
                         "84580156166097919133875499200524063689912560717606"
                         "05886116467109405077541002256983155200055935729725"
                         "71636269561882670428252483600823257530420752963450";
-    //printf("%d",strlen(num_str));
     
-    char num_array[1000];
+    char num_arr[LEN_ARR];
     long long answ = 0;
-    long long prod = 1;
-    //разбиваем строку на массив цифр
-    for(int i = 0; i < 1000; i++)
+    bool is_answ = false;                           // флаг наличия ответа (отсутствия нуля в серии чисел)
+
+    for(int i = 0; i < LEN_ARR; i++)                // преобразуем строку в массив цифр   
+        num_arr[i] = num_str[i] - 48;               // символ '0' имеет код 48, '1' - 49 и т.д.
+    
+    SNAKE Snake;                                    // создаем стркутуру "змея" - массив чисел из одного числа
+    Snake.product = num_arr[0];                     // произведение равно первому числу массива
+    Snake.len_snake = 1;                            // "длина змеи" - одно число
+    Snake.head.indx = 0;                            // "голова" 
+    Snake.head.value = num_arr[0];
+    Snake.tail.indx = 0;                            // и "хвост" также находятся в первом числе массива
+    Snake.tail.value = num_arr[0];
+
+    while (Snake.head.indx < LEN_ARR)               // пока не дойдем до конца массива
     {
-        char symb[] = {num_str[i],'\0'};
-        num_array[i] = atoi(symb);
+        if(Snake.len_snake < LEN_SERIES)            // "змея" растет
+            is_answ = snake_growth(&Snake, num_arr);
+        else                                        // или ползет
+            is_answ = snake_crawl(&Snake, num_arr);
+
+        if(is_answ)                                 // если есть ответ - обновляем максимум
+            answ = (answ > Snake.product) ? answ : Snake.product;
+        else                                        // если встретился ноль - "змея" прыгает
+            snake_jump(&Snake, num_arr);
     }
-    //перемножаем последовательно 13 цифр      
-    for (int i = 0; i  < 987; i++)
-    {
-        prod = 1;
-        for( int j = 0; j < 13; j++)
-             prod *= num_array[i + j];        
-        // prod *= num_array[i] * num_array[i + 1] * num_array[i + 2] * num_array[i + 3] * num_array[i + 4] * num_array[i + 5] * num_array[i + 6] * num_array[i + 7] * num_array[i + 8] * num_array[i + 9] * num_array[i + 10] * num_array[i + 11] * num_array[i + 12];
-        if (prod > answ) answ = prod;
-    }    
-    printf("%lld",answ);              //2091059712 - неверно , верно 23514624000
+
+    printf("%lld",answ);                    
     return 0;
 }
