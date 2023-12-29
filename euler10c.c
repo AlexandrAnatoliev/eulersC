@@ -52,16 +52,16 @@ bool is_composite(char comp_arr[], int num)
 //              num                 - проверяемое число    
 // return:      true                - если число составное!
 {
-	int div_max = sqrt(num) + 1;                                // выносим вычисление квадратного корня из цикла for
+    int div_max = sqrt(num) + 1;                                // выносим вычисление квадратного корня из цикла for
 
-	for (int div = 2; div < div_max; div++)                     // чтобы он не вычислялся каждую итерацию цикла
-	{
-		// пропускаем составные делители и срабатываем при num % i == 0, пропускаем число 2
-        if (!comp_arr[div] && !(num % div) && (num != 2))   
-			return true;
-	}
+    for (int div = 2; div < div_max; div++)                     // чтобы он не вычислялся каждую итерацию цикла
+    {
+        // пропускаем составные делители и срабатываем при num % i == 0
+        if (!comp_arr[div] && !(num % div))
+            return true;
+    }
 
-	return false;
+    return false;
 }
 
 int note_composite(char comp_arr[], int step, int start, int finish)
@@ -78,39 +78,39 @@ int note_composite(char comp_arr[], int step, int start, int finish)
     int shift = (start % step == 0) ? 0 : step - (start % step);// смещение индекса start
     start += shift;                                             // первое составное число
 
-    for(int i = start; i < finish; i += step)
+    for (int i = start; i < finish; i += step)
     {
-        if(!comp_arr[i])                                        // если еще не отмечено
+        if (!comp_arr[i])                                       // если еще не отмечено
         {
             comp_arr[i] = 1;                                    // отмечаем составные числа
             cnt++;                                              // и считаем их
         }
     }
-                                               
+
     return cnt;
 }
 
 int main(void)
-{                           
+{
     static char composit_arr[LEN_ARR] = { 0 };		            // массив[состаное число] = 1 - static писать!                                  
-    long long answ = 0; 
+    long long answ = 0;
+
     double time_spent = 0.0;                                    // для хранения времени выполнения кода
-    
     clock_t begin = clock();                                    // СТАРТ таймера
 
-    for(int num = 2; num < LEN_ARR; num++)
+    for (int num = 2; num < LEN_ARR; num++)
     {
-        if(!composit_arr[num])                                  // composit_arr[i] == 0
-            if(is_composite(composit_arr, num))
-                note_composite(composit_arr, num, num, LEN_ARR);
-                
-            else
-                answ += num;
+        // если число не отмечено составным -> проверяем число -> если число простое
+        if (!composit_arr[num] && !is_composite(composit_arr, num)) 
+        {
+            note_composite(composit_arr, num, num, LEN_ARR);    // отмечаем составные числа, кратные простому
+            answ += num;                                        // складываем простое число с остальными
+        } 
     }
-    
+
     clock_t end = clock();                                      // СТОП таймера
     time_spent += (double)(end - begin) / CLOCKS_PER_SEC;       // время работы в секундах
-    
+
     printf("answer = %lld   runtime = %f\n", answ, time_spent);
-    return 0;  
+    return 0;
 }
