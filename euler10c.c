@@ -103,7 +103,7 @@ int main(void)
         // если число не отмечено составным -> проверяем число -> если число простое
         if (!composit_arr[num] && !is_composite(composit_arr, num)) 
         {
-            note_composite(composit_arr, num, num, LEN_ARR);    // отмечаем составные числа, кратные простому
+            note_composite(composit_arr, num * 2, num, LEN_ARR);    // отмечаем составные числа, кратные простому
             answ += num;                                        // складываем простое число с остальными
         } 
     }
