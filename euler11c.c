@@ -184,9 +184,9 @@ int main(void)
                     dir_i += direct_arr[dr][0];
                     dir_j += direct_arr[dr][1];
 
-                // проверяем что индексы не выходят за пределы таблицы - массива
-                if ( (i + dir_i) > 19 || (j + dir_j) > 19 || (i + dir_i) < 0 || (j + dir_j) < 0)
-                    break;
+                    // проверяем что индексы не выходят за пределы таблицы - массива
+                    if ( (i + dir_i) > 19 || (j + dir_j) > 19 || (i + dir_i) < 0 || (j + dir_j) < 0)
+                        break;
                 }
             
                 answ = (answ > prod) ? answ : prod;         // обновляем максимум произведения
