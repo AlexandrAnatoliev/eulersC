@@ -65,33 +65,33 @@ int get_permutation(int numb, int perm_num)
 //              perm_num    - порядковый номер перестановки числа (меньший 24!)             
 // return:      перестановленное числа
 {
-    int fact_arr[] = { 6, 2, 1, 1 };                              // факториалы чисел {3! 2! 1! 0!} 
-    int indx_arr[4] = { 0 };
-    int numb_arr[4] = { 0 };
-    int answ_arr[4] = { 0 };
-    int answ = 0;
+    int fact_arr[] = { 6, 2, 1, 1 };                            // факториалы чисел {3! 2! 1! 0!} 
+    int indx_arr[4] = { 0 };                                    // раскладываем номер перестановки 1 -> [0,0,1,0]
+    int numb_arr[4] = { 0 };                                    // число 1234 раскладываем в [1,2,3,4]
+    int answ_arr[4] = { 0 };                                    // массив с числами ответа (перестановки)
+    int answ = 0;                                               // ответ числом
 
-    for (int i = 0; i < 4; i++)                                  // преобразуем порядковый номер в массив с индексами
-    {
+    for (int i = 0; i < 4; i++)                                 // преобразуем порядковый номер в массив с индексами
+    {                                                           // 2 -> [0,1,0,0] 3 -> [0,1,1,0] 4 -> [0,2,0,0]
         indx_arr[i] = perm_num / fact_arr[i];
         perm_num %= fact_arr[i];
     }
 
-    for (int i = 3; i >= 0; i--)                                 // раскладываем число на цифры в массив
+    for (int i = 3; i >= 0; i--)                                // раскладываем число на цифры в массив
     {
-        numb_arr[i] = numb % 10;
+        numb_arr[i] = numb % 10;                                // 1234 -> [1,2,3,4]
         numb /= 10;
     }
 
-    for (int i = 0; i < 4; i++)                                 // делаем нужную перестановку цифр в числе
+    for (int i = 0; i < 4; i++)                                 // делаем искомую перестановку цифр в числе
     {
-        answ_arr[i] = numb_arr[indx_arr[i]];                    // выбираем число из отсортированного массива
+        answ_arr[i] = numb_arr[indx_arr[i]];                    // выбираем число из числа-массива
         for (int j = indx_arr[i]; j < (3 - i); j++)             // смещаем числа в массиве
             numb_arr[j] = numb_arr[j + 1];
     }
 
     for (int i = 0, j = 1000; i < 4; i++, j /= 10)              // преобразуем массив чисел обратно в число
-        answ += answ_arr[i] * j;
+        answ += answ_arr[i] * j;                                // [1,2,3,4] -> 1234
 
     return answ;
 }
@@ -106,7 +106,7 @@ int sort_arr(int arr[], int len_arr)
     for (int i = 0; i < len_arr; i++)
     {
         max_num = arr[0];                                       // берем первое число из массива
-        for (int j = 1; j < len_arr; j++)
+        for (int j = 1; j < len_arr; j++)                       // [(3),1,2,4]
         {
             if (arr[j] > max_num)
             {
@@ -115,9 +115,9 @@ int sort_arr(int arr[], int len_arr)
             }
             else
                 arr[j - 1] = arr[j];                            // смещаем числа в массиве
-        }
-        arr[len_arr - 1] = max_num;                             // записываем последенее число в массиве
-    }
+        }                                                       // [(3),1,2,4] -> [1,(3),2,4] -> [1,2,(3),4]
+        arr[len_arr - 1] = max_num;                             // записываем последнее число в массиве
+    }                                                                   
     return 0;
 }
 
@@ -127,47 +127,53 @@ bool is_sequence(int arr[], int len_arr)
 //              len_arr - количество чисел в массиве 
 // return:      true    - в массиве есть арифметическая прогрессия
 {
-    int diff_arr[23] = { 0 };                                     // массив с разностями ряда чисел перестановок
+    int diff_arr[23] = { 0 };                                   // массив с разностями ряда чисел перестановок
 
     for (int i = 0; i < len_arr - 1; i++)
         diff_arr[i] = arr[i + 1] - arr[i];
 
-    for (int i = 0; i < len_arr - 2; i++)
+    // ищем три числа идущих через равные промежутки 
+    // сравниваем между собой числа и суммы чисел расположенных рядом    
+    for (int i = 0; i < len_arr - 2; i++)                       // [5,4,3,2,1]
     {
-        int diff_1 = diff_arr[i];
+        int diff_1 = diff_arr[i];                               // [(5),4,3,2,1]
         int i_ptr = i;
 
         while (i_ptr < len_arr - 2)
         {
-            int diff_2 = diff_arr[i_ptr + 1];
+            int diff_2 = diff_arr[i_ptr + 1];                   // [(5),{4},3,2,1]
+
             for (int j = i_ptr + 1; j < len_arr - 1; j++)
             {
-                if (diff_1 > diff_2 && (j + 1) < (len_arr - 1))
-                    diff_2 += diff_arr[j + 1];
-                else if (diff_1 == diff_2)
+                if (diff_1 > diff_2 && (j + 1) < (len_arr - 1)) // сравниваем (5) > {4}
+                    diff_2 += diff_arr[j + 1];                  // [(5),{4+3},2,1]
+
+                else if (diff_1 == diff_2)                      // два равных промежутка между тремя числами
                 {
                     // выводим ответ (пишем все три числа подряд)
                     printf("answer: %d%d%d\n", arr[i], arr[i_ptr + 1], arr[j + 1]);
                     return true;
                 }
-                else
+
+                else                                            // (5) < {4+3}
                     break;
             }
             i_ptr++;
-            diff_1 += diff_arr[i_ptr];
+            diff_1 += diff_arr[i_ptr];                          // [(5+4),3,2,1]
         }
     }
     return false;
 }
+
 int main(void)
 {
     static char composit_arr[LEN_ARR] = { 0 };		            // массив[составное число] = 1 - static писать!       
     static int used_numbs[LEN_ARR] = { 0 };                     // использованные в процессе вычисления числа
-    int mult_arr[24] = { 0 };
-    int mult_cnt = 0;
-    int num = 1000;
+    int mult_arr[24] = { 0 };                                   // четырехзначное число имеет максимум 24 перестановки
+    int mult_cnt;                                               // счетчик перестановок: простые и неповторяющиеся числа
+    int num = 1000;                                             // проверяем 4-значные числа
     int mult_num;
-    bool answ_fl = false;
+    bool answ_fl = false;                                       // флаг наличия ответа
     int answ_cnt = 0;                                           // счетчик ответов
 
     double time_spent = 0.0;                                    // для хранения времени выполнения кода
@@ -181,7 +187,7 @@ int main(void)
             note_composite(composit_arr, num, num, LEN_ARR);    // отмечаем составные числа, кратные простому   
     }
 
-    while (!answ_fl && num < 10000)
+    while (!answ_fl && num < 10000)                             // проверяем четырехзначные числа
     {
         mult_cnt = 0;                                           // сетчик количества перестановок
         num++;                                                  // перебираем числа
@@ -189,7 +195,7 @@ int main(void)
         if (composit_arr[num])                                  // пропускаем составные числа
             continue;
 
-        for (int i = 0; i < 24; i++)
+        for (int i = 0; i < 24; i++)                            // перебираем 24 возможные перестановки
         {
             mult_num = get_permutation(num, i);
 
