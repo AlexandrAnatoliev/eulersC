@@ -90,23 +90,24 @@
 // продвинутый вариант со структурой "змея"
 #include <stdio.h>
 #include <stdbool.h>
+#include <time.h>                                           // for clock_t, clock(), CLOCKS_PER_SEC
 
-#define LEN_ARR 1000                                // длина массива с числами
-#define LEN_SERIES 13                               // длина искомой серии чисел
+#define LEN_ARR 1000                                        // длина массива с числами
+#define LEN_SERIES 13                                       // длина искомой серии чисел
 
-typedef struct tip                                  // создаем структуру для хранения "оконечностей змеи"
+typedef struct tip                                          // создаем структуру для хранения "оконечностей змеи"
 {
-    int value;                                      // текущее значение 
-    int indx;                                       // текущий индекс положения в массиве
-} TIP;                                              // для красоты меняем название типа данных struct tip -> TIP
+    int value;                                              // текущее значение 
+    int indx;                                               // текущий индекс положения в массиве
+} TIP;                                                      // для красоты меняем название типа данных struct tip -> TIP
 
-typedef struct snake                                // создаем структуру для хранения "змеи" - серии чисел
+typedef struct snake                                        // создаем структуру для хранения "змеи" - серии чисел
 {
-    long long product;                              // текущее значение произведения серии чисел - "тело змеи" 
-    TIP head;                                       // значение и индекс "головы змеи"
-    TIP tail;                                       // значение и индекс "хвоста змеи"
-    int len_snake;                                  // длина змеи
-} SNAKE;                                            // для красоты меняем название типа данных struct snake -> SNAKE
+    long long product;                                      // текущее значение произведения серии чисел - "тело змеи" 
+    TIP head;                                               // значение и индекс "головы змеи"
+    TIP tail;                                               // значение и индекс "хвоста змеи"
+    int len_snake;                                          // длина змеи
+} SNAKE;                                                    // для красоты меняем название типа данных struct snake -> SNAKE
 
 bool snake_growth(SNAKE *snake, char num_arr[])
 // "змея" растет - увеличивает длину, пока не достигнет длины 13 чисел или не встретит ноль
@@ -117,16 +118,16 @@ bool snake_growth(SNAKE *snake, char num_arr[])
 {
     while(snake->len_snake < LEN_SERIES)
     {
-        snake->head.indx++;                         // перемещаем "голову" на шаг вперед
+        snake->head.indx++;                                 // перемещаем "голову" на шаг вперед
         snake->head.value = num_arr[snake->head.indx];
 
-        if(!snake->head.value)                      // snake.head.value == 0
-            return false;                           // встретили ноль - "змея" не выросла
+        if(!snake->head.value)                              // snake.head.value == 0
+            return false;                                   // встретили ноль - "змея" не выросла
 
-        snake->product *= snake->head.value;        // изменяем "тело змеи" - произведение серии чисел
-        snake->len_snake++;                         // увеличисваем длину змеи
+        snake->product *= snake->head.value;                // изменяем "тело змеи" - произведение серии чисел
+        snake->len_snake++;                                 // увеличисваем длину змеи
     }
-    return true;                                    // "змея" успешно выросла до 13 чисел
+    return true;                                            // "змея" успешно выросла до 13 чисел
 }
 
 bool snake_crawl(SNAKE *snake, char num_arr[])
@@ -136,19 +137,19 @@ bool snake_crawl(SNAKE *snake, char num_arr[])
 // return:      true        - "змея" успешно проползла один шаг
 //              false       - "змея" встретила ноль
 {
-    snake->head.indx++;                             // перемещаем "голову" на шаг вперед
+    snake->head.indx++;                                     // перемещаем "голову" на шаг вперед
     snake->head.value = num_arr[snake->head.indx];
 
-    if(!snake->head.value)                          // snake.head.value == 0
-        return false;                               // встретили ноль
+    if(!snake->head.value)                                  // snake.head.value == 0
+        return false;                                       // встретили ноль
 
-    snake->product /= snake->tail.value;            // обрезаем "хвост"
-    snake->tail.indx++;                             // перемещаем "хвост" на шаг вперед
+    snake->product /= snake->tail.value;                    // обрезаем "хвост"
+    snake->tail.indx++;                                     // перемещаем "хвост" на шаг вперед
     snake->tail.value = num_arr[snake->tail.indx];
 
-    snake->product *= snake->head.value;            // изменяем "тело змеи" - произведение серии чисел
+    snake->product *= snake->head.value;                    // изменяем "тело змеи" - произведение серии чисел
     
-    return true;                                    // "змея" успешно проползла один шаг
+    return true;                                            // "змея" успешно проползла один шаг
 }
 
 void snake_jump(SNAKE *snake, char num_arr[])
@@ -156,23 +157,26 @@ void snake_jump(SNAKE *snake, char num_arr[])
 // параметры:	*snake      - указатель структуру - "змея"
 //              num_arr[]   - указатель на массив с числами
 {
-    int jump = snake->len_snake;                    // длина прыжка
+    int jump = snake->len_snake;                            // длина прыжка
 
-    while(!num_arr[snake->tail.indx + jump])        // num_arr[snake->tail.indx + jump] == 0
-        jump++;                                     // изменяем длину прыжка, чтобы не попадать на ноль
+    while(!num_arr[snake->tail.indx + jump])                // num_arr[snake->tail.indx + jump] == 0
+        jump++;                                             // изменяем длину прыжка, чтобы не попадать на ноль
 
-    snake->tail.indx += jump;                       // перемещаем "хвост" вперед
+    snake->tail.indx += jump;                               // перемещаем "хвост" вперед
     snake->tail.value = num_arr[snake->tail.indx];
 
-    snake->head.indx = snake->tail.indx;            // перемещаем "голову" вперед
+    snake->head.indx = snake->tail.indx;                    // перемещаем "голову" вперед
     snake->head.value = num_arr[snake->head.indx];
 
-    snake->product = snake->tail.value;             // обновляем значение "тела" змеи
-    snake->len_snake = 1;                           // "змея" занимает только одно число
+    snake->product = snake->tail.value;                     // обновляем значение "тела" змеи
+    snake->len_snake = 1;                                   // "змея" занимает только одно число
 }
 
 int main (void)
 {
+    double time_spent = 0.0;                                // для хранения времени выполнения кода
+    clock_t begin = clock();                                // СТАРТ таймера
+
     //объявил 1000-значное число из задания в виде строки
     char num_str[] =    "73167176531330624919225119674426574742355349194934"
                         "96983520312774506326239578318016984801869478851843"
@@ -197,32 +201,35 @@ int main (void)
     
     char num_arr[LEN_ARR];
     long long answ = 0;
-    bool is_answ = false;                           // флаг наличия ответа (отсутствия нуля в серии чисел)
+    bool is_answ = false;                                   // флаг наличия ответа (отсутствия нуля в серии чисел)
 
-    for(int i = 0; i < LEN_ARR; i++)                // преобразуем строку в массив цифр   
-        num_arr[i] = num_str[i] - 48;               // символ '0' имеет код 48, '1' - 49 и т.д.
+    for(int i = 0; i < LEN_ARR; i++)                        // преобразуем строку в массив цифр   
+        num_arr[i] = num_str[i] - 48;                       // символ '0' имеет код 48, '1' - 49 и т.д.
     
-    SNAKE Snake;                                    // создаем стркутуру "змея" - массив чисел из одного числа
-    Snake.product = num_arr[0];                     // произведение равно первому числу массива
-    Snake.len_snake = 1;                            // "длина змеи" - одно число
-    Snake.head.indx = 0;                            // "голова" 
+    SNAKE Snake;                                            // создаем стркутуру "змея" - массив чисел из одного числа
+    Snake.product = num_arr[0];                             // произведение равно первому числу массива
+    Snake.len_snake = 1;                                    // "длина змеи" - одно число
+    Snake.head.indx = 0;                                    // "голова" 
     Snake.head.value = num_arr[0];
-    Snake.tail.indx = 0;                            // и "хвост" также находятся в первом числе массива
+    Snake.tail.indx = 0;                                    // и "хвост" также находятся в первом числе массива
     Snake.tail.value = num_arr[0];
 
-    while (Snake.head.indx < LEN_ARR)               // пока не дойдем до конца массива
+    while (Snake.head.indx < LEN_ARR)                       // пока не дойдем до конца массива
     {
-        if(Snake.len_snake < LEN_SERIES)            // "змея" растет
+        if(Snake.len_snake < LEN_SERIES)                    // "змея" растет
             is_answ = snake_growth(&Snake, num_arr);
-        else                                        // или ползет
+        else                                                // или ползет
             is_answ = snake_crawl(&Snake, num_arr);
 
-        if(is_answ)                                 // если есть ответ - обновляем максимум
+        if(is_answ)                                         // если есть ответ - обновляем максимум
             answ = (answ > Snake.product) ? answ : Snake.product;
-        else                                        // если встретился ноль - "змея" перепрыгивает через него
+        else                                                // если встретился ноль - "змея" перепрыгивает через него
             snake_jump(&Snake, num_arr);
     }
 
-    printf("%lld",answ);                    
+    clock_t end = clock();                                  // СТОП таймера
+    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;   // время работы в секундах
+
+    printf("answer = %lld runtime = %f\n", answ, time_spent); // выводим результат и время работы программы              
     return 0;
 }

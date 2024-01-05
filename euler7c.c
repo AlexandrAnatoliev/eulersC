@@ -5,8 +5,9 @@
 // #include <stdio.h>
 // #include <stdbool.h>
 // #include <math.h>
+// #include <time.h>                                           // for clock_t, clock(), CLOCKS_PER_SEC
 
-// #define LEN_ARR 200000                                  // длина массивов - зависит от размера искомого числа
+// #define LEN_ARR 200000                                      // длина массивов - зависит от размера искомого числа
 
 // bool is_prime(char prime_ar[], int num)
 // // функция принимает число и возвращает true - если число простое
@@ -14,11 +15,11 @@
 // //              num         - проверяемое число    
 // // return:      true        - если число простое
 // {
-// 	int div_max = sqrt(num) + 1;                        // выносим вычисление квадратного корня из цикла for
+// 	int div_max = sqrt(num) + 1;                            // выносим вычисление квадратного корня из цикла for
 
-// 	for (int div = 2; div < div_max; div++)             // чтобы он не вычислялся каждую итерацию цикла
+// 	for (int div = 2; div < div_max; div++)                 // чтобы он не вычислялся каждую итерацию цикла
 // 	{
-// 		if (prime_ar[div] && !(num % div))              // пропускаем составные делители и срабатываем при num % i == 0
+// 		if (prime_ar[div] && !(num % div))                  // пропускаем составные делители и срабатываем при num % i == 0
 // 			return false;
 // 	}
 // 	return true;
@@ -26,22 +27,28 @@
 
 // int main(void)
 // {                           
-//     static char prime_arr[LEN_ARR] = { 0 };		        // массив[простое число] = 1 - static писать обязательно!                                  
+//     double time_spent = 0.0;                                // для хранения времени выполнения кода
+//     clock_t begin = clock();                                // СТАРТ таймера
+
+//     static char prime_arr[LEN_ARR] = { 0 };		            // массив[простое число] = 1 - static писать обязательно!                                  
 //     prime_arr[2] = 1;
-//     int count = 1;                                      // определили одно простое число в массиве - 2
+//     int count = 1;                                          // определили одно простое число в массиве - 2
 //     int num = 2;
 
 //     while (count < 10001)    
 //     {
-//         num++;                                          // перебираем числа
+//         num++;                                              // перебираем числа
 //         if (is_prime(prime_arr, num))
 //         {                               
-//             prime_arr[num] = 1;                         // отмечаем число как простое в массиве
+//             prime_arr[num] = 1;                             // отмечаем число как простое в массиве
 //             count++;
 //         }
 //     }
-//                                                         // выводим 10001 число
-//     printf("%d\n",num);                                 // 104743
+    
+//     clock_t end = clock();                                  // СТОП таймера
+//     time_spent += (double)(end - begin) / CLOCKS_PER_SEC;   // время работы в секундах
+
+//     printf("answer = %d runtime = %f\n", num, time_spent);  // выводим результат и время работы программы
 //     return 0;  
 // }
 
@@ -50,8 +57,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
+#include <time.h>                                               // for clock_t, clock(), CLOCKS_PER_SEC
 
-#define LEN_ARR 200000                                      // длина массивов - зависит от размера искомого числа
+#define LEN_ARR 200000                                          // длина массивов - зависит от размера искомого числа
 
 bool is_composite(char comp_arr[], int num)
 // функция принимает число и возвращает true - если число составное
@@ -127,6 +135,9 @@ int get_prime(char comp_arr[], int number, int start, int finish)
 
 int main(void)
 {                           
+    double time_spent = 0.0;                                    // для хранения времени выполнения кода
+    clock_t begin = clock();                                    // СТАРТ таймера
+
     static char composit_arr[LEN_ARR] = { 0 };		            // массив[состаное число] = 1 - static писать!                                  
     int cnt_prime = 0;                                          // счетчик количества простых чисел в массиве
     int past_cnt_prime;                                         // сохраняем значение счетчика предыдущей итерации
@@ -166,6 +177,10 @@ int main(void)
     
     // 10001 - предыдущее значение счетчика = порядковый номер искомого числа в отрезке массива                                                  
     answ = get_prime(composit_arr, 10001 - past_cnt_prime, start, finish);
-    printf("%d\n",answ);                                        // 104743
+    
+    clock_t end = clock();                                      // СТОП таймера
+    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;       // время работы в секундах
+
+    printf("answer = %d runtime = %f\n", answ, time_spent);     // выводим результат и время работы программы
     return 0;  
 }
