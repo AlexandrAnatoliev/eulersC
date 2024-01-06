@@ -117,6 +117,6 @@ int main(void)
             printf("answer = %d runtime = %f\n", triple, time_spent);   // результат и время работы программы
         }            
     }
-        
+
     return 0;
 }
