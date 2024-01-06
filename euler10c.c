@@ -6,14 +6,14 @@
 // #include <stdbool.h>
 // #include <math.h>
 
-// bool is_simple(int *num_arg)
+// bool is_simple(int num_arg)
 // //true - если число простое
 // {
-//     int i_arg = sqrt(*num_arg) + 1;
+//     int i_arg = sqrt(num_arg) + 1;
     
 //     for (int i = 2; i < i_arg; i++)
 //     {
-//         if (*num_arg%i == 0) 
+//         if (num_arg%i == 0) 
 //             return false;
 //     }
 //     return true;
@@ -24,10 +24,10 @@
 //     long long answ = 0;                      
 //     for (int i = 2; i < 2000000; i++)
 //     {
-//         if (is_simple(&i)) 
+//         if (is_simple(i)) 
 //             answ += i;
 //     }  
-//     printf("%lld",answ);                     //142913828922
+//     printf("%lld",answ);                     
 //     return 0;  
 // }
 
