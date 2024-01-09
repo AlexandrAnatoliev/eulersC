@@ -4,11 +4,13 @@
 
 int main(void)
 {
-    int div_max;
-    int num = 134043;                       // 134043
-    num = (double)num;
-    double sq_num = sqrt((double)num);
-    div_max = (int)sq_num + 1;
-	
+    int rest = 0;
+    int cnt = 0;
+    int len_arr = 2;
+
+    while (cnt < len_arr)
+    {
+        
+    };
     return 0;
 }									
