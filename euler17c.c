@@ -9,38 +9,38 @@
 // Например, число 342 (three hundred and forty-two) состоит из 23 букв, число 115 (one hundred and fifteen) - из 20 букв.
 // Использование "and" при записи чисел соответствует правилам британского английского.
 
-// #include <stdio.h>
-// // 1        one                     3
-// // 2        two                     3
-// // 3        three                   5
-// // 4	    four                    4
-// // 5		five                    4
-// // 6		six	                    3
-// // 7		seven                   5
-// // 8		eight                   5
-// // 9		nine                    4
-// // 10		ten                     3
-// // 11		eleven                  6
-// // 12		twelve                  6
-// // 13		thirteen                8
-// // 14		fourteen	            8
-// // 15		fifteen	                7
-// // 16		sixteen	                7
-// // 17		seventeen               9
-// // 18		eighteen                8
-// // 19		nineteen                8
-// // 20		twenty	                6
-// // 21	 	twenty one              6 + [3]
-// // 30		thirty	                6
-// // 40		forty	                5
-// // 50		fifty	                5
-// // 60		sixty	                5
-// // 70		seventy	                7
-// // 80		eighty	                6
-// // 90		ninety	                6
-// // 100		one hundred	            [3] + 7
-// // 101	 	one hundred and one	    [3] + 7 + 3? + [3]
-// // 1000		one thousand            11
+#include <stdio.h>
+// 1        one                     3
+// 2        two                     3
+// 3        three                   5
+// 4	    four                    4
+// 5		five                    4
+// 6		six	                    3
+// 7		seven                   5
+// 8		eight                   5
+// 9		nine                    4
+// 10		ten                     3
+// 11		eleven                  6
+// 12		twelve                  6
+// 13		thirteen                8
+// 14		fourteen	            8
+// 15		fifteen	                7
+// 16		sixteen	                7
+// 17		seventeen               9
+// 18		eighteen                8
+// 19		nineteen                8
+// 20		twenty	                6
+// 21	 	twenty one              6 + [3]
+// 30		thirty	                6
+// 40		forty	                5
+// 50		fifty	                5
+// 60		sixty	                5
+// 70		seventy	                7
+// 80		eighty	                6
+// 90		ninety	                6
+// 100		one hundred	            [3] + 7
+// 101	 	one hundred and one	    [3] + 7 + 3? + [3]
+// 1000		one thousand            11
 
 // int main(void)
 // {
@@ -141,7 +141,7 @@ int main(void)
 
     int sum_letter = 0;
 
-    for (int num = 1; num <= 1000; num++)                           // перебираем числа и считаем в них буквы
+    for (int num = -1; num <= 1000; num++)                           // перебираем числа и считаем в них буквы
         sum_letter += count_letters(num);
 
     clock_t end = clock();                                          // СТОП таймера
@@ -165,7 +165,7 @@ int count_letters(int num)
 
     if (num > 9999 || num < 1)                                      // отрабатываем некорректные значения
     {
-        printf("Input number between 0 and 10000\n");
+        printf("Number = %d! Input number between 1 and 9999\n", num);
         return 0;
     }
 
