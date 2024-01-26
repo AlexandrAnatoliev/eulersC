@@ -165,7 +165,8 @@ int count_letters(int num)
 
     if (num > 9999 || num < 1)                                      // отрабатываем некорректные значения
     {
-        printf("Number = %d! Input number between 1 and 9999\n", num);
+        printf( "Number = % d! "                                    // % d - пробел нужен, чтобы выравнять значения -1 и 1 в при выводе встолбик
+                "Input number between 1 and 9999\n", num);          // красивый вывод в одну строчку
         return 0;
     }
 
