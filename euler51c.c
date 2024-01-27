@@ -18,84 +18,14 @@
 #include <time.h> // for clock_t, clock(), CLOCKS_PER_SEC
 
 #define LEN_ARR 1000000 // длина массивов - зависит от размера искомого числа
+// для корректной работы функции count_replacements() LEN_ARR должно быть "круглым" числом - 1000, 10000 и т.п.
 
-bool is_composite(char comp_arr[], int num)
-// функция принимает число и возвращает true - если число составное
-// параметры:	comp_arr[]          - массив с ранее вычисленными составными числами
-//              comp_arr[num] = 0   - число простое!
-//              comp_arr[num] = 1   - число составное!
-//              num                 - проверяемое число
-// return:      true                - если число составное!
-{
-    int div_max = sqrt(num) + 1; // выносим вычисление квадратного корня из цикла for
-
-    for (int div = 2; div < div_max; div++) // чтобы он не вычислялся каждую итерацию цикла
-    {
-        // пропускаем составные делители и срабатываем при num % i == 0
-        if (!comp_arr[div] && !(num % div))
-            return true;
-    }
-
-    return false;
-}
-
-int note_composite(char comp_arr[], int step, int start, int finish)
-// функция отмечает составные числа в массиве
-// параметры:	comp_arr[]          - массив с ранее вычисленными составными числами
-//              comp_arr[num] = 0   - число простое!
-//              comp_arr[num] = 1   - число составное!
-//              step                - простое число, служит шагом
-//              start               - начальный индекс в массиве
-//              finish              - конечный индекс
-// return:                          - количество отмеченных составных чисел
-{
-    int shift = (start % step == 0) ? 0 : step - (start % step); // смещение индекса start
-    start += shift;                                              // первое составное число
-
-    for (int i = start + step; i < finish; i += step) // первое число - простое, не отмечаем его
-    {
-        if (!comp_arr[i])    // если еще не отмечено
-            comp_arr[i] = 1; // отмечаем составные числа
-    }
-
-    return 0;
-}
-
-int get_factorial(int number)
-// функция возвращает факториал числа
-// параметры:	number  - натуральное число
-// return:              - факториал числа
-{
-    int factorial = 1;
-    for (int i = number; i > 0; i--) // считаем максимально возможную длину числа
-        factorial *= i;
-
-    return factorial;
-}
-
-int count_replacements(int number)
-// функция считает количество возможных перестановок для числа и same_digits количества одинаковых цифр
-// параметры:	number      - натуральное число
-// return:                  - количество отмеченных составных чисел
-{
-    int max_len = 0; // максимально возможная длина числа (ограничена [LEN_ARR])
-    int number_len = 0;
-    int answ;
-    int same_digits; // количество одинаковых чисел
-
-    for (int i = LEN_ARR; i > 1; i /= 10) // ДО! 1000000 - 6-значные числа
-        max_len++;
-
-    for (int i = number; i > 0; i /= 10) // считаем длину числа
-        number_len++;
-
-    same_digits = max_len - number_len;
-
-    answ = get_factorial(max_len - 1) / get_factorial(same_digits);
-    // (max_len - 1)! / same_digits! - не считаем крайнее правое число (max_len - 1), его менять не будем
-
-    return answ;
-}
+bool is_composite(char comp_arr[], int num);
+int note_composite(char comp_arr[], int prime, int finish);
+int get_cnt_replacement(char cnt_ar[], int len_replace, int len_num);
+int get_replacment(int len_replace, int num, int cnt_replace, int some);
+int count_primes(char comp_arr[], int len_replace, int num, int cnt_replace, int value_prime);
+int print_primes(char comp_arr[], int len_replace, int num, int cnt_replace);
 
 int main(void)
 {
@@ -109,14 +39,204 @@ int main(void)
     {
         // если число не отмечено составным -> проверяем число -> если число простое
         if (!composit_arr[num] && !is_composite(composit_arr, num))
-            note_composite(composit_arr, num, num, LEN_ARR); // отмечаем составные числа, кратные простому
+            note_composite(composit_arr, num, LEN_ARR); // отмечаем составные числа, кратные простому
     }
 
-    answ = count_replacements(12);
+    char cnt_arr[100] = {0};
+    get_cnt_replacement(cnt_arr, 5, 2); //!
+    int ptr;
+    int num = 109;                  //!
+    while (answ != 8 && num < 1000) //!!
+    {
+        ptr = 0;
+        while (cnt_arr[ptr] && answ != 8)                                 // !
+            answ = count_primes(composit_arr, 5, num, cnt_arr[ptr++], 8); //!!
+        num += 2;
+    }
+
+    print_primes(composit_arr, 5, num - 2, cnt_arr[ptr - 1]); //!
+
     clock_t end = clock();                                // СТОП таймера
     time_spent += (double)(end - begin) / CLOCKS_PER_SEC; // время работы в секундах
 
-    printf("answer = %d runtime = %f\n", answ, time_spent); // выводим результат и время работы программы
+    printf("answers = %d runtime = %f\n", answ, time_spent); // выводим результат и время работы программы
 
     return 0;
+}
+
+bool is_composite(char comp_arr[], int num)
+// функция принимает число и возвращает true - если число составное
+// параметры:	comp_arr[]          - массив с ранее вычисленными составными числами
+//              comp_arr[num] = 0   - число простое!
+//              comp_arr[num] = 1   - число составное!
+//              num                 - проверяемое число
+// return:      true                - если число составное!
+{
+    if (num >= LEN_ARR || num < 0) // проверка на выход числа за пределы массива
+    {
+        printf("is_composite(): array index (num) = % d out of bounds [0 - %d]\n", num, LEN_ARR);
+        return false;
+    }
+
+    int div_max = sqrt(num) + 1; // выносим вычисление квадратного корня из цикла for
+
+    for (int div = 2; div < div_max; div++) // чтобы он не вычислялся каждую итерацию цикла
+    {
+        // пропускаем составные делители и срабатываем при num % i == 0
+        if (!comp_arr[div] && !(num % div))
+            return true;
+    }
+
+    return false;
+}
+
+int note_composite(char comp_arr[], int prime, int finish)
+// функция отмечает составные числа в массиве
+// параметры:	comp_arr[]          - массив с ранее вычисленными составными числами
+//              comp_arr[num] = 0   - число простое!
+//              comp_arr[num] = 1   - число составное!
+//              prime               - простое число, служит шагом
+//              finish              - конечный индекс в массиве
+// return:                          - количество отмеченных составных чисел
+{
+    if (prime >= LEN_ARR + 1 || prime < 0) // проверка на выход числа за пределы массива
+    {
+        printf("note_composite(): array index (prime) = % d out of bounds [0 - %d]\n", prime, LEN_ARR);
+        return false;
+    }
+
+    if (finish >= LEN_ARR + 1 || finish < 0) // проверка на выход числа за пределы массива
+    {
+        printf("note_composite(): array index (finish) = % d out of bounds [0 - %d]\n", finish, LEN_ARR);
+        return false;
+    }
+
+    for (int i = prime * 2; i < finish; i += prime) // первое число - простое, не отмечаем его
+    {
+        if (!comp_arr[i])    // если еще не отмечено
+            comp_arr[i] = 1; // отмечаем составные числа
+    }
+
+    return 0;
+}
+
+int get_cnt_replacement(char cnt_ar[], int len_replace, int len_num)
+// Для размещения числа 123 (3 цифры) в 5-значном числе вида хх123 функция формирует код 00111
+// в виде x1x23 - код 01011 и так далее.
+// где 1 - цифра исходного числа, 0 - одинаковые числа, которые будут меняться 00123... 11123... 22123... 33123
+// Функция заполняет массив возможными размещениями в десятичном виде 00111 = 7, 01011 = 11 и т.д.
+// параметры:   cnt_ar[]    - массив для сохранения размещений числа в десятичном виде
+//              len_replace - длина числа после перестановки
+//              len_num     - длина исходного числа, в которое добавляются одинакове числа
+// return:                  - количество занесенных в массив размещений цифр
+{
+    int cnt = 0;
+    int max_num = pow(2, len_replace);
+    for (int replace_num = 1; replace_num < max_num; replace_num++)
+    {
+        int mask = 1;
+        int cnt_coincidence = 0;
+        while (mask < max_num)
+        {
+            if (replace_num & mask)
+                cnt_coincidence++;
+            if (cnt_coincidence > len_num)
+                break;
+            mask = mask << 1;
+        }
+        if (cnt_coincidence == len_num)
+            cnt_ar[cnt++] = replace_num;
+    }
+    return cnt;
+}
+
+int get_replacment(int len_replace, int num, int cnt_replace, int some)
+// Формирует размещение чисел
+// параметры:   len_replace - длина числа после перестановки (44123) - 5 чисел
+//              num         - исходное число (123)
+//              cnt_replace - номер размещения (7 - 00111)
+//              some        - числа, являющиеся одинаковыми в размещении 44123 - цифра 4
+// return:                  - размещение цифр в виде числа 44123
+{
+    int degree = 1;
+    int replace = 0;
+    int max_num = pow(2, len_replace);
+    int mask = 1;
+    int ptr = 0;
+    char arr[16] = {0};
+    while (num)
+    {
+        arr[ptr++] = num % 10;
+        num /= 10;
+    }
+    ptr = 0;
+    while (mask < max_num)
+    {
+        if (cnt_replace & mask)
+            replace += arr[ptr++] * degree;
+        else
+            replace += some * degree;
+        degree *= 10;
+        mask = mask << 1;
+    }
+    return replace;
+}
+
+int count_primes(char comp_arr[], int len_replace, int num, int cnt_replace, int value_prime)
+// перебирает размещения чисел и считает простые из них
+// от числа отрезается младшая цифра и остальные перебираются
+// 123 -> 12 (3) -> 44412(3) -> 44124(3) -> 41244(3) -> 12444(3)
+// параметры:   comp_arr[]  - массив простых/составных чисел
+//              len_replace - длина числа после перестановки (44412) - 5 чисел
+//              num         - исходное число (123) - обрезается до 12
+//              cnt_replace - номер размещения (3 - 00011)
+//              some        - числа, являющиеся одинаковыми в размещении 44412 - цифра 4
+//              value_prime - сколько простых чисел ищется
+// return:                  - количество найденных простых чисел
+{
+    int cnt_prime = 0;
+    int cnt_comp = 0;
+    int replace;
+    for (int some = 0; some < 10; some++)
+    {
+        replace = num % 10;
+        replace += get_replacment(len_replace, num / 10, cnt_replace, some) * 10;
+        bool len_fl = replace / pow(10, len_replace); // отсекаем числа меньшей длины 000123 -> 123
+        if (comp_arr[replace] == 0 && len_fl)
+            cnt_prime++;
+        else
+            cnt_comp++;
+        if (cnt_comp > 10 - value_prime) // если число составных чисел велико
+            return cnt_prime;            // доальше можно не искать
+    }
+
+    return cnt_prime;
+}
+
+int print_primes(char comp_arr[], int len_replace, int num, int cnt_replace)
+// перебирает размещения чисел и выводит простые из них
+// от числа отрезается младшая цифра и остальные перебираются
+// 123 -> 12 (3) -> 44412(3) -> 44124(3) -> 41244(3) -> 12444(3)
+// параметры:   comp_arr[]  - массив простых/составных чисел
+//              len_replace - длина числа после перестановки (44412) - 5 чисел
+//              num         - исходное число (123) - обрезается до 12
+//              cnt_replace - номер размещения (3 - 00011)
+//              some        - числа, являющиеся одинаковыми в размещении 44412 - цифра 4
+//              value_prime - сколько простых чисел ищется
+// return:                  - количество найденных простых чисел
+{
+    int cnt_prime = 0;
+    int replace;
+    for (int some = 0; some < 10; some++)
+    {
+        replace = num % 10;
+        replace += get_replacment(len_replace, num / 10, cnt_replace, some) * 10;
+        if (comp_arr[replace] == 0)
+        {
+            printf("%d\n", replace);
+            cnt_prime++;
+        }
+    }
+
+    return cnt_prime;
 }
