@@ -108,7 +108,7 @@ int multiply(int num_ar1[], int num2)
 {
     if (num2 >= LEN_ARR || num2 < 1)        // отрабатываем некорректные значения
     {
-        printf("multiply(): Num2 = % d! "   // % d - пробел нужен, чтобы выравнять значения -1 и 1 в при выводе встолбик
+        printf("multiply(): Num2 = % d! "   // % d - пробел нужен, чтобы выравнять значения -1 и 1 в при выводе в столбик
                "Used number between 0 and % d \n",
                num2, LEN_ARR);              // красивый вывод в одну строчку
         return 0;
