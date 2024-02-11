@@ -12,8 +12,8 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <ctype.h> // для isalpha()
-#include <time.h>  // for clock_t, clock(), CLOCKS_PER_SEC
+#include <ctype.h>                                                  // для isalpha()
+#include <time.h>                                                   // for clock_t, clock(), CLOCKS_PER_SEC
 
 #define NAME_FILE "euler22text.txt"
 #define LEN_ARR 50000
@@ -24,18 +24,18 @@ int parser_names(char text_arr[], int name_arr[], int lenght);
 bool compare_names(char text_arr[], int indx_name1, int indx_name2);
 int copy_arrs(int receive_arr[], int sourse_arr[], int start_indx, int lenght);
 int merge_sort(char text_arr[], int name_arr[], int names);
-int get_name_score(char arr[], int indx_name);
+int get_name_score(char text_arr[], int indx_name);
 bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main()
 {
-    double time_spent = 0.0; // для хранения времени выполнения кода
-    clock_t begin = clock(); // СТАРТ таймера
+    double time_spent = 0.0;                                        // для хранения времени выполнения кода
+    clock_t begin = clock();                                        // СТАРТ таймера
 
-    char text_arr[LEN_ARR] = {0}; // массив для хранения содержимого файла
-    int name_arr[NAMES] = {0};    // массив для хранения индексов первых букв имен в массиве text_arr[]
+    char text_arr[LEN_ARR] = {0};                                   // массив для хранения содержимого файла
+    int name_arr[NAMES] = {0};                                      // массив для хранения индексов первых букв имен в массиве text_arr[]
 
-    unsigned long long sum_point = 0; // сумма очков
+    unsigned long long sum_point = 0;                               // сумма очков
 
     int lenght = open_file(NAME_FILE, text_arr);
     int names = parser_names(text_arr, name_arr, lenght);
@@ -45,10 +45,10 @@ int main()
     for (int num_name = 1; num_name <= names; num_name++)
         sum_point += num_name * get_name_score(text_arr, name_arr[num_name - 1]);
 
-    clock_t end = clock();                                // СТОП таймера
-    time_spent += (double)(end - begin) / CLOCKS_PER_SEC; // время работы в секундах
+    clock_t end = clock();                                          // СТОП таймера
+    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;           // время работы в секундах
 
-    printf("answer = %llu runtime = %f\n", sum_point, time_spent); // выводим результат и время работы программы
+    printf("answer = %llu runtime = %f\n", sum_point, time_spent);  // выводим результат и время работы программы
 
     return 0;
 }
@@ -61,7 +61,7 @@ int open_file(const char *name_file, char text_arr[])
 {
     FILE *file;
 
-    file = fopen(name_file, "r"); // открываем файл на чтение
+    file = fopen(name_file, "r");   // открываем файл на чтение
 
     if (file == NULL)
     {
@@ -71,9 +71,9 @@ int open_file(const char *name_file, char text_arr[])
 
     fgets(text_arr, LEN_ARR, file); // копируем содержимое файла в массив (до EOF)
 
-    int lenght = ftell(file); // получаем значение файловой позиции (конец = длина файла)
+    int lenght = ftell(file);       // получаем значение файловой позиции (конец = длина файла)
 
-    fclose(file); // закрываем файл
+    fclose(file);                   // закрываем файл
 
     printf("open_file():    file \"%s\" is opened (lenght - %d) and save in array (lenght - %d)\n", name_file, lenght, LEN_ARR);
 
@@ -87,27 +87,27 @@ int parser_names(char text_arr[], int name_arr[], int lenght)
 //              lenght      - количество символов в массиве arr[]
 // return:      name_indx   - количество слов в массиве
 {
-    if (input_more_limit("parser_names()", "lenght", lenght, "LEN_ARR", LEN_ARR - 1)) // выход за пределы массива text_arr[]
-        return 0;
+    if (input_more_limit("parser_names()", "lenght", lenght, "LEN_ARR", LEN_ARR - 1))   
+        return 0;                                               // выход за пределы массива text_arr[]
 
     int name_indx = 0;
-    bool start_name = false; // флаг начала слова
+    bool start_name = false;                                    // флаг начала слова
 
     for (int indx = 0; indx < lenght; indx++)
     {
-        if (isalpha(text_arr[indx]) && start_name == false) // первый встреченый символ алфавита
+        if (isalpha(text_arr[indx]) && start_name == false)     // первый встреченый символ алфавита
         {
-            start_name = true;                                                                  // является началом слова
-            if (input_more_limit("parser_names()", "name_indx", name_indx, "NAMES", NAMES - 1)) // выход за пределы массива text_arr[name_indx]
-                return 0;
-            name_arr[name_indx++] = indx; // заносим индекс начала слова text_arr[indx] в массив name_arr[name_index]
+            start_name = true;                                  // является началом слова
+            if (input_more_limit("parser_names()", "name_indx", name_indx, "NAMES", NAMES - 1)) 
+                return 0;                                       // выход за пределы массива text_arr[name_indx]
+            name_arr[name_indx++] = indx;                       // заносим индекс начала слова text_arr[indx] в массив name_arr[name_index]
         }
 
         else if (isalpha(text_arr[indx]) && start_name == true) // не первый символ слова - идем дальше
             continue;
 
         else
-            start_name = false; // слово закончилось
+            start_name = false;                                 // слово закончилось
     }
 
     printf("parser_names(): is counted %d names\n", name_indx);
@@ -122,17 +122,17 @@ bool compare_names(char text_arr[], int indx_name1, int indx_name2)
 //              indx_name2  - индекс начала второго слова (BEN)
 // return:      true        - если слова уже отсортированы верно (ANNA BEN)
 {
-    if (input_more_limit("compare_names()", "indx_name1", indx_name1, "LEN_ARR", LEN_ARR - 1)) // выход за пределы массива text_arr[]
-        return true;                                                                           // прерываем функцию и ничего не меняем в массиве
+    if (input_more_limit("compare_names()", "indx_name1", indx_name1, "LEN_ARR", LEN_ARR - 1))  // выход за пределы массива text_arr[]
+        return true;                                                                            // прерываем функцию и ничего не меняем в массиве
 
-    if (input_more_limit("compare_names()", "indx_name2", indx_name2, "LEN_ARR", LEN_ARR - 1)) // выход за пределы массива text_arr[]
-        return true;                                                                           // прерываем функцию и ничего не меняем в массиве
+    if (input_more_limit("compare_names()", "indx_name2", indx_name2, "LEN_ARR", LEN_ARR - 1))  // выход за пределы массива text_arr[]
+        return true;                                                                            // прерываем функцию и ничего не меняем в массиве
 
-    while (isalpha(text_arr[indx_name1])) // пока не кончилось первое слово
+    while (isalpha(text_arr[indx_name1]))                                                       // пока не кончилось первое слово
     {
-        if (isalpha(text_arr[indx_name2]) && text_arr[indx_name1] == text_arr[indx_name2]) // и второе
+        if (isalpha(text_arr[indx_name2]) && text_arr[indx_name1] == text_arr[indx_name2])      // и второе
         {
-            indx_name1++; // если буквы одинаковые - переходим к следующим
+            indx_name1++;                                                                       // если буквы одинаковые - переходим к следующим
             indx_name2++;
             continue;
         }
@@ -140,11 +140,11 @@ bool compare_names(char text_arr[], int indx_name1, int indx_name2)
         else if (isalpha(text_arr[indx_name2]) && text_arr[indx_name1] < text_arr[indx_name2]) // A (NNA) < B (EN)
             return true;                                                                       // [ANNA, BEN] -> [ANNA, BEN]
 
-        else              // [BEN, ANNA] -> [ANNA, BEN]; [ANNA, ANN] -> [ANN, ANNA]
-            return false; // при одинаковых начальныных буквах - первым ставить более короткое слово
+        else                    // [BEN, ANNA] -> [ANNA, BEN]; [ANNA, ANN] -> [ANN, ANNA]
+            return false;       // при одинаковых начальныных буквах - первым ставить более короткое слово
     }
 
-    return true; // если слова одинаковы - не меняем их расположение
+    return true;                                                                                // если слова одинаковы - не меняем их расположение
 }
 
 int copy_arrs(int receive_arr[], int sourse_arr[], int start_indx, int lenght)
@@ -170,74 +170,73 @@ int copy_arrs(int receive_arr[], int sourse_arr[], int start_indx, int lenght)
 }
 
 int merge_sort(char text_arr[], int name_arr[], int names)
-// Функция реализует быструю сортировку слиянием
+// Функция реализует быструю сортировку слиянием:
+//      выделяет из массива name_arr[] = {..., first,...,second-1,...,second + step - 1,...};
+//      два подмассива: {first,...,second-1} и {second,...,second + step - 1}; 
+//      значения из первого подмассива копируются во временный массив temp_arr[];
+//      массив name_arr[] заполняется из дополнительного массива и второго подмассива, параллельно сортируясь
 // параметры:   text_arr[]  - массив в который сохранены имена
 //              name_arr[]  - массив в котором отмечены индексы начала слов
 //              names       - слов в массиве name_arr[]
 {
-    if (input_more_limit("merge_sort()", "names", names, "NAMES", NAMES - 1)) // выход за пределы массива name_arr[]
+    if (input_more_limit("merge_sort()", "names", names, "NAMES", NAMES - 1))           // выход за пределы массива name_arr[]
         return true;
 
-    int step = 1;
-    while (step < names)
+    int len_arrs = 1;                                                                   // длина отсортированных массивов
+    while (len_arrs < names)
     {
-        int first = 0;     // индексы начала первого    {first,...,second-1} 
-        int second = step; // и второго подмассивов     {second,...,second + step - 1} массива name_arr[]
+        int first = 0;                                                                  // индексы начала первого {first,...,second-1} в массиве name_arr[]
+        int second = len_arrs;                                                          // и второго подмассивов {second,...,second + step - 1} в массиве name_arr[]
 
-        for (first = 0; second < names; first += step * 2, second += step * 2)
+        for (first = 0; second < names; first += len_arrs * 2, second += len_arrs * 2)
         {
-            int temp_arr[NAMES] = {0}; // дополнительный массив для временного хранения списка индексов начала слов
+            int temp_arr[NAMES] = {0};                                                  // дополнительный массив для временного хранения списка индексов начала слов
             int ptr_temp = 0;
             int ptr_second = second;
-            int max_temp = copy_arrs(temp_arr, name_arr, first, step);        // копируем в него значения temp_arr[] < {first,...,second-1} 
-            int max_second = (second + step < names) ? second + step : names; // ограничиваем длину второго массива
+            int max_temp = copy_arrs(temp_arr, name_arr, first, len_arrs);              // копируем в дополнительный temp_arr[] значения первого подмассива
+            int max_second = (second + len_arrs < names) ? second + len_arrs : names;   // ограничиваем длину второго массива
 
-            for (int i = first; i < first + step * 2; i++)
+            for (int i = first; i < first + len_arrs * 2; i++)
             {
-                // если слова из обоих массивов еще не использованы, сравниваем слова из массивов - заносим из массива temp_arr[]
+                // если слова из обоих массивов еще не использованы, сравниваем слова из массивов
                 if (ptr_temp < max_temp && ptr_second < max_second && compare_names(text_arr, temp_arr[ptr_temp], name_arr[ptr_second]))
-                    name_arr[i] = temp_arr[ptr_temp++]; // {first,...,second + step - 1} < temp_arr[ptr_temp]
+                    name_arr[i] = temp_arr[ptr_temp++];                                 // заносим в массив name_arr[] значения из массива temp_arr[]
 
                 // сравниваем слова из массивов - заносим из подмассива массива name_arr[ptr_second]
                 else if (ptr_temp < max_temp && ptr_second < max_second && !compare_names(text_arr, temp_arr[ptr_temp], name_arr[ptr_second]))
-                    name_arr[i] = name_arr[ptr_second++]; // {first,...,second + step - 1} < name_arr[ptr_second]
+                    name_arr[i] = name_arr[ptr_second++];                               // заносим в массив name_arr[] значения из второго подмассива
 
                 else if (ptr_temp < max_temp)
-                    name_arr[i] = temp_arr[ptr_temp++]; // {first,...,second + step - 1} < temp_arr[ptr_temp]
+                    name_arr[i] = temp_arr[ptr_temp++];                                 // если не закончились слова в дополнительном массиве - заносим из него
 
                 else
-                    name_arr[i] = name_arr[ptr_second++];
+                    name_arr[i] = name_arr[ptr_second++];                               // заносим слова из второго подмассива
             }
         }
-        step *= 2;
+        len_arrs *= 2;
     }
     return 0;
 }
 
-int get_name_score(char arr[], int indx_name)
+int get_name_score(char text_arr[], int indx_name)
 // функция считает алфавитное значение имени
-// параметры:   arr[]       - массив в который сохранены имена
+// Параметры:   text_arr[]  - массив в который сохранены имена
 //              indx_name   - индекс начала слова
 // return:                  - имя COLIN (алфавитное значение равно 3 + 15 + 12 + 9 + 14 = 53)
 {
-    if (indx_name >= LEN_ARR || indx_name < 0) // отрабатываем некорректные значения
-    {
-        printf("get_name_score(): indx_name = % d! " // % d - пробел нужен, чтобы выравнять значения -1 и 1 в при выводе в столбик
-               "Used number between 0 and % d \n",
-               indx_name, LEN_ARR); // красивый вывод в одну строчку
-        return 0;
-    }
+    if (input_more_limit("get_name_score()", "indx_name", indx_name, "LEN_ARR", LEN_ARR - 1))   // выход за пределы массива text_arr[]
+        return false;
 
-    if (!isalpha(arr[indx_name])) // если первый символ не буква
+    if (!isalpha(text_arr[indx_name]))                                                          // если первый символ не буква
     {
-        printf("get_name_score(): first simbol = %c (arr[indx] = %d) is not correct\n", arr[indx_name], indx_name);
+        printf("get_name_score(): first simbol = %c (indx_name = %d) is not correct\n", text_arr[indx_name], indx_name);
         return 0;
     }
 
     int score = 0;
 
-    while (isalpha(arr[indx_name]))     // пока не кончилось слово
-        score += arr[indx_name++] - 64; // код 'A' = 65
+    while (isalpha(text_arr[indx_name]))                                                        // пока не кончилось слово
+        score += text_arr[indx_name++] - 64;                                                    // код 'A' = 65
 
     return score;
 }
@@ -251,7 +250,7 @@ bool input_more_limit(const char *name_func, const char *name_input, int input_v
 //              *name_limit - название предельного значения
 // return:      true        - при превышении
 {
-    if (input_value > limit_value) // отрабатываем превышение
+    if (input_value > limit_value)                                                              // отрабатываем превышение
     {
         printf("%s: %s = %d more %s = %d\n", name_func, name_input, input_value, name_limit, limit_value);
         return true;
