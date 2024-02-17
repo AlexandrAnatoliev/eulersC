@@ -160,7 +160,7 @@ bool is_answer(factors_t *numerator, factors_t *denominator)
     if (input_more_limit("is_answer()", "numerator->f_value", numerator->f_value, "LEN_ARR", LEN_ARR))
         return 0;
     if (input_more_limit("is_answer()", "denominator->f_value", denominator->f_value, "LEN_ARR", LEN_ARR))
-        return 0;                                                                       // выход запределы массива
+        return 0;                                                                       // выход запределы 
 
     unsigned long long num_tor = 1;                                                     // текущее произведение множителей в числителе
     int den_tor = 1;                                                                    // в знаменателе

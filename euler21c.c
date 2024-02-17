@@ -16,7 +16,7 @@
 
 #define LEN_ARR 10000
 
-int get_sum_div(int num);
+int get_sum_divisors(int num);
 
 int main(void)
 {
@@ -29,7 +29,7 @@ int main(void)
 
     for (int num = 1; num < LEN_ARR; num++)                     // перебираем числа
     {
-        div_arr[num] = get_sum_div(num);                        // записываем их делители
+        div_arr[num] = get_sum_divisors(num);                        // записываем их делители
         // div_arr[220] = 284 - сумма делителей числа 220 = 284
 
         if ((div_arr[div_arr[num]] == num) and (div_arr[num] != num))
@@ -49,7 +49,7 @@ int main(void)
     return 0;
 }
 
-int get_sum_div(int num)
+int get_sum_divisors(int num)
 // функция возвращает сумму делителей числа
 // параметры:	num - раскладываемое на множители число
 // return:          - сумма делителей числа (начиная от 1)
