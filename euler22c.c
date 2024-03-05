@@ -69,7 +69,7 @@ int open_file(const char *name_file, char text_arr[])
         return 0;
     }
 
-    fgets(text_arr, LEN_ARR, file); // копируем содержимое файла в массив (до EOF)
+    fgets(text_arr, LEN_ARR, file); // копируем содержимое файла в массив (до '\n'!!!)
 
     int lenght = ftell(file);       // получаем значение файловой позиции (конец = длина файла)
 
