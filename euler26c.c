@@ -17,30 +17,28 @@
 // Найдите значение d < 1000, для которого 1/d в десятичном виде содержит самую длинную повторяющуюся последовательность цифр.
 
 #include <stdio.h>
-#include <time.h>   // for clock_t, clock(), CLOCKS_PER_SEC
-#include <locale.h> // русский язык в printf()
-#include <stdlib.h> // для calloc() и free()
-
-#define LEN_ARR 1000
+#include <time.h>                                           // for clock_t, clock(), CLOCKS_PER_SEC
+#include <locale.h>                                         // русский язык в printf()
+#include <stdlib.h>                                         // для calloc() и free()
 
 int get_len_rec_cycle(int den);
 int get_start_rec_cycle(int residue, char res_arr[]);
 
 int main(void)
 {
-    double time_spent = 0.0; // для хранения времени выполнения кода
-    clock_t begin = clock(); // СТАРТ таймера
+    double time_spent = 0.0;                                // для хранения времени выполнения кода
+    clock_t begin = clock();                                // СТАРТ таймера
 
-    setlocale(LC_ALL, "Rus"); // русский язык в printf()
+    setlocale(LC_ALL, "Rus");                               // русский язык в printf()
 
     int answ = 0;
     int len_max = 0;
-    int den = 983;
+    int den = 1000;
 
-    while (den > 2 && den > len_max) // длина последовательности не может быть больше делителя
+    while (den > 2 && den > len_max)                        // длина последовательности не может быть больше делителя
     {
         int len = get_len_rec_cycle(den);
-        if (len_max < len)
+        if (len_max < len)                                  // обновляем ответ
         {
             len_max = len;
             answ = den;
@@ -48,11 +46,10 @@ int main(void)
         den--;
     }
 
-    clock_t end = clock();                                // СТОП таймера
-    time_spent += (double)(end - begin) / CLOCKS_PER_SEC; // время работы в секундах
+    clock_t end = clock();                                  // СТОП таймера
+    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;   // время работы в секундах
 
-    printf("Ответ = %d время = %f\n", answ, time_spent); // выводим результат и время работы программы
-    printf("%d", len_max);
+    printf("Ответ = %d время = %f\n", answ, time_spent);    // выводим результат и время работы программы
 
     return 0;
 }
@@ -62,12 +59,12 @@ int get_len_rec_cycle(int den)
 // Параметры:   den - знаменатель дроби 1/denom
 // return:      0   - если дробь не имеет повторяющейся последовательности
 {
-    int len = 0; // длина последовательности
+    int len = 0;                                        // длина последовательности
     int residue = 1;
     char *res_cash = calloc(den, sizeof(char)); // динамический массив для хранения остатков деления по индексу (заполнен нулями)
     char *res_arr = calloc(den, sizeof(char));
 
-    while (residue) // пока есть остаток
+    while (residue && len < den)                        // пока есть остаток и не выходим за пределы массива
     {
         while (residue / den == 0)
         {
@@ -75,22 +72,22 @@ int get_len_rec_cycle(int den)
             len++;
         }
 
-        residue %= den; // вычисляем очередной остаток от деления
+        residue %= den;                                 // вычисляем очередной остаток от деления
 
-        if (res_cash[residue]) // если такой был
+        if (res_cash[residue])                          // если такой был
         {
             len++;
             break;
         }
 
-        res_arr[len] = residue; // заносим остатки по очереди, чтобы найти первое включение
-        res_cash[residue] = 1;  // кэшуем в массив
+        res_arr[len] = residue;                         // заносим остатки по очереди, чтобы найти первое включение
+        res_cash[residue] = 1;                          // кэшуем в массив
     }
 
-    if (residue == 0) // дробь не имеет повторяющейся последовательности
+    if (residue == 0)                                   // дробь не имеет повторяющейся последовательности
         len = 0;
     else
-        len -= get_start_rec_cycle(residue, res_arr);
+        len -= get_start_rec_cycle(residue, res_arr);   // конец последовательности - ее начало = длина
 
     free(res_cash);
     free(res_arr);
@@ -105,7 +102,7 @@ int get_start_rec_cycle(int residue, char res_arr[])
 // return:      порядковый номер остатка
 {
     int indx = 0;
-    while (res_arr[indx++] != residue && indx < residue) // ищем первое вхождение в массив
+    while (res_arr[indx++] != residue && indx < residue)    // ищем первое вхождение в массив
         ;
     return indx;
 }
