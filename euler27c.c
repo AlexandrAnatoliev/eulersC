@@ -32,8 +32,8 @@
 //  согласно которому можно получить максимальное количество простых чисел для последовательных значений n, начиная со значения n = 0
 
 #include <stdio.h>
-#include <stdbool.h>                                            //для красоты кода использую bool
-#include <math.h>                                               //для использовании функции sqrt()
+#include <stdbool.h>                                            // для красоты кода использую bool
+#include <math.h>                                               // для использовании функции sqrt()
 #include <time.h>                                               // for clock_t, clock(), CLOCKS_PER_SEC
 #include <stdlib.h>                                             // для calloc() и free()
 #include <locale.h>                                             // русский язык в printf()
@@ -184,7 +184,7 @@ int note_composite(char comp_arr[], int len_arr, int prime, int start, int finis
 }
 
 int count_primes(char comp_arr[], int *len_arr, int a, int b)
-// функция отмечает составные числа в массиве
+// функция, которая считает количество постых чисел подряд
 // параметры:	comp_arr[]  - массив с ранее вычисленными составными числами
 //              len_arr     - длина массива
 //              a           - коэффициент в формуле (n * n) + (a * n) + b
