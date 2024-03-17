@@ -1,62 +1,148 @@
 #include <stdio.h>
-#include <stdbool.h>                                                //для красоты кода использую bool
-#include <math.h>                                                   //для использовании функции sqrt()
-#include <time.h>                                           // for clock_t, clock(), CLOCKS_PER_SEC
+#include <stdbool.h>
+#include <time.h> // for clock_t, clock(), CLOCKS_PER_SEC
 
-#define LEN_ARR 15000                                               //принял длину масиива опытным путем
-
-bool is_simple(int num_arg)
-//функция принимает число и возвращает true - если число простое
+int split_number(unsigned char arr_arg[], int num_arg)
+// принимает указатель на массив и число
+// раскладывает число на отдельные цифры и заносит в массив
+// возвращает число занесенных символов в массив
 {
-    int i_arg = sqrt(num_arg) + 1;                                  //выносим вычисление квадратного корня из цикла for
-
-    for (int i = 2; i < i_arg; i++)                                 //чтобы он не вычислялся каждую итерацию цикла
-    {
-        if (num_arg % i == 0)
-            return false;
-    }
-    return true;
+	int cnt = 1;
+	while (num_arg)
+	{
+		if (num_arg % 10 == 0) // заносим нули
+		{
+			arr_arg[cnt++] = 0;
+			num_arg /= 10;
+		}
+		else
+		{
+			arr_arg[cnt++] = num_arg % 10; // заносим цифры
+			num_arg /= 10;
+		}
+	}
+	arr_arg[0] = cnt; // длина массива - в первой ячейке
+	return cnt;
 }
+
+int mult_num(unsigned char arr_num1_arg[], int num_arg)
+// перемножает числа 1 и 2
+{
+	int cnt1 = arr_num1_arg[0]; // длина массива1 (первого числа)
+
+	unsigned char num2_arr[5] = {0}; // число-массив2 - второе число
+	split_number(num2_arr, num_arg);
+	int cnt2 = num2_arr[0];
+
+	unsigned char num3_arr[3][255] = {0}; // промежуточный массив для умножения столбиком
+
+	unsigned char num = 0;		// переменные для разложения числа 23 -> 3
+	unsigned char next_num = 0; //									 -> 2
+
+	for (int j = 1; j < cnt2; j++)
+	// перемножаем цифры в числах и заносим в промежуточный массив
+	{
+		next_num = 0;
+		if (j > 1)	// если второй множитель двузначный
+			cnt1++; // увеличиваем длину числа
+		for (int i = 1 + j - 1; i < cnt1; i++)
+		{
+			// перемножаем цифры
+			num = arr_num1_arg[i + 1 - j] * num2_arr[j] + next_num;
+			next_num = num / 10;		   // выделяем десятки
+			num3_arr[j - 1][i] = num % 10; // и записываем остаток в массив
+		}
+
+		if (next_num)							// если осталось незанесенная цифра
+			num3_arr[j - 1][cnt1++] = next_num; // заносим ее в массив и увеличиваем длину числа
+	}
+
+	next_num = 0;
+	for (int i = 1; i < cnt1; i++)
+	// складываем цифры в промежуточном массиве
+	{
+		num = num3_arr[0][i] + num3_arr[1][i] + num3_arr[2][i] + next_num;
+		arr_num1_arg[i] = num % 10;
+		next_num = num / 10;
+	}
+	if (next_num)
+		arr_num1_arg[cnt1++] = next_num;
+
+	int cnt_check; // уточняем длину массива
+	for (int i = cnt1 - 2; i < cnt1 + 2; i++)
+	{
+		if (arr_num1_arg[i])
+			cnt_check = i + 1;
+	}
+	arr_num1_arg[0] = cnt_check;
+	return cnt1;
+}
+
+bool compare_nums(const unsigned char arr_num1_arg[], const unsigned char arr_num2_arg[])
+// сравнивает массивы -> true - одинаковые
+// первый элемент массива - длина, если длины не совпадут, то дальше не проверяется
+{
+	for (int i = 0; i < 255; i++)
+		if (arr_num1_arg[i] != arr_num2_arg[i])
+			return false;
+	return true;
+}
+
+int copy_arr(unsigned char arr_num1_arg[], unsigned char arr_num2_arg[])
+// копирует массив 2 в 1
+{
+	int len_arr = arr_num2_arg[0];
+	for (int i = 0; i < len_arr; i++)
+		arr_num1_arg[i] = arr_num2_arg[i];
+	return 0;
+}
+
+void nullify_arr(unsigned char arr_num1_arg[], int len_arr_arg)
+// обнуляем массив
+{
+	for (int i = 0; i < len_arr_arg; i++)
+		arr_num1_arg[i] = 0;
+}
+
 int main(void)
 {
-    double time_spent = 0.0;                                // для хранения времени выполнения кода
-    clock_t begin = clock();                                // СТАРТ таймера
-    char arr[LEN_ARR] = {0};                                        //массив для записи простых чисел
-    int n, answ_a, answ_b, a, b, cnt, answ = 1, cnt_max = 0;
+	double time_spent = 0.0; // для хранения времени выполнения кода
+	clock_t begin = clock(); // СТАРТ таймера
 
-    //вычисляю простые числа до 15000 один раз и заношу их массив по индексу
-    for (int i = 1; i < LEN_ARR; i++)                               //если arr[indx] = 1 => indx - простое число
-        arr[i] = is_simple(i);
+	static unsigned char arr[10000][255] = {0}; // без static - ошибка, первый символ - длина массива
+	unsigned char num1_arr[255] = {0};			// число-массив1 для вычислений
 
-    //в цикле перебираю все возможные коэффициенты
-    for (a = -1000; a < 1000; a++)
-    {
-        for (b = -1000; b < 1000; b++)
-        {
-            cnt = 0;
-            n = 0;
-            for(n = 0; n < 100; n++)                                //предположил, что простых чисел будет не более ста
-            {
-                answ = (n * n) + (a * n) + b;                       //проверяем формулу
-                if (answ < 0 || arr[answ] == 0)                     //простое число не может быть отрицательным
-                    break;                                          //прервем проверку формулы если встретилось число не являющееся простым
+	int a = 100;
+	int b = 100;
+	int cnt = 0; // счетчик занесенных чисел
 
-                cnt++;
-            }
+	for (int base = 2; base <= a; base++) // перебираем числа основания
+	{
+		nullify_arr(num1_arr, 255); // обнуляем массив перед использованием
+		split_number(num1_arr, base);
+		for (int pow = 2; pow <= b; pow++) // перебираем степени
+		{
+			mult_num(num1_arr, base); // возводим в степень - умножаем число на само себя несколько раз
 
-            if (cnt > cnt_max)                                      //обновляем значения коэффициентов
-            {
-                cnt_max = cnt;
-                answ_a = a;
-                answ_b = b;
-            }
-        }
-    }
+			bool flag = true;
+			for (int j = 0; j <= cnt; j++)
+			// проверяем нет ли уже такого числа
+			{
+				if (compare_nums(arr[j], num1_arr)) // если нашли такое число
+				{
+					flag = false; // не заносим число в массив
+					break;
+				}
+			}
+			if (flag)
+				copy_arr(arr[cnt++], num1_arr); // иначе - заносим в массив
+		}
+	}
 
-    // printf("cnt = %d\na*b = %d", cnt_max - 1, answ_a*answ_b);
-    clock_t end = clock();                                  // СТОП таймера
-    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;   // время работы в секундах
+	// printf("%d", cnt);
+	clock_t end = clock();								  // СТОП таймера
+	time_spent += (double)(end - begin) / CLOCKS_PER_SEC; // время работы в секундах
 
-    printf("Ответ = %d время = %f\n", answ_a*answ_b, time_spent);    // выводим результат и время работы программы
-    return 0;
+	printf("Ответ = %d время = %f\n", cnt, time_spent); // выводим результат и время работы программы
+	return 0;
 }
