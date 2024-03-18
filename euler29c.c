@@ -88,7 +88,7 @@ int get_fact(int num)
 // Параметры:	num	- раскладываемое число
 // return:			- первый множитель - минимальный делитель числа
 {
-	for (int fact = 2; fact < num; fact++)
+	for (int fact = 2; fact * fact - 1 < num; fact++)
 		if (num % fact == 0)
 			return fact;	// возвращаем первый делитель числа - минимальный
 
