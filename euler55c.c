@@ -26,7 +26,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <time.h> // for clock_t, clock(), CLOCKS_PER_SEC
+#include <time.h> 											// for clock_t, clock(), CLOCKS_PER_SEC
 
 #define MAX_NUM 10000
 #define MAX_ITER 50
@@ -39,30 +39,33 @@ bool is_palindrom(const char num[]);
 
 int main(void)
 {
-	double time_spent = 0.0; // для хранения времени выполнения кода
-	clock_t begin = clock(); // СТАРТ таймера
+	double time_spent = 0.0; 								// для хранения времени выполнения кода
+	clock_t begin = clock(); 								// СТАРТ таймера
 
-	char arr[MAX_ITER + 1][LEN_NUM] = {2, 0, 1}; // 51 число, получаемое за 50 итераций (плюс сразу заносим стартовое число)
-
-	int cnt = 0; // счетчик занесенных чисел
+	char arr[MAX_ITER + 1][LEN_NUM] = {2, 0, 1}; 			// сразу заносим стартовое число (число из 2 цифр - 10)
+												 			// плюс числа, образованные за 50 итераций
+	int cnt = 0;
 
 	for (int num = 10; num < MAX_NUM; num++)
 	{
-		num_increment(arr[0]);
-		for (int iter = 0; iter < MAX_ITER; iter++)
+		num_increment(arr[0]); 								// перебираем стартовые числа
+
+		for (int iter = 0; iter < MAX_ITER; iter++) 		// перебираем 50 итераций числа
 		{
-			get_next_num(arr[iter], arr[iter + 1]); // записываем следующее число
-			if (is_palindrom(arr[iter + 1]))
-				break;
+			get_next_num(arr[iter], arr[iter + 1]); 		// записываем следующее число
+
+			if (is_palindrom(arr[iter + 1])) 				// если встречается палиндром,
+				break;										// то стартовое число - не Личрэла
+
 			if (iter == 49)
-				cnt++;
+				cnt++; 										// иначе зачитываем число
 		}
 	}
 
-	clock_t end = clock();								  // СТОП таймера
-	time_spent += (double)(end - begin) / CLOCKS_PER_SEC; // время работы в секундах
+	clock_t end = clock();								  	// СТОП таймера
+	time_spent += (double)(end - begin) / CLOCKS_PER_SEC; 	// время работы в секундах
 
-	printf("Ответ = %d время = %f\n", cnt, time_spent); // выводим результат и время работы программы
+	printf("Ответ = %d время = %f\n", cnt, time_spent); 	// выводим результат и время работы программы
 	return 0;
 }
 
@@ -74,17 +77,17 @@ int num_increment(char start_num[])
 	int ptr = 0;
 	int residue = 1;
 
-	while (residue)
+	while (residue)												// идем по массиву пока есть остаток
 	{
 		if (input_more_limit("num_increment()", "++ptr", ptr + 1, "LEN_NUM", LEN_NUM))
-			return 0;
+			return 0;											// проверка на выход за пределы массива
 
 		int num = start_num[++ptr] + residue;
-		residue = num / 10;
+		residue = num / 10;										// переносим при необходимости остаток
 		start_num[ptr] = num % 10;
 	}
 
-	start_num[0] = (start_num[0] > ptr) ? start_num[0] : ptr;
+	start_num[0] = (start_num[0] > ptr) ? start_num[0] : ptr;	// при необходимости обновляем лину числа
 
 	return start_num[0];
 }
@@ -98,7 +101,7 @@ bool input_more_limit(const char *name_func, const char *name_input, int input_v
 //              *name_limit - название предельного значения
 // return:      true        - при превышении
 {
-	if (input_value > limit_value) // обрабатываем превышение
+	if (input_value > limit_value) 								// обрабатываем превышение
 	{
 		printf("%s: %s = %d больше %s = %d\n", name_func, name_input, input_value, name_limit, limit_value);
 		return true;
@@ -114,8 +117,8 @@ int get_next_num(const char num[], char next_num[])
 // return:      			- количество цифр в получившемся числе (массиве)
 {
 
-	int ptr = 0;		  // указатель на начало массива
-	int rev_ptr = num[0]; // на конец массива
+	int ptr = 0;		  									// указатель на начало массива
+	int rev_ptr = num[0]; 									// на конец массива
 	int residue = 0;
 
 	while (residue || ptr < num[0])
@@ -123,13 +126,13 @@ int get_next_num(const char num[], char next_num[])
 		if (input_more_limit("num_increment()", "++ptr", ptr + 1, "LEN_NUM", LEN_NUM))
 			return 0;
 
-		int rev_num = (rev_ptr > 0) ? num[rev_ptr--] : 0; // в нулевой ячейке записана не очередная цифра, а их количество в числе
-		int number = num[++ptr] + rev_num + residue;	  // складываем цифры, перебирая их от начала концу и наоборот
+		int rev_num = (rev_ptr > 0) ? num[rev_ptr--] : 0;	// в нулевой ячейке записана не очередная цифра, а их количество в числе
+		int number = num[++ptr] + rev_num + residue;	  	// складываем цифры, перебирая их от начала концу и наоборот
 		residue = number / 10;
-		next_num[ptr] = number % 10; // переносим мостаток
+		next_num[ptr] = number % 10; 						// переносим остаток
 	}
 
-	next_num[ptr + 1] = 0; // обнуляем цифру за числом, чтобы затереть следы старого числа
+	next_num[ptr + 1] = 0; 									// обнуляем цифру за числом, чтобы затереть следы старого числа
 	next_num[0] = ptr;
 
 	return ptr;
@@ -140,12 +143,12 @@ bool is_palindrom(const char num[])
 // параметры:   num[]	- число (массив)
 // return:      true	- число - палиндром
 {
-	int ptr = 1;		  // указатель на начало массива
-	int rev_ptr = num[0]; // на конец массива
+	int ptr = 1;		  					// указатель на начало массива
+	int rev_ptr = num[0]; 					// на конец массива
 
-	while (rev_ptr > ptr) // перемещаемся по массиву с двух сторон
+	while (rev_ptr > ptr) 					// перемещаемся по массиву с двух сторон
 	{
-		if (num[ptr++] != num[rev_ptr--]) // если цифры не совпали - это не палиндром
+		if (num[ptr++] != num[rev_ptr--])	// если цифры не совпали - это не палиндром
 			return false;
 	}
 
