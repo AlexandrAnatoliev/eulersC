@@ -15,10 +15,10 @@
 
 int main(void)
 {
-	double time_spent = 0.0; 												// для хранения времени выполнения кода
-	clock_t begin = clock(); 												// СТАРТ таймера
+	double time_spent = 0.0; 																// для хранения времени выполнения кода
+	clock_t begin = clock(); 																// СТАРТ таймера
 
-	int coins_arr[] = {1, 2, 5, 10, 20, 50, 100, 200}; 						// номиналы монет
+	int coins_arr[] = {1, 2, 5, 10, 20, 50, 100, 200}; 										// номиналы монет
 
 	// массив [добавленный номинал монеты][сумма монет] = количество способов составить данную сумму из данных монет
 	int sum_arr[sizeof(coins_arr) / sizeof(coins_arr[0])][LEN_ARR] = {0};
@@ -27,26 +27,26 @@ int main(void)
 		sum_arr[0][sum] = 1; 	// количество способов получить любую сумму для монет с единственным номиналом равно одному
 
 	for (int added_coin = 0; added_coin < sizeof(coins_arr) / sizeof(coins_arr[0]); added_coin++)
-		sum_arr[added_coin][0] = 1; 										// вспосогательный столбик в левой части массива
+		sum_arr[added_coin][0] = 1; 														// вспосогательный столбик в левой части массива
 
 	for (int added_coin = 1; added_coin < sizeof(coins_arr) / sizeof(coins_arr[0]); added_coin++)
-	{																			// добавляем очередной номинал монет
-		for (int sum = 1; sum < LEN_ARR; sum++) 								// перебираем возможные суммы монет
+	{																						// добавляем очередной номинал монет
+		for (int sum = 1; sum < LEN_ARR; sum++) 											// перебираем возможные суммы монет
 		{
-			int ways = 0;
-			while (ways <= sum)
+			int sum_high_coin = 0;
+			while (sum_high_coin <= sum)
 			{
 				// (количество варинтов для суммы 10 из монет 1p и 2p) + (монета 5p и количество вариантов для суммы 5 из  монет 1p и 2p) + (2 монеты 5p)
-				sum_arr[added_coin][sum] += sum_arr[added_coin - 1][sum - ways]; // обращаемся к ранее вычисленным способам
-				ways += coins_arr[added_coin];									 // подсчитываем варианты для текущей суммы и комбинации номиналов монет
+				sum_arr[added_coin][sum] += sum_arr[added_coin - 1][sum - sum_high_coin]; 	// обращаемся к ранее вычисленным способам
+				sum_high_coin += coins_arr[added_coin];									 	// подсчитываем варианты для текущей суммы и комбинации номиналов монет
 			}
 		}
 	}
 
-	clock_t end = clock();								  						// СТОП таймера
-	time_spent += (double)(end - begin) / CLOCKS_PER_SEC; 						// время работы в секундах
+	clock_t end = clock();								  									// СТОП таймера
+	time_spent += (double)(end - begin) / CLOCKS_PER_SEC; 									// время работы в секундах
 
-	printf("Ответ = %d время = %f\n", sum_arr[7][200], time_spent); 			// выводим результат и время работы программы
+	printf("Ответ = %d время = %f\n", sum_arr[7][200], time_spent); 						// выводим результат и время работы программы
 	return 0;
 }
 
