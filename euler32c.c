@@ -12,93 +12,74 @@
 // ПОДСКАЗКА: Некоторые произведения можно получить несколькими способами, поэтому убедитесь, что включили их в сумму лишь единожды.
 
 #include <stdio.h>
-#include <time.h> // for clock_t, clock(), CLOCKS_PER_SEC
 #include <stdbool.h>
+#include <time.h> 											// for clock_t, clock(), CLOCKS_PER_SEC
 
-#define LEN_ARR 10 // берем с запасом
+#define LEN_ARR 10	   										// длина массива цифрами - берем с запасом
+#define LEN_CASH 10000 										// длина массива для сохранения ответов
 
 bool increase_indx_num(int indx_num[]);
-bool get_pandigital_num(int pandig_num[], int indx_num[]);
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+bool get_pandig_num(int pandig_num[], int indx_num[]);
 
 int main(void)
 {
-	double time_spent = 0.0; // для хранения времени выполнения кода
-	clock_t begin = clock(); // СТАРТ таймера
+	double time_spent = 0.0; 								// для хранения времени выполнения кода
+	clock_t begin = clock(); 								// СТАРТ таймера
 
-	int indx_num[LEN_ARR] = {0};	   // промежуточное число-из-индексов
-	int pandigital_num[LEN_ARR] = {0}; // пан-цифровое число
-	char cash[10000] = {0};
+	int indx_num[LEN_ARR] = {0};   							// промежуточное число-из-индексов
+	int pandig_num[LEN_ARR] = {0}; 							// пан-цифровое число
+	char cash[LEN_CASH] = {0};
 
 	int answer = 0;
 
-	while (increase_indx_num(indx_num)) // перебираем возможные перестановки цифр
+	while (increase_indx_num(indx_num)) 					// перебираем возможные перестановки цифр
 	{
-		get_pandigital_num(pandigital_num, indx_num);
-		int fact = 1;
+		get_pandig_num(pandig_num, indx_num);
+
 		int num1 = 0;
-		bool fl = false;
+		bool is_answer = false; 							// флаг наличия ответа
 
-		for (int ptr1 = 1; ptr1 < LEN_ARR - 1; ptr1++) // ноль не используем
+		for (int ptr_num1 = 1, fact1 = 1; ptr_num1 < LEN_ARR - 2; ptr_num1++, fact1 *= 10) // 1 т.к. ноль не используем
 		{
-			if (fl)
+			if (is_answer) 									// если найден ответ - переходим к следующей перестановке
 				break;
-			// int pandigital_num[] = {0, 8, 3, 7, 1, 4, 2, 5, 9, 6};
-			// int pandigital_num[] = {0, 2, 1, 3, 4, 5, 7, 8, 6, 9};
 
-			int ptr1_1 = ptr1;
-			int ptr2 = ptr1 + 1;
-			while (ptr1_1 < ptr2)
-			{
-				num1 += pandigital_num[ptr1_1++] * fact;
-				fact *= 10;
-			}
+			num1 += pandig_num[ptr_num1] * fact1; 			// движемся по массиву и увеличиваем первое число
 
-			for (ptr2 = ptr1 + 1; ptr2 < LEN_ARR; ptr2++)
+			int num2 = 0;
+
+			for (int ptr_num2 = ptr_num1 + 1, fact2 = 1; ptr_num2 < LEN_ARR - 1; ptr_num2++, fact2 *= 10)
 			{
-				if (fl)
-					break;
-				int fact = 1;
-				int num2 = 0;
-				int ptr2_1 = ptr1 + 1;
-				while (ptr2_1 < LEN_ARR)
+				num2 += pandig_num[ptr_num2] * fact2; 		// движемся по массиву и увеличиваем второе число
+
+				int product = num1 * num2; 					// произведение ножителей
+				int ptr_prod = ptr_num2 + 1;
+
+				while (product) // движемся по массиву и проверяем соответствие ему цифр произведения
 				{
-					num2 += pandigital_num[ptr2_1++] * fact;
-					fact *= 10;
-					int answ = num1 * num2;
-					int ptr3 = ptr2_1;
-					while (answ)
-					{
-						if (ptr3 >= LEN_ARR)
-							break;
-						if (answ % 10 != pandigital_num[ptr3++])
-							break;
-						answ /= 10;
-					}
-
-					if (answ == 0 && ptr3 == LEN_ARR && cash[num1 * num2] == 0)
-					{
-						answer += num1 * num2;
-						fl = true;
-						printf("%d * %d = %d\n", num1, num2, num1 * num2);
-						// for (int i = 0; i < LEN_ARR; i++)
-						// 	printf("%d", pandigital_num[i]);
-
-						// return 0;
-						cash[num1 * num2] = 1;
-					}
-
-					if (fl || ptr3 >= LEN_ARR)
-						break;
+					if (product % 10 != pandig_num[ptr_prod++])
+						break;								// прерываем при несовпадении цифры
+					product /= 10;
 				}
+
+				// если число соответствует массиву и такого не было
+				if (product == 0 && ptr_prod == LEN_ARR && cash[num1 * num2] == 0)
+				{
+					answer += num1 * num2; 					// учитываем ответ
+					cash[num1 * num2] = 1; 					// помечаем ответ как уже использованный
+					is_answer = true;	   					// ответ найден
+				}
+
+				if (is_answer || ptr_prod >= LEN_ARR) 		// переходим к следующей перестановке
+					break;
 			}
 		}
 	}
 
-	clock_t end = clock();								  // СТОП таймера
-	time_spent += (double)(end - begin) / CLOCKS_PER_SEC; // время работы в секундах
+	clock_t end = clock();								  	// СТОП таймера
+	time_spent += (double)(end - begin) / CLOCKS_PER_SEC; 	// время работы в секундах
 
-	printf("Ответ = %d время = %f\n", answer, time_spent); // выводим результат и время работы программы
+	printf("Ответ = %d время = %f\n", answer, time_spent);	// выводим результат и время работы программы
 	return 0;
 }
 
@@ -112,59 +93,41 @@ bool increase_indx_num(int indx_num[])
 
 	for (int i = LEN_ARR - 2; i > 0; i--)
 	{
-		if (indx_num[i] > max_indx_arr[i]) // если разряд переполняется
+		if (indx_num[i] > max_indx_arr[i]) 				// если разряд переполняется
 		{
-			indx_num[i - 1]++; // увеличиваем старший разряд
+			indx_num[i - 1]++; 							// увеличиваем старший разряд
 			indx_num[i] = 0;
 		}
 
 		else
-			break; // прерываем, если не нужно дальше менять числа
+			break; 										// прерываем, если не нужно дальше менять числа
 	}
 
 	if (indx_num[0])
-		return false; // достигли максимально возможного (9-значного) числа
+		return false; 									// достигли максимально возможного (9-значного) числа
 
 	return true;
 }
 
-bool get_pandigital_num(int pandig_num[], int indx_num[])
+bool get_pandig_num(int pandig_num[], int indx_num[])
 // Функция для вычисления пан-цифрового числа по массиву с индексами перестановок
 // Параметры:	indx_num        - массив c индексами
 //              pandigital_num  - массив с панцифровым числом
 // return:      false       	- при достижении максимально возможного числа
 {
-	int sort_arr[LEN_ARR] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}; // отсортированные числа
+	int sort_arr[LEN_ARR] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}; 	// отсортированные числа
 
 	for (int i = 0; i < LEN_ARR; i++)
 	{
-		pandig_num[i] = sort_arr[indx_num[i]];				  // выбираем число из отсортированного массива
-		for (int j = indx_num[i]; j < (LEN_ARR - 1 - i); j++) // смещаем числа в массиве
+		pandig_num[i] = sort_arr[indx_num[i]];				  	// выбираем число из отсортированного массива
+		for (int j = indx_num[i]; j < (LEN_ARR - 1 - i); j++) 	// смещаем числа в массиве
 			sort_arr[j] = sort_arr[j + 1];
 	}
 
-	if (pandig_num[0]) // если вместо ноля число
-		return false;  // достигли максимально возможного (9-значного) числа
+	if (pandig_num[0]) 											// если вместо ноля число
+		return false;  											// достигли максимально возможного (9-значного) числа
 
 	return true;
-}
-
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
-// функция определяет превышение переменной своего предельного значения и выводит предупреждение
-// параметры:   *name_func  - название функции
-//              input_value - значение переменной
-//              *name_input - название переменной
-//              limit_value - предельное значение
-//              *name_limit - название предельного значения
-// return:      true        - при превышении
-{
-	if (input_value > limit_value) // обрабатываем превышение
-	{
-		printf("%s: %s = %d more %s = %d\n", name_func, name_input, input_value, name_limit, limit_value);
-		return true;
-	}
-
-	return false;
 }
 
 // int get_permutation(int sort_arr[], int indx_arr[])
