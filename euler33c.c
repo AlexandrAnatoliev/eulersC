@@ -119,8 +119,8 @@ int siplify(int *numer, int *denom)
 bool is_non_trivial(fract_t *fraction, int numer, int denom)
 // Функция для проверки не является ли дробь тривиальной
 // Параметры:	fraction	- дробь									(12/24)
-//				num_dig		- числитель	без повторяющейся цыфры		(1)
-//				num_den		- знаменатель без повторяющейся цыфры	(4)
+//				num_dig		- числитель	без повторяющейся цифры		(1)
+//				num_den		- знаменатель без повторяющейся цифры	(4)
 // return:		false		- не является тривиальной дробью
 {
 	int numerator = fraction->numerator;	 // числитель
