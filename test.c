@@ -1,17 +1,36 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <time.h> 															// for clock_t, clock(), CLOCKS_PER_SEC
+#include <time.h> 													// for clock_t, clock(), CLOCKS_PER_SEC
 
-bool put_numbers(char arr_arg[], int num_arg)
-//сохраняет в массив цифры по индексу
-//возвращает false, если в массиве такие цифры уже есть
+char get_arr(char arr_arg[], int num_arg, int div_arg)
+// раскладывает число на цифры по заданному основанию и заносит их в массив
+// параметры:
+// char arr_arg[]: массив, в который будет сохраняться разложенное число;
+// int num_arg: раскладываемое число;
+// int div_arg: основание, по которому раскладывается число
+// return: количество цифр в числе
 {
-	while (num_arg)
+	char cnt = 0;
+	while (num_arg)									//раскладываем число на цифры и заносим в массив
 	{
-		if (arr_arg[num_arg % 10] == 0)
+		arr_arg[++cnt] = num_arg % div_arg;
+		num_arg /= div_arg;
+	}
+	arr_arg[0] = cnt;								//заносим количество цифр в числе
+	return cnt;
+}
+
+bool is_palindrom(char arr_arg[])
+//true - если число палиндром
+{
+	char ptr1 = 1;									//указатель(индекс) на первое число
+	char ptr2 = arr_arg[0];							//указатель(индекс) на последнее число
+	while (ptr1 < ptr2)
+	{
+		if (arr_arg[ptr1] == arr_arg[ptr2])
 		{
-			arr_arg[num_arg % 10] = 1;
-			num_arg /= 10;
+			ptr1++;
+			ptr2--;
 		}
 		else
 			return false;
@@ -19,79 +38,31 @@ bool put_numbers(char arr_arg[], int num_arg)
 	return true;
 }
 
-bool is_pandigital(int mult_arg1, int mult_arg2, int prod_arg)
-//принимает два множителя и произведение, возвращает true если равенство является пан-цифровым
-{
-	char arr[10] = { 0 };										//массив сохраняющий уже содержащиеся цифры
-
-	if (put_numbers(arr, mult_arg1) == false)					//заносим в массив цифры первого множителя
-		return false;
-	if (put_numbers(arr, mult_arg2) == false)					//заносим в массив цифры второго множителя
-		return false;
-	if (put_numbers(arr, prod_arg) == false)					//заносим в массив цифры произведение
-		return false;
-
-	if (arr[0])													//если был ноль
-		return false;
-
-	for (int i = 1; i < 10; i++)								//проверяем что были все цифры
-		if (arr[i] == 0)
-			return false;
-	return true;
-}
-
-bool is_possible(int mult_arg1, int mult_arg2)
-//true - возможно есть пан-цифровое равенство, т.е сумма цифр будет равня 9
-//счистает количество цифр множителей, варианты: a * bbbb = cccc; aaaa * b = cccc; aa * bbb = cccc; aaa * bb = cccc
-{
-	if ((mult_arg1 < 10) && (mult_arg2 > 999) || (mult_arg2 < 10) && (mult_arg1 > 999))		//a * bbbb = cccc || aaaa * b = cccc
-		return true;
-	if ((mult_arg1 > 9) && (mult_arg1 < 100) && (mult_arg2 > 100) && (mult_arg2 < 1000))	//aa * bbb = cccc
-		return true;
-	if ((mult_arg2 > 9) && (mult_arg2 < 100) && (mult_arg1 > 100) && (mult_arg1 < 1000))	//aaa * bb = cccc
-		return true;
-	return false;
-}
-
 int main(void)
 {
-	double time_spent = 0.0; 																// для хранения времени выполнения кода
-	clock_t begin = clock(); 																// СТАРТ таймера
+	double time_spent = 0.0; 										// для хранения времени выполнения кода
+	clock_t begin = clock(); 										// СТАРТ таймера
 
-	int arr[20] = { 0 };
-	int cnt = 0;
+	char arr_bin[22] = { 0 };						//массив для хранения цифр числа в 2-ичном виде
+	//первая цифра - количество цифр в занесенном числе, 1000000 -> 21-значное число в 2-ичной системе
+	char arr_dec[7] = { 0 };						//массив для хранения цифр числа в 10-тичном виде
 	int answ = 0;
 
-	for (int mult1 = 0; mult1 < 10000; mult1++)
+	for (int num = 1; num < 1000000; num++)
 	{
-		for (int mult2 = 0; mult2 < 10000; mult2++)
+		get_arr(arr_dec, num, 10);
+        get_arr(arr_bin, num, 2);
+		if (is_palindrom(arr_dec) && is_palindrom(arr_bin))
 		{
-			if (is_possible(mult1, mult2) && is_pandigital(mult1, mult2, mult1 * mult2))
-			{
-				bool flag = true;								//проверяем осутствие в массиве такого множителя
-				for (int i = 0; i < cnt; i++)
-				{
-					if (arr[i] == mult1 * mult2)
-					{
-						flag = false;
-						break;
-					}
-				}
-				if (flag)
-				{
-					answ += mult1 * mult2;						//заносим множитель в массив
-					arr[cnt++] = mult1 * mult2;
-					printf("%d %d\n", mult1, mult2);
-				}
-			}
+			answ += num;
+			printf("%d\n", num);
 		}
+			
 	}
-	// printf("%d", answ);
 
-	clock_t end = clock();								  									// СТОП таймера
-	time_spent += (double)(end - begin) / CLOCKS_PER_SEC; 									// время работы в секундах
+	clock_t end = clock();								  	// СТОП таймера
+	time_spent += (double)(end - begin) / CLOCKS_PER_SEC; 	// время работы в секундах
 
-	printf("Ответ = %d время = %f\n", answ, time_spent); 						// выводим результат и время работы программы
-
+	printf("Ответ = %d время = %f\n", answ, time_spent);	// выводим результат и время работы программы
 	return 0;
 }
