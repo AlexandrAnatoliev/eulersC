@@ -39,7 +39,7 @@
 #include <locale.h>                                             // русский язык в printf()
 
 void *my_realloc(char *arr, int *len_arr, int len_add);
-int note_comp_arr(char *comp_arr, int len_arr, int start, int finish);
+int note_prime_arr(char *comp_arr, int len_arr, int start, int finish);
 bool is_composite(char comp_arr[], int len_arr, int num);
 int note_composite(char comp_arr[], int len_arr, int prime, int start, int finish);
 int count_primes(char comp_arr[], int *len_arr, int a, int b);
@@ -57,7 +57,7 @@ int main(void)
 
     char *comp_arr = calloc(len_arr, sizeof(char));             // массив для хранения составных чисел
 
-    note_comp_arr(comp_arr, len_arr, 2, len_arr);               // заполняем массив составными числами
+    note_prime_arr(comp_arr, len_arr, 2, len_arr);               // заполняем массив составными числами
 
     for (int a = -1000; a < 1000; a++)                          // в цикле перебираю все возможные коэффициенты
     {
@@ -108,7 +108,7 @@ void *my_realloc(char *arr, int *len_arr, int len_add)
     return arr;
 }
 
-int note_comp_arr(char *comp_arr, int len_arr, int start, int finish)
+int note_prime_arr(char *comp_arr, int len_arr, int start, int finish)
 // Функция отмечает составные числа в массиве
 // Параметры:	comp_arr[]  - массив с ранее вычисленными составными числами
 //              len_arr     - длина массива
@@ -203,7 +203,7 @@ int count_primes(char comp_arr[], int *len_arr, int a, int b)
         {
             int past_len = *len_arr;                                            // сохраняем изначальную длину массива
             comp_arr = my_realloc(comp_arr, len_arr, answer - *len_arr + 1000); // увеличиваем массив (len_arr  увеличивается в функции!)
-            note_comp_arr(comp_arr, *len_arr, past_len, *len_arr);              // отмечаем в добавленной части массива составные числа
+            note_prime_arr(comp_arr, *len_arr, past_len, *len_arr);              // отмечаем в добавленной части массива составные числа
         }
 
         if (answer < 0 || comp_arr[answer] == 1)                                // простое число не может быть отрицательным

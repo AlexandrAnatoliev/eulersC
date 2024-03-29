@@ -99,7 +99,7 @@ bool is_bin_palindrome(int num)
 
 	while (number)
 	{
-		palindrome = (palindrome << 1) + (number & 1); 	// добаляем по одной двоичной цифре и смещаем число влево
+		palindrome = (palindrome << 1) + (number & 1); 	// добавляем по одной двоичной цифре и смещаем число влево
 		number >>= 1;								   	// смещаем число вправо и сохраняем
 	}
 
