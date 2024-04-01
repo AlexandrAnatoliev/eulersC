@@ -104,12 +104,12 @@ int siplify(int *numer, int *denom)
 // Параметры:	num_dig	- числитель		(11)
 //				num_den	- знаменатель	(33)
 {
-	for (int dev = *numer; dev > 0; dev--)
+	for (int div = *numer; div > 0; div--)
 	{
-		if (*numer % dev == 0 && *denom % dev == 0) // перый общий делитель - максимальный
+		if (*numer % div == 0 && *denom % div == 0) // первый общий делитель - максимальный
 		{
-			*numer /= dev;
-			*denom /= dev;
+			*numer /= div;
+			*denom /= div;
 			return 0;
 		}
 	}

@@ -173,7 +173,7 @@ int note_composite(char prime_arr[], int len_arr, int prime, int start, int fini
 }
 
 bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
-// функция определяет превышение переменной своего предельного значения и выводит предупреждение
+// функция, которая определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной
 //              *name_input - название переменной
@@ -208,16 +208,16 @@ bool del_right_num(char prime_arr[], int num)
 }
 
 bool del_left_num(char prime_arr[], int num)
-// откидывает числа слева по одному, проверяет простые ли они
+// Функция, которая откидывает числа слева по одному, проверяет простые ли они
 // Параметры:	prime_arr[]	- массив простых чисел (0 - простое)
 //				num 		- проверяемое числоо
 // return:		true 		- если все числа простые, иначе - false
 {
-	int fact = 1;
-	while (num > 10 * fact) 	// определяем порядок числа
-		fact *= 10;
+	int div = 1;
+	while (num > 10 * div) 	// определяем порядок числа
+		div *= 10;
 
-	for (num, fact; fact > 0; num %= fact, fact /= 10)
+	for (num, div; div > 0; num %= div, div /= 10)
 		if (prime_arr[num]) 	// составное число
 			return false;
 
