@@ -18,20 +18,20 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <time.h> // для clock_t, clock(), CLOCKS_PER_SEC
+#include <time.h> 				// для clock_t, clock(), CLOCKS_PER_SEC
 
 #define LEN_ARR 400
 
-typedef struct big_num // структура "большое число"
+typedef struct big_num 			// структура "большое число"
 {
-	char arr[LEN_ARR]; // массив для хранения цифр числа
-	int len;		   // длина числа
+	char arr[LEN_ARR]; 			// массив для хранения цифр числа
+	int len;		   			// длина числа
 } big_t;
 
-typedef struct fraction // структура "дробь"
+typedef struct fraction 		// структура "дробь"
 {
-	big_t numer; // числитель
-	big_t denom; // знаменатель
+	big_t numer; 				// числитель
+	big_t denom; 				// знаменатель
 } fract_t;
 
 int fract_init(fract_t *fract, int num, int den);
@@ -42,21 +42,21 @@ int fract_reciprocal(fract_t *fract);
 int main(void)
 {
 	double time_spent = 0.0;
-	clock_t begin = clock(); // СТАРТ таймера
+	clock_t begin = clock(); 								// СТАРТ таймера
 
 	int answ = 0;
-	fract_t one_plus_fraction;
-	fract_t fraction;
+	fract_t expantion; 										// приближение квадратного корня (1 + 2/5 = 7/5)
+	fract_t fraction;  										// дробная часть приближения (2/5)
 
-	fract_init(&fraction, 1, 2); // 1/2
+	fract_init(&fraction, 1, 2); 							// 1/2
 
-	for (int i = 1; i < 1000; i++)
+	for (int iteration = 1; iteration < 1000; iteration++)
 	{
-		fract_plus(&fraction, 2);		   // 2 + 1/2 = 5/2
-		fract_reciprocal(&fraction);	   // 1/ (5/2) = 2/5
-		one_plus_fraction = fraction;	   					// сохраняем результат
-		fract_plus(&one_plus_fraction, 1); 					// 1 + 2/5 = 7/5
-		if (one_plus_fraction.numer.len > one_plus_fraction.denom.len)
+		fract_plus(&fraction, 2);		   					// 2 + 1/2 = 5/2
+		fract_reciprocal(&fraction);	   					// 1/(5/2) = 2/5
+		expantion = fraction;	   							// сохраняем результат
+		fract_plus(&expantion, 1); 							// 1 + 2/5 = 7/5
+		if (expantion.numer.len > expantion.denom.len)
 			answ++;
 	}
 
@@ -68,7 +68,7 @@ int main(void)
 }
 
 int fract_init(fract_t *fract, int num, int den)
-// Функция для присваиванию начальных значений дроби
+// Функция для присваивания начальных значений дроби
 // Параметры:   fract   - дробь
 //              num     - числитель
 //              power   - знаменатель
@@ -76,20 +76,19 @@ int fract_init(fract_t *fract, int num, int den)
 	fract->numer.len = 0;
 	fract->denom.len = 0;
 
-	// обнуляем массивы
-	for (int i = 0; i < LEN_ARR; i++)
+	for (int i = 0; i < LEN_ARR; i++)	// обнуляем массивы
 	{
 		fract->denom.arr[i] = 0;
 		fract->numer.arr[i] = 0;
 	}
 
-	while (num) // заносим начальные данные в дробь
+	while (num) 						// заносим начальные данные в числитель
 	{
 		fract->numer.arr[fract->numer.len++] = num % 10;
 		num /= 10;
 	}
 
-	while (den) // заносим начальные данные в дробь
+	while (den) 						// заносим начальные данные в знаменатель
 	{
 		fract->denom.arr[fract->denom.len++] = den % 10;
 		den /= 10;
@@ -105,14 +104,15 @@ int fract_mult(fract_t *fract, int num)
 {
 	int cnt = 0;
 	int residue = 0;
-	while (residue || cnt < fract->numer.len) // умножаем числитель на число
+
+	while (residue || cnt < fract->numer.len) 								// умножаем числитель на число
 	{
 		residue += fract->numer.arr[cnt] * num;
 		fract->numer.arr[cnt++] = residue % 10;
 		residue /= 10;
 	}
 
-	fract->numer.len = (fract->numer.len > cnt) ? fract->numer.len : cnt; // обновляем длину числа
+	fract->numer.len = (fract->numer.len > cnt) ? fract->numer.len : cnt;	// обновляем длину числа
 }
 
 int fract_plus(fract_t *fract, int num)
@@ -121,23 +121,22 @@ int fract_plus(fract_t *fract, int num)
 //              num     - натуральное число
 {
 	int cnt = 0;
-	fract_t fr_num;
+	fract_t fract_n;
 
-	// имеют один тип данных big_t потому можно просто копировать
-	fr_num.numer = fract->denom; // заносим в число 1 в виде приведенной к общему основанию дроби 1234/1234
-	fr_num.denom = fract->denom; // можно убрать!
+	fract_n.numer = fract->denom; 	// заносим в число 1 в виде приведенной к общему основанию дроби 1234/1234
+	fract_n.denom = fract->denom; 	// имеют один тип данных big_t потому можно просто копировать
 
-	fract_mult(&fr_num, num); // записываем множитель в виде приведенной к общему основанию дроби
+	fract_mult(&fract_n, num); 		// записываем множитель в виде приведенной к общему основанию дроби
 
-	int number = 0;
-	while (number || cnt < fract->numer.len || cnt < fr_num.numer.len) // заносим данные в дробь
+	int sum = 0;
+	while (sum || cnt < fract->numer.len || cnt < fract_n.numer.len) 		// заносим данные в дробь
 	{
-		number += fract->numer.arr[cnt] + fr_num.numer.arr[cnt];
-		fract->numer.arr[cnt++] = number % 10;
-		number /= 10;
+		sum += fract->numer.arr[cnt] + fract_n.numer.arr[cnt];
+		fract->numer.arr[cnt++] = sum % 10;
+		sum /= 10;
 	}
 
-	fract->numer.len = (fract->numer.len > cnt) ? fract->numer.len : cnt; // обновляем длину числа
+	fract->numer.len = (fract->numer.len > cnt) ? fract->numer.len : cnt; 	// обновляем длину числа
 }
 
 int fract_reciprocal(fract_t *fract)
@@ -145,9 +144,10 @@ int fract_reciprocal(fract_t *fract)
 // a / b -> b / a
 // Параметры:   fract   - дробь
 {
-	big_t temp;
+	big_t temp; 					// временная переменная 
+
 	temp = fract->numer;
-	fract->numer = fract->denom; // медленно?
+	fract->numer = fract->denom;
 	fract->denom = temp;
 
 	return 0;
