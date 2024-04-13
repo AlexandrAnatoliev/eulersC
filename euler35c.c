@@ -16,7 +16,7 @@
 int note_prime_arr(char *prime_arr, int finish);
 bool is_composite(char prime_arr[], int num);
 int note_composite(char prime_arr[], int prime, int finish);
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main(void)
 {
@@ -101,7 +101,7 @@ bool is_composite(char prime_arr[], int num)
 //              num                 - проверяемое число
 // return:      true                - если число составное!
 {
-	if (input_more_limit("is_composite()", "num", num, "LEN_ARR", LEN_ARR)) // проверяем выход за пределы массива
+	if (more_limit("is_composite()", "num", num, "LEN_ARR", LEN_ARR)) // проверяем выход за пределы массива
 		return false;
 
 	int div_max = sqrt(num) + 1; 				// выносим вычисление квадратного корня из цикла for
@@ -124,10 +124,10 @@ int note_composite(char prime_arr[], int prime, int finish)
 //              finish              - конечный индекс в массиве
 // return:                          - количество отмеченных составных чисел
 {
-	if (input_more_limit("note_composite()", "prime", prime, "LEN_ARR", LEN_ARR)) 
+	if (more_limit("note_composite()", "prime", prime, "LEN_ARR", LEN_ARR)) 
 		return 0;									// проверка на выход числа за пределы массива
 
-	if (input_more_limit("note_composite()", "finish", finish, "LEN_ARR", LEN_ARR))
+	if (more_limit("note_composite()", "finish", finish, "LEN_ARR", LEN_ARR))
 		return 0;
 
 	for (int i = 2 * prime; i < finish; i += prime) // первое число - простое, не отмечаем его
@@ -136,7 +136,7 @@ int note_composite(char prime_arr[], int prime, int finish)
 	return 0;
 }
 
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной

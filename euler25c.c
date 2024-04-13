@@ -46,7 +46,7 @@ typedef struct big_num
 int big_num_init(big_num_t *big_num, int num, int index, prior_t prior);
 int get_len_num(int num);
 int get_next_fib(big_num_t *fib_prev, big_num_t *fib_next);
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main(void)
 {
@@ -128,7 +128,7 @@ int get_next_fib(big_num_t *fib_prev, big_num_t *fib_next)
     int len_arr = fib_next->lenght / LEN_NUMB + 1;                                  // минимально необходимая длина массива для хранения числа
     int residue = 0;
 
-    if (input_more_limit("get_next_fib()", "len_arr", len_arr, "LEN_ARR", LEN_ARR)) // обрабатываем выход за пределы массива
+    if (more_limit("get_next_fib()", "len_arr", len_arr, "LEN_ARR", LEN_ARR)) // обрабатываем выход за пределы массива
         return 1;
 
     for (int i = 0; i < len_arr; i++)
@@ -153,7 +153,7 @@ int get_next_fib(big_num_t *fib_prev, big_num_t *fib_next)
     return 0;
 }
 
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной

@@ -25,7 +25,7 @@ bool compare_names(char text_arr[], int indx_name1, int indx_name2);
 int copy_arrs(int receive_arr[], int sourse_arr[], int start_indx, int lenght);
 int merge_sort(char text_arr[], int name_arr[], int names);
 int get_name_score(char text_arr[], int indx_name);
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main()
 {
@@ -87,7 +87,7 @@ int parser_names(char text_arr[], int name_arr[], int lenght)
 //              lenght      - количество символов в массиве arr[]
 // return:      name_indx   - количество слов в массиве
 {
-    if (input_more_limit("parser_names()", "lenght", lenght, "LEN_ARR", LEN_ARR - 1))   
+    if (more_limit("parser_names()", "lenght", lenght, "LEN_ARR", LEN_ARR - 1))   
         return 0;                                               // выход за пределы массива text_arr[]
 
     int name_indx = 0;
@@ -98,7 +98,7 @@ int parser_names(char text_arr[], int name_arr[], int lenght)
         if (isalpha(text_arr[indx]) && start_name == false)     // первый встреченый символ алфавита
         {
             start_name = true;                                  // является началом слова
-            if (input_more_limit("parser_names()", "name_indx", name_indx, "NAMES", NAMES - 1)) 
+            if (more_limit("parser_names()", "name_indx", name_indx, "NAMES", NAMES - 1)) 
                 return 0;                                       // выход за пределы массива text_arr[name_indx]
             name_arr[name_indx++] = indx;                       // заносим индекс начала слова text_arr[indx] в массив name_arr[name_index]
         }
@@ -122,10 +122,10 @@ bool compare_names(char text_arr[], int indx_name1, int indx_name2)
 //              indx_name2  - индекс начала второго слова (BEN)
 // return:      true        - если слова уже отсортированы верно (ANNA BEN)
 {
-    if (input_more_limit("compare_names()", "indx_name1", indx_name1, "LEN_ARR", LEN_ARR - 1))  // выход за пределы массива text_arr[]
+    if (more_limit("compare_names()", "indx_name1", indx_name1, "LEN_ARR", LEN_ARR - 1))  // выход за пределы массива text_arr[]
         return true;                                                                            // прерываем функцию и ничего не меняем в массиве
 
-    if (input_more_limit("compare_names()", "indx_name2", indx_name2, "LEN_ARR", LEN_ARR - 1))  // выход за пределы массива text_arr[]
+    if (more_limit("compare_names()", "indx_name2", indx_name2, "LEN_ARR", LEN_ARR - 1))  // выход за пределы массива text_arr[]
         return true;                                                                            // прерываем функцию и ничего не меняем в массиве
 
     while (isalpha(text_arr[indx_name1]))                                                       // пока не кончилось первое слово
@@ -155,7 +155,7 @@ int copy_arrs(int receive_arr[], int sourse_arr[], int start_indx, int lenght)
 //              lenght          - количество переносимых значений
 // return:                      - количество занесенных в массив чисел
 {
-    if (input_more_limit("copy_arrs()", "start_indx + lenght", start_indx + lenght, "NAMES", NAMES - 1)) // выход за пределы массива name_arr[]
+    if (more_limit("copy_arrs()", "start_indx + lenght", start_indx + lenght, "NAMES", NAMES - 1)) // выход за пределы массива name_arr[]
         return false;
 
     int cnt = 0;
@@ -179,7 +179,7 @@ int merge_sort(char text_arr[], int name_arr[], int names)
 //              name_arr[]  - массив в котором отмечены индексы начала слов
 //              names       - слов в массиве name_arr[]
 {
-    if (input_more_limit("merge_sort()", "names", names, "NAMES", NAMES - 1))           // выход за пределы массива name_arr[]
+    if (more_limit("merge_sort()", "names", names, "NAMES", NAMES - 1))           // выход за пределы массива name_arr[]
         return true;
 
     int len_arrs = 1;                                                                   // длина отсортированных массивов
@@ -224,7 +224,7 @@ int get_name_score(char text_arr[], int indx_name)
 //              indx_name   - индекс начала слова
 // return:                  - имя COLIN (алфавитное значение равно 3 + 15 + 12 + 9 + 14 = 53)
 {
-    if (input_more_limit("get_name_score()", "indx_name", indx_name, "LEN_ARR", LEN_ARR - 1))   // выход за пределы массива text_arr[]
+    if (more_limit("get_name_score()", "indx_name", indx_name, "LEN_ARR", LEN_ARR - 1))   // выход за пределы массива text_arr[]
         return false;
 
     if (!isalpha(text_arr[indx_name]))                                                          // если первый символ не буква
@@ -241,7 +241,7 @@ int get_name_score(char text_arr[], int indx_name)
     return score;
 }
 
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной

@@ -33,7 +33,7 @@
 #define LEN_NUM 30
 
 int num_increment(char start_num[]);
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 int get_next_num(const char num[], char next_num[]);
 bool is_palindrom(const char num[]);
 
@@ -79,7 +79,7 @@ int num_increment(char start_num[])
 
 	while (residue)												// идем по массиву пока есть остаток
 	{
-		if (input_more_limit("num_increment()", "++ptr", ptr + 1, "LEN_NUM", LEN_NUM))
+		if (more_limit("num_increment()", "++ptr", ptr + 1, "LEN_NUM", LEN_NUM))
 			return 0;											// проверка на выход за пределы массива
 
 		int num = start_num[++ptr] + residue;
@@ -92,7 +92,7 @@ int num_increment(char start_num[])
 	return start_num[0];
 }
 
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной
@@ -123,7 +123,7 @@ int get_next_num(const char num[], char next_num[])
 
 	while (residue || ptr < num[0])
 	{
-		if (input_more_limit("num_increment()", "++ptr", ptr + 1, "LEN_NUM", LEN_NUM))
+		if (more_limit("num_increment()", "++ptr", ptr + 1, "LEN_NUM", LEN_NUM))
 			return 0;
 
 		int rev_num = (rev_ptr > 0) ? num[rev_ptr--] : 0;	// в нулевой ячейке записана не очередная цифра, а их количество в числе

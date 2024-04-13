@@ -43,7 +43,7 @@ int note_prime_arr(char *comp_arr, int len_arr, int start, int finish);
 bool is_composite(char comp_arr[], int len_arr, int num);
 int note_composite(char comp_arr[], int len_arr, int prime, int start, int finish);
 int count_primes(char comp_arr[], int *len_arr, int a, int b);
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main(void)
 {
@@ -140,7 +140,7 @@ bool is_composite(char comp_arr[], int len_arr, int num)
 //              num                 - проверяемое число
 // return:      true                - если число составное!
 {
-    if (input_more_limit("is_composite()", "num", num, "len_arr", len_arr)) // проверяем выход за пределы массива
+    if (more_limit("is_composite()", "num", num, "len_arr", len_arr)) // проверяем выход за пределы массива
         return false;
 
     int div_max = sqrt(num) + 1;                                            // выносим вычисление квадратного корня из цикла for
@@ -163,16 +163,16 @@ int note_composite(char comp_arr[], int len_arr, int prime, int start, int finis
 //              finish              - конечный индекс в массиве
 // return:                          - количество отмеченных составных чисел
 {
-    if (input_more_limit("note_composite()", "prime", prime, "len_arr", len_arr))   // проверка на выход числа за пределы массива
+    if (more_limit("note_composite()", "prime", prime, "len_arr", len_arr))   // проверка на выход числа за пределы массива
         return 0;
 
-    if (input_more_limit("note_composite()", "start", start, "len_arr", len_arr))
+    if (more_limit("note_composite()", "start", start, "len_arr", len_arr))
         return 0;
 
-    if (input_more_limit("note_composite()", "finish", finish, "len_arr", len_arr))
+    if (more_limit("note_composite()", "finish", finish, "len_arr", len_arr))
         return 0;
 
-    if (input_more_limit("note_composite()", "start", start, "finish", finish))
+    if (more_limit("note_composite()", "start", start, "finish", finish))
         return 0;
 
     start = (start > prime) ? start + (prime - start % prime) : 2 * prime;          // первое число - простое, не отмечаем его
@@ -216,7 +216,7 @@ int count_primes(char comp_arr[], int *len_arr, int a, int b)
     return cnt;
 }
 
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной

@@ -17,7 +17,7 @@
 
 int get_indx_arr(int indx_arr[], int count);
 int get_factorial(int factorial[], int number);
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 int show_permutation(int sort_arr[], int indx_arr[]);
 
 int main(void)
@@ -56,7 +56,7 @@ int get_indx_arr(int indx_arr[], int count)
         count %= factorial[num];
     }
 
-    if (input_more_limit("get_indx_arr()", "count", count, "0", 0)) // остался остаток => занесено не все число
+    if (more_limit("get_indx_arr()", "count", count, "0", 0)) // остался остаток => занесено не все число
         return 1;
 
     return 0;
@@ -69,7 +69,7 @@ int get_factorial(int factorial[], int number)
 //              numb        - число, до которого ВКЛЮЧИТЕЛЬНО считаются факториалы
 // return:      numb!
 {
-    if (input_more_limit("get_factorial()", "number", number, "LEN_ARR - 1", LEN_ARR - 1))  // обрабатываем выход за пределы массива
+    if (more_limit("get_factorial()", "number", number, "LEN_ARR - 1", LEN_ARR - 1))  // обрабатываем выход за пределы массива
         return 0;
 
     factorial[0] = 1;                                                                       // 0! = 1
@@ -79,7 +79,7 @@ int get_factorial(int factorial[], int number)
     return factorial[number];
 }
 
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной
@@ -106,7 +106,7 @@ int show_permutation(int sort_arr[], int indx_arr[])
 
     for (int indx = 0; indx < LEN_ARR; indx++)
     {
-        if (input_more_limit("show_permutation()", "indx_arr[indx]", indx_arr[indx], "LEN_ARR - 1", LEN_ARR - 1)) 
+        if (more_limit("show_permutation()", "indx_arr[indx]", indx_arr[indx], "LEN_ARR - 1", LEN_ARR - 1)) 
             return 1;                                   // обрабатываем некорректные индексы в массиве
 
         printf("%d", sort_arr[indx_arr[indx]]);         // выводим число по индексу из отсортированного массива

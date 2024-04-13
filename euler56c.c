@@ -22,7 +22,7 @@ typedef struct num_pow // структура "число^степень"
 int num_pow_next(pow_t *num_pow);
 int num_pow_init(pow_t *num_pow, int num, int power);
 int summ_digs(pow_t *num_pow);
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main(void)
 {
@@ -67,11 +67,11 @@ int num_pow_next(pow_t *num_pow)
     int cnt = 0;
     int residue = 0;
 
-    while (residue || cnt < num_pow->lenght) // перемножаем се числа в массиве на число
+    while (residue || cnt < num_pow->lenght) // перемножаем все числа в массиве на число
     {
         int number = num_pow->arr[cnt] * num_pow->num + residue;
 
-        if (input_more_limit("num_pow_next()", "cnt++", cnt + 1, "LEN_ARR", LEN_ARR))
+        if (more_limit("num_pow_next()", "cnt++", cnt + 1, "LEN_ARR", LEN_ARR))
             return 1; // выход за пределы массива
 
         num_pow->arr[cnt++] = number % 10;
@@ -116,7 +116,7 @@ int summ_digs(pow_t *num_pow)
     return sum;
 }
 
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // Функция для определения превышения переменной своего предельного значения и вывода предупреждения
 // Параметры:   *name_func  - название функции
 //              input_value - значение переменной

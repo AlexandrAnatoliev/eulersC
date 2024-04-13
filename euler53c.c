@@ -24,7 +24,7 @@ typedef struct factors                                      // создаем с
 
 int factors_init(factors_t *number);
 int mark_facrors(factors_t *number, int start, int finish);
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 int reduse_same_factors(factors_t *number1, factors_t *number2);
 bool is_answer(factors_t *numerator, factors_t *denominator);
 
@@ -80,9 +80,9 @@ int mark_facrors(factors_t *number, int start, int finish)
 // т.к. работаем с факториалами и запись 10! включает в себя множитель 10, удобнее заносить ряд множителей с последним ВКЛЮЧИТЕЛЬНО
 // return:              - количество занесенных множителей в массив
 {
-    if (input_more_limit("mark_facrors()", "finish", finish, "LEN_ARR", LEN_ARR))   // обрабатываем выход за пределы массива
+    if (more_limit("mark_facrors()", "finish", finish, "LEN_ARR", LEN_ARR))   // обрабатываем выход за пределы массива
         return 0;
-    if (input_more_limit("mark_facrors()", "start", start, "finish", finish))       // обрабатываем корректность значений start и finish
+    if (more_limit("mark_facrors()", "start", start, "finish", finish))       // обрабатываем корректность значений start и finish
         return 0;
 
     int cnt = 0;
@@ -94,7 +94,7 @@ int mark_facrors(factors_t *number, int start, int finish)
     return cnt;
 }
 
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной
@@ -118,9 +118,9 @@ int reduse_same_factors(factors_t *number1, factors_t *number2)
 //              number2 - число 2
 // return:      cnt     - количество сокращенных цифр
 {
-    if (input_more_limit("reduse_same_factors()", "number1->f_value", number1->f_value, "LEN_ARR", LEN_ARR)) 
+    if (more_limit("reduse_same_factors()", "number1->f_value", number1->f_value, "LEN_ARR", LEN_ARR)) 
         return 0;
-    if (input_more_limit("reduse_same_factors()", "number2->f_value", number2->f_value, "LEN_ARR", LEN_ARR))
+    if (more_limit("reduse_same_factors()", "number2->f_value", number2->f_value, "LEN_ARR", LEN_ARR))
         return 0;                                           // в массиве не может быть больше элементов чем его длина
 
     int cnt = 0;
@@ -157,9 +157,9 @@ bool is_answer(factors_t *numerator, factors_t *denominator)
 //              denom_num   - знаменатель
 // return:      true        - количество выборок превышает один миллион
 {
-    if (input_more_limit("is_answer()", "numerator->f_value", numerator->f_value, "LEN_ARR", LEN_ARR))
+    if (more_limit("is_answer()", "numerator->f_value", numerator->f_value, "LEN_ARR", LEN_ARR))
         return 0;
-    if (input_more_limit("is_answer()", "denominator->f_value", denominator->f_value, "LEN_ARR", LEN_ARR))
+    if (more_limit("is_answer()", "denominator->f_value", denominator->f_value, "LEN_ARR", LEN_ARR))
         return 0;                                                                       // выход запределы 
 
     unsigned long long num_tor = 1;                                                     // текущее произведение множителей в числителе

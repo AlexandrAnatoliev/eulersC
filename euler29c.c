@@ -24,7 +24,7 @@ int pow_num(int arr[], int num, int pow);
 int summ_fact(int arr[]);
 bool compare_nums(const int arr1[], const int arr2[]);
 int nullify_arr(int arr[], int len_arr);
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main(void)
 {
@@ -69,7 +69,7 @@ int main(void)
 
 			if (flag)
 			{
-				if (input_more_limit("main()", "cnt", cnt, "BASE * POW", BASE * POW))
+				if (more_limit("main()", "cnt", cnt, "BASE * POW", BASE * POW))
 					return 1; 								// проверка на невыход за пределы массива
 				cnt++;		  								// иначе - заносим в массив
 			}
@@ -102,7 +102,7 @@ int pow_num(int arr[], int num, int pow)
 //				pow	- степень (4)
 //				arr[2] = 4 - т.е.число является произведением 2 * 2 * 2 * 2
 {
-	if (input_more_limit("pow_num()", "num", num, "BASE + 1", BASE + 1))	
+	if (more_limit("pow_num()", "num", num, "BASE + 1", BASE + 1))	
 		return 1;					// проверка на невыход за пределы массива
 
 	arr[num] += pow; 				// количество множителей num
@@ -158,7 +158,7 @@ int nullify_arr(int arr[], int len_arr)
 // Параметры:	arr[]	- обнуляемый массив
 //				len_arr	- длина массива
 {
-	if (input_more_limit("nullify_arr()", "len_arr", len_arr, "BASE + 1", BASE + 1))
+	if (more_limit("nullify_arr()", "len_arr", len_arr, "BASE + 1", BASE + 1))
 		return 1;							// проверка на невыход за пределы массива
 
 	for (int i = 0; i < len_arr; i++)
@@ -167,7 +167,7 @@ int nullify_arr(int arr[], int len_arr)
 	return 0;
 }
 
-bool input_more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной
