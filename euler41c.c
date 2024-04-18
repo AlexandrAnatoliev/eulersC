@@ -1,13 +1,15 @@
-// euler42c - Закодированные треугольные числа
+// euler41c - Пан-цифровое простое число
 
 // Будем считать n-значное число пан-цифровым, если каждая из цифр от 1 до n используется в нем ровно один раз.
 // К примеру, 2143 является 4-значным пан-цифровым числом, а также простым числом.
-//
+// 7652413
 // Какое существует наибольшее n-значное пан-цифровое простое число ?
 
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>											// для работы функции sqrt()
+#include <time.h>			// for clock_t, clock(), CLOCKS_PER_SEC
+#include <locale.h> 		// русский язык в printf()
 
 bool is_simple(char ar_arg[], int num_arg)
 // функция определяет простое ли число
@@ -62,6 +64,11 @@ bool is_pandigital(int num_arg)
 
 int main(void)
 {
+	setlocale(LC_ALL, "Rus"); 										// русский язык в printf()
+
+	double time_spent = 0.0; 										// для хранения времени выполнения кода
+	clock_t begin = clock(); 										// СТАРТ таймера
+	
 	int answ;
 	static char prime_arr[10000000] = { 0 };				// массив[простое число] = 1 - static писать обязательно!
 	
@@ -78,7 +85,10 @@ int main(void)
 			break;
 		}
 			
-	printf("%d", answ);										// 7652413
+	clock_t end = clock();								  			// СТОП таймера
+	time_spent += (double)(end - begin) / CLOCKS_PER_SEC; 			// время работы в секундах
+
+	printf("Ответ = %d время = %f\n", answ, time_spent); 			// выводим результат и время работы программы								
 
 	return 0;
 }
