@@ -1,6 +1,6 @@
 // euler43c - Делимость подстрок
 
-// Число 1406357289, является пан-цифровым, поскольку оно состоит из цифр от 0 до 9 в определенном порядке. 
+// Число 1406357289, является пан-цифровым, поскольку оно состоит из цифр от 0 до 9 в определенном порядке.
 // Помимо этого, оно также обладает интересным свойством делимости подстрок.
 
 // Пусть d1 будет 1-й цифрой, d2 будет 2-й цифрой, и т.д. В таком случае, можно заметить следующее:
@@ -16,220 +16,227 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <time.h>	// for clock_t, clock(), CLOCKS_PER_SEC
-#include <locale.h> // русский язык в printf()
+#include <time.h>           // for clock_t, clock(), CLOCKS_PER_SEC
+#include <locale.h>         // русский язык в printf()
 
-#define PANDIG 10 // длина пан-цифрового числа
-#define SUB_DIV 3 // длина подстроки
+#define PANDIG 10           // длина пан-цифрового числа
+#define SUB_DIV 3           // длина подстроки
 
-typedef enum name // структура "имена подстрок"
+typedef enum name           // структура "имена подстрок"
 {
-	d1d2d3,
-	d2d3d4,
-	d3d4d5,
-	d4d5d6,
-	d5d6d7,
-	d6d7d8,
-	d7d8d9,
-	d8d9d10
+    d1d2d3, d2d3d4, d3d4d5, d4d5d6, d5d6d7, d6d7d8, d7d8d9, d8d9d10
 } name_t;
 
-typedef struct sub_string
+typedef struct sub_string   // структура "подстрока"
 {
-	char arr[SUB_DIV]; // массив цифр числа
-	int num;		   // само число
-	int div;		   // делитель
-	name_t name;	   // имя подстроки == индексу в массиве цифры
+    char arr[SUB_DIV];      // массив цифр числа
+    int num;                // само число
+    int div;                // делитель
+    name_t name;            // имя подстроки == индексу в массиве цифры
 } sub_t;
 
-typedef struct pangigital
+typedef struct pangigital   // структура "пан-цифровое число"
 {
-	char fl_arr[PANDIG];  // fl_arr[4] = 1, в числе есть цира 4
-	char dig_arr[PANDIG]; // массив цифр числа
-	sub_t str_arr[8];	  // массив подстрок [d1d2d3, d2d3d4,...,d8d9d10]
+    char fl_arr[PANDIG];    // fl_arr[4] = 1, в числе есть цира 4
+    char dig_arr[PANDIG];   // массив цифр числа
+    sub_t str_arr[8];       // массив подстрок [d1d2d3, d2d3d4,...,d8d9d10]
 } pandig_t;
 
-bool sub_div_init(sub_t* sub_div, name_t name, int num);
-bool pandig_init(pandig_t* pandig);
-int get_next_sub_str(pandig_t* pandig, sub_t* sub_div);
-bool put_digs(pandig_t* pandig, sub_t* sub_div);
-bool clear_digs(pandig_t* pandig, sub_t* sub_div);
+bool sub_div_init(sub_t *sub_div, name_t name, int num);
+bool pandig_init(pandig_t *pandig);
+int get_next_sub_str(pandig_t *pandig, sub_t *sub_div);
+bool put_digs(pandig_t *pandig, sub_t *sub_div);
+bool clear_digs(pandig_t *pandig, sub_t *sub_div);
 
 int main(void)
 {
-	setlocale(LC_ALL, "Rus"); // русский язык в printf()
+    setlocale(LC_ALL, "Rus");                                           // русский язык в printf()
 
-	double time_spent = 0.0; // для хранения времени выполнения кода
-	clock_t begin = clock(); // СТАРТ таймера
+    double time_spent = 0.0;                                            // для хранения времени выполнения кода
+    clock_t begin = clock();                                            // СТАРТ таймера
 
-	long long answ = 0;
+    long long answ = 0;
+    pandig_t pandig;
+    name_t sub_str = d8d9d10;                                           // начинаем подбор подстрок с крайней справа
 
-	pandig_t pandig;
-	pandig_init(&pandig);
+    pandig_init(&pandig);
 
-	name_t sub_str = d8d9d10; // начинаем подбор подстрок с крайней справа
+    while (pandig.str_arr[d8d9d10].num < 999)                           // пока три крайние цифры не дойдут до 999
+    {
+        while (sub_str > d1d2d3)                                        // пока не дойдем до крайней левой подстроки
+        {
+            if (get_next_sub_str(&pandig, &pandig.str_arr[sub_str]))    // найдена следующая подстрока
+                sub_str--;                                              // переходим на следующую - влево
+            else                                                        // переходим на предыдущую подстроку - вправо
+            {
+                if (pandig.str_arr[d8d9d10].num >= 1000)                // закончен перебор
+                    break;
 
-	while (pandig.str_arr[d8d9d10].num < 999) // пока три крайние цифры не дойдут до 999
-	{
-		while (sub_str > d1d2d3) // пока не дойдем до крайней левой подстроки
-		{
-			if (get_next_sub_str(&pandig, &pandig.str_arr[sub_str])) // найдена следующая подстрока
-				sub_str--;											 // переходим на следующую - влево
-			else													 // переходим на предыдущую подстроку - вправо
-			{
-				if (pandig.str_arr[d8d9d10].num >= 1000) // закончен перебор
-					break;
+                if (pandig.dig_arr[sub_str])                            // если текущая цифра в пан-цифровом числе не ноль
+                {
+                    pandig.fl_arr[pandig.dig_arr[sub_str]] = 0;         // обнуляем ее
+                    pandig.dig_arr[sub_str] = 0;
+                }
 
-				if (pandig.dig_arr[sub_str]) // если есть цифра в пан-цифровом числе
-				{
-					pandig.fl_arr[pandig.dig_arr[sub_str]] = 0; // обнуляем ее
-					pandig.dig_arr[sub_str] = 0;
-				}
+                sub_div_init(&pandig.str_arr[sub_str], sub_str, 0);     // обнуляем подстроку
 
-				sub_div_init(&pandig.str_arr[sub_str], sub_str, 0); // обнуляем подстроку
+                sub_str++;                                              // переходим на предыдущую подстроку - вправо
+            }
+        }
 
-				sub_str++; // переходим на предыдущую подстроку - вправо
-			}
-		}
+        if (pandig.str_arr[d8d9d10].num >= 1000)                        // перебраны все возможные комбинации
+            break;
 
-		if (pandig.str_arr[d8d9d10].num >= 1000) // перебраны все возможные комбинации
-			break;
+        for (long long i = 0, fact = 1000000000; i < PANDIG; i++, fact /= 10)
+        {
+            answ += pandig.dig_arr[i] * fact;                           // заносим в ответ цифры из массива пан-цифрового числа
+            if (pandig.fl_arr[i] == 0)
+                answ += i * 1000000000;                                 // заносим цифру числа, не занесенную в массив
+        }
 
-		for (long long i = 0, fact = 1000000000; i < PANDIG; i++, fact /= 10)
-		{
-			answ += pandig.dig_arr[i] * fact; // заносим в число цифры из массива
-			if (pandig.fl_arr[i] == 0)
-				answ += i * 1000000000; // заносим цифру числа, не занесенную в массив
-		}
+        sub_str++;                                                      // переходим на предыдущую подстроку - вправо
+    }
 
-		sub_str++; // переходим на предыдущую подстроку - вправо
-	}
+    clock_t end = clock();                                              // СТОП таймера
+    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;               // время работы в секундах
 
-	clock_t end = clock();								  // СТОП таймера
-	time_spent += (double)(end - begin) / CLOCKS_PER_SEC; // время работы в секундах
+    printf("Ответ = %llu время = %f\n", answ, time_spent);              // выводим результат и время работы программы
 
-	printf("Ответ = %llu время = %f\n", answ, time_spent); // выводим результат и время работы программы
-
-	return 0;
+    return 0;
 }
 
-bool sub_div_init(sub_t* sub_div, name_t name, int num)
+bool sub_div_init(sub_t *sub_div, name_t name, int num)
+// Функция для задания начальных значения подстроке
+// Параметры:	sub_div - структура "подстрока"
+//              name    - имя подстроки
+//              num     - численное значение подстроки
+// return:      true    - успешная инициализация структуры
 {
-	int div_arr[] = { 1, 2, 3, 5, 7, 11, 13, 17 };
+    int div_arr[] = {1, 2, 3, 5, 7, 11, 13, 17};    // массив с делителями
 
-	sub_div->num = num;
-	sub_div->name = name;
-	sub_div->div = div_arr[name];
+    sub_div->num = num;                             // заносим начальные данные
+    sub_div->name = name;
+    sub_div->div = div_arr[name];
 
-	for (int i = 0; i < SUB_DIV; i++)
-	{
-		sub_div->arr[i] = num % 10;
-		num /= 10;
-	}
+    for (int i = 0; i < SUB_DIV; i++)
+    {
+        sub_div->arr[i] = num % 10;
+        num /= 10;
+    }
 
-	return true;
+    return true;
 }
 
-bool pandig_init(pandig_t* pandig)
+bool pandig_init(pandig_t *pandig)
+// Функция для задания начальных значения пан-цифровому числу
+// Параметры:	pandig - структура "пан-цифровое число"
+// return:      true    - успешная инициализация структуры
 {
-	for (int i = 0; i < PANDIG; i++)
-	{
-		pandig->fl_arr[i] = 0;
-		pandig->dig_arr[i] = 0;
-	}
+    for (int i = 0; i < PANDIG; i++)    // обнуляем начальные данные
+    {
+        pandig->fl_arr[i] = 0;
+        pandig->dig_arr[i] = 0;
+    }
 
-	for (int name = 0; name < 8; name++)
-		sub_div_init(&pandig->str_arr[name], name, 0);
+    for (int name = 0; name < 8; name++)
+        sub_div_init(&pandig->str_arr[name], name, 0);
 
-	return true;
+    return true;
 }
 
-int get_next_sub_str(pandig_t* pandig, sub_t* sub_div)
+int get_next_sub_str(pandig_t *pandig, sub_t *sub_div)
+// Функция для получения следующего значения подстроки
+// Параметры:	pandig  - структура "пан-цифровое число"
+//              sub_div - структура "подстрока"
+// return:      0       - перебраны все возможные значения подстроки
+//                      - значение подстроки
 {
-	int num = 0;
-	sub_t past_sub_div = *sub_div; // сохраняем предыдущее значение
+    sub_t past_sub_div = *sub_div;                  // сохраняем предыдущее значение
+    int num = 0;
 
-	if (sub_div->name == d8d9d10) // перебираем все три цифры
-	{
-		sub_div->num++;
-		while (sub_div->num < 1000)
-		{
-			sub_div->num++; // перебираем значения подстроки
-			int dig1 = sub_div->num / 100; // раскладываем ее на отдельные цифры
-			int dig2 = (sub_div->num % 100) / 10;
-			int dig3 = sub_div->num % 10;
-			 
-			if (sub_div->num % sub_div->div == 0 // пока подстрока не поделится на делитель 
-				&& dig1 != dig2 && dig2 != dig3 && dig1 != dig3) // и не будет одинаковых цифры в числе
-				break;
-		}
+    if (sub_div->name == d8d9d10)                   // перебираем все три цифры
+    {
+        while (sub_div->num < 1000)
+        {
+            sub_div->num++;                         // перебираем значения подстроки
+            int dig1 = sub_div->num / 100;          // раскладываем ее на отдельные цифры
+            int dig2 = (sub_div->num % 100) / 10;
+            int dig3 = sub_div->num % 10;
 
-		if (sub_div->num >= 1000) // перебраны все возможные значения подстроки
-			return 0;
+            if (sub_div->num % sub_div->div == 0                 // пока подстрока не поделится на делитель
+                && dig1 != dig2 && dig2 != dig3 && dig1 != dig3) // и не будет одинаковых цифры в числе
+                break;
+        }
 
-		num = sub_div->num;
-		for (int i = 0; i < SUB_DIV; i++)
-		{
-			sub_div->arr[i] = num % 10;
-			num /= 10;
-		}
+        if (sub_div->num >= 1000)                   // перебраны все возможные значения подстроки
+            return 0;
 
-		clear_digs(pandig, &past_sub_div);
-		put_digs(pandig, sub_div);
+        num = sub_div->num;
 
-		return sub_div->num;
-	}
+        clear_digs(pandig, &past_sub_div);         // из панцифрового числа удаляем цифры предыдущего значения подстроки
+        sub_div_init(sub_div, sub_div->name, num); // обновляем текущее значение подстроки
+        put_digs(pandig, sub_div);                 // заносим цифры текущего значения
 
-	else // перебираем только старшую цифру
-	{
-		int first_dig = 0;
-		if (sub_div->arr[2])
-			first_dig = sub_div->arr[2];
+        return sub_div->num;
+    }
 
-		for (int i = sub_div->name + 1, fact = 10; i < sub_div->name + 3; i++, fact /= 10) // получаем число уже записанное в массиве
-			num += pandig->dig_arr[i] * fact;
+    else                                                    // перебираем только старшую цифру
+    {
+        int num = 0;
+        int first_dig = sub_div->arr[2];                    // первая цифра числа подстроки
 
-		for (int dig = first_dig; dig < PANDIG; dig++)
-			if ((pandig->fl_arr[dig] == 0) && ((dig * 100 + num)) % sub_div->div == 0) // подставляем цифры и проверяем
-			{
-				num += dig * 100;
+        for (int i = sub_div->name + 1, fact = 10; i < sub_div->name + 3; i++, fact /= 10)  // получаем число из двух цифр
+            num += pandig->dig_arr[i] * fact;                                               // уже записанное в массиве
 
-				clear_digs(pandig, &past_sub_div);
-				sub_div_init(sub_div, sub_div->name, num);
-				put_digs(pandig, sub_div);
+        for (int dig = first_dig; dig < PANDIG; dig++)      // перебираем цифры, еще не использованные в пан-цифровом числе
+        {
+            if ((pandig->fl_arr[dig] == 0) && ((dig * 100 + num)) % sub_div->div == 0)      // проверяем на делимость
+            {
+                num += dig * 100;
 
-				if (first_dig)
-					pandig->fl_arr[first_dig] = 0;
+                clear_digs(pandig, &past_sub_div);          // удаляем цифры предыдущего значения подстроки
+                sub_div_init(sub_div, sub_div->name, num);  // обновляем текущее значение подстроки
+                put_digs(pandig, sub_div);                  // заносим цифры из текущего значения подстроки в пан-цифровое число
 
-				return sub_div->num;
-			}
-	}
-	return 0;
+                if (first_dig)                              // при необходимости - обнуляем цифру в пан-цифровом числе
+                    pandig->fl_arr[first_dig] = 0;
+
+                return sub_div->num;
+            }
+        }
+    }
+    return 0;
 }
 
-bool put_digs(pandig_t* pandig, sub_t* sub_div)
+bool put_digs(pandig_t *pandig, sub_t *sub_div)
+// Функция для занесения значений из подстроки в пан-цифровое число
+// Параметры:	pandig - структура "пан-цифровое число"
+//              sub_div - структура "подстрока"
+// return:      true    - успешно
 {
-	for (int i = 0, j = sub_div->name + 2; i < SUB_DIV; i++, j--)
-	{
-		pandig->fl_arr[sub_div->arr[i]] = 1;  // отмечаем цифры как занятые
-		pandig->dig_arr[j] = sub_div->arr[i]; // заносим цифры в массив
-	}
+    for (int i = 0, j = sub_div->name + 2; i < SUB_DIV; i++, j--)
+    {
+        pandig->fl_arr[sub_div->arr[i]] = 1;  // отмечаем цифры как занятые
+        pandig->dig_arr[j] = sub_div->arr[i]; // заносим цифры в массив
+    }
 
-	return true;
+    return true;
 }
 
-bool clear_digs(pandig_t* pandig, sub_t* sub_div)
+bool clear_digs(pandig_t *pandig, sub_t *sub_div)
+// Функция для удаления значений подстроки из пан-цифрового числа
+// Параметры:	pandig - структура "пан-цифровое число"
+//              sub_div - структура "подстрока"
+// return:      true    - успешно
 {
-	for (int i = 0; i < SUB_DIV; i++)
-	{
-		pandig->fl_arr[sub_div->arr[i]] = 0;	// убираем цифры
-		pandig->dig_arr[sub_div->name + i] = 0; // из пан-цифрового числа
-	}
+    for (int i = 0; i < SUB_DIV; i++)
+    {
+        pandig->fl_arr[sub_div->arr[i]] = 0;    // убираем цифры
+        pandig->dig_arr[sub_div->name + i] = 0; // из пан-цифрового числа
+    }
 
-	return true;
+    return true;
 }
-
-
 
 // #include <stdio.h>
 // #include <stdbool.h>
@@ -267,7 +274,7 @@ bool clear_digs(pandig_t* pandig, sub_t* sub_div)
 // // параметры:	indx_num        - массив c индексами
 // //              pandigital_num  - массив с панцифровым числом
 // {
-//     int sort_arr[10] = {0,1,2,3,4,5,6,7,8,9};               // отсортированные числа 
+//     int sort_arr[10] = {0,1,2,3,4,5,6,7,8,9};               // отсортированные числа
 //     for(int i = 0; i < 10; i++)
 //     {
 //         pandig_num[i] = sort_arr[indx_num[i]];              // выбираем число из отсортированного массива
@@ -278,22 +285,22 @@ bool clear_digs(pandig_t* pandig, sub_t* sub_div)
 
 // bool is_sub_str_div(int pandig_num[])
 // // функция проверяет обладает ли пан-цифровое число свойством делимости подстрок
-// // параметры:   pandigital_num  - массив с панцифровым числом	
-// // return:      true            - пан-цифровое число обладает свойством делимости подстрок       
+// // параметры:   pandigital_num  - массив с панцифровым числом
+// // return:      true            - пан-цифровое число обладает свойством делимости подстрок
 // {
 //     int arr_div[] = {2,3,5,7,11,13,17};                     // массив с делителями
 
 //     for(int i = 0; i < 7; i++)
 //     {
-//         if((pandig_num[i + 1] * 100 + pandig_num[i + 2] * 10 + pandig_num[i + 3]) % arr_div[i])  
+//         if((pandig_num[i + 1] * 100 + pandig_num[i + 2] * 10 + pandig_num[i + 3]) % arr_div[i])
 //             return false;                                   // d2d3d4 % 2 != 0 => делится на 2 c остатком и т.д.
 //     }
-//     return true;                                 
+//     return true;
 // }
 
 // long long get_num(int pandig_num[])
 // // функция преобразует массив с цифрами в десятизначное число
-// // параметры:   pandigital_num  - массив с панцифровым числом	
+// // параметры:   pandigital_num  - массив с панцифровым числом
 // // return:                      - десятизначное число
 // {
 //     long long num = 0;
@@ -307,7 +314,7 @@ bool clear_digs(pandig_t* pandig, sub_t* sub_div)
 // {
 // 	int indx_num[10] = {0};                                 // промежуточное число-из-индексов
 //     int pandigital_num[10] = {0};                           // пан-цифровое число
-    
+
 //     long long answ = 0;
 //     bool max_num_fl = true;                                 // флаг достижения максимально возможного промежуточного числа-из-индексов
 
@@ -315,11 +322,11 @@ bool clear_digs(pandig_t* pandig, sub_t* sub_div)
 //     {
 //         max_num_fl = increase_indx_num(indx_num);           // увеличиваем промежуточное число от 0000000000 -> 9876543210
 //         get_pandigital_num(pandigital_num, indx_num);       // вычисляем очередное пан-цифровое число
-//         if(is_sub_str_div(pandigital_num))                  // пан-цифровое число обладает свойством делимости подстрок  
+//         if(is_sub_str_div(pandigital_num))                  // пан-цифровое число обладает свойством делимости подстрок
 //             answ += get_num(pandigital_num);
 //     }
 
-//     printf("%llu", answ);                                   
+//     printf("%llu", answ);
 
 // 	return 0;
 // }
