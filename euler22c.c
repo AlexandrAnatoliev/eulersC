@@ -19,7 +19,7 @@
 #define LEN_ARR 50000
 #define NAMES 6000
 
-int open_file(const char *name_file, char text_arr[]);
+int file_to_arr(const char *name_file, char text_arr[]);
 int parser_names(char text_arr[], int name_arr[], int lenght);
 bool compare_names(char text_arr[], int indx_name1, int indx_name2);
 int copy_arrs(int receive_arr[], int sourse_arr[], int start_indx, int lenght);
@@ -37,7 +37,7 @@ int main()
 
     unsigned long long sum_point = 0;                               // сумма очков
 
-    int lenght = open_file(NAME_FILE, text_arr);
+    int lenght = file_to_arr(FILE_NAME, text_arr);
     int names = parser_names(text_arr, name_arr, lenght);
 
     merge_sort(text_arr, name_arr, names);
@@ -53,7 +53,7 @@ int main()
     return 0;
 }
 
-int open_file(const char *name_file, char text_arr[])
+int file_to_arr(const char *name_file, char text_arr[])
 // функция открывает файл и копирует его содержимое в массив
 // параметры:   *name_file  - название / путь к файлу строкой "euler22text.txt"
 //              text_arr[]  - массив в который копируем

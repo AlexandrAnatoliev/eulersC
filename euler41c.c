@@ -23,7 +23,7 @@
 typedef struct pandig 										// структура "пан-цифровое число"
 {
 	int indx_ar[LEN_ARR]; 									// массив для хранения "числа-из-индексов"
-	int len;			  									// длина "числа-из-индексов"
+	int len;			  									// длина числа
 	int num;			  									// пан-цифровое число
 } pandig_t;
 
@@ -39,7 +39,7 @@ int main(void)
 	clock_t begin = clock(); 								// СТАРТ таймера
 
 	int num_init = 987654321; 								// максимально возможное пан-цифровое число
-	int answ, fact;
+	int answ, div;
 	bool answ_fl = false;
 
 	pandig_t pandig;
@@ -58,11 +58,11 @@ int main(void)
 		if (answ_fl) 										// если найден ответ
 			break;
 
-		fact = 1;
-		while (num_init > fact * 10) 						// определям длину числа
-			fact *= 10;
+		div = 1;
+		while (num_init > div * 10) 						// определям длину числа
+			div *= 10;
 
-		num_init %= fact; 									// отрезаем старшую цифру
+		num_init %= div; 									// отрезаем старшую цифру
 	}
 
 	clock_t end = clock();								  	// СТОП таймера
@@ -79,7 +79,7 @@ bool pandig_init(pandig_t *pandig, int num)
 //              num		- вносимое пан-цифровое число
 // return:      false	- вносимое число не пан-цифровое
 {
-	int ptr, fact = 1;
+	int ptr, div = 1;
 	int sort_ar[] = {1, 2, 3, 4, 5, 6, 7, 8, 9}; 		// отсортированный массив
 	char fl_ar[LEN_ARR] = {0};					 		// массив для контроля занесенных цифр
 
@@ -89,18 +89,18 @@ bool pandig_init(pandig_t *pandig, int num)
 	for (int i = 0; i < LEN_ARR; i++)
 		pandig->indx_ar[i] = 0; 						// обнуляем массив
 
-	while (num > fact * 10) 							// подбираем множитель
+	while (num > div * 10) 								// подбираем делитель
 	{
-		fact *= 10;	   									// считаем цифры числа
-		pandig->len++; 									// и длину
+		div *= 10;	   									
+		pandig->len++; 									// считаем длину числа
 	}
 
-	ptr = LEN_ARR - pandig->len; 						// индекс цифры, с которой идет число
+	ptr = LEN_ARR - pandig->len; 						// индекс первой цифры числа
 	while (num)
 	{
 		for (int i = 0; i < LEN_ARR; i++)
 		{
-			if (num / fact == sort_ar[i]) 				// ищем старшую цифру в отсортированном массиве
+			if (num / div == sort_ar[i]) 				// ищем старшую цифру в отсортированном массиве
 			{
 				pandig->indx_ar[ptr++] = i; 			// заносим индекс цифры в массив
 
@@ -110,9 +110,9 @@ bool pandig_init(pandig_t *pandig, int num)
 			}
 		}
 
-		fl_ar[num / fact] = 1; 							// помечаем цифру как занятую
-		num %= fact;		   							// отрезаем старшую цифру
-		fact /= 10;
+		fl_ar[num / div] = 1; 							// помечаем цифру как занятую
+		num %= div;		   								// отрезаем старшую цифру
+		div /= 10;
 	}
 
 	for (int i = 1; i < pandig->len + 1; i++) 			// проверяем, что число пан-цифровое
@@ -130,22 +130,22 @@ int pandig_decrement(pandig_t *pandig)
 {
 	int max_indx_ar[] = {0, 8, 7, 6, 5, 4, 3, 2, 1, 0}; 		// максимально возможный индекс
 	int sort_ar[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};				// отсортированный массив
-	int num, zero = 0;
+	int num, past_zero = 0;
 
 	for (int i = 0; i < LEN_ARR; i++) 							// отмечаем индекс последнего ноля перед цифрой
 	{
 		if (pandig->indx_ar[i] == 0) 							// [0,0,0,->0<-,1,2,3,4,5]
-			zero = i;
+			past_zero = i;
 		else
 			break;
 	}
 
-	if (zero >= LEN_ARR - 2) 									// достигнуто минимально возможное пан-цифровое число
+	if (past_zero >= LEN_ARR - 2) 								// достигнуто минимально возможное пан-цифровое число
 		return 0;
 
-	for (int i = LEN_ARR - 2; i > zero; i--) 					// [0,0,0,0,->1,2,3,4,5<-]
+	for (int i = LEN_ARR - 2; i > past_zero; i--) 				// [0,0,0,0,->1,2,3,4,5<-]
 	{
-		if (pandig->indx_ar[i])
+		if (pandig->indx_ar[i])									// уменьшаем число
 		{
 			pandig->indx_ar[i]--;
 			break;

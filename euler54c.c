@@ -56,7 +56,7 @@
 #include <locale.h>         // русский язык в printf()
 #include <stdbool.h>
 
-#define NAME_FILE "euler54text.txt"
+#define FILE_NAME "euler54text.txt"
 #define LEN_ARR 32000       // 1000 ставок по 10 карт (из двух букв) и 10 пробелов + запас
 
 typedef enum poker_combinations
@@ -91,7 +91,7 @@ typedef struct hand
     char two_kind_min;      // значение младшей пары карт
 } hand_t;
 
-int open_file(const char *name_file, char text_arr[]);
+int file_to_arr(const char *name_file, char text_arr[]);
 void hand_init(hand_t *Hand1);
 int get_hand(hand_t *Hand, char hands_arr[], int indx, char values_suits[]);
 comb_t get_comb(hand_t *Hand);
@@ -115,7 +115,7 @@ int main(void)
     hand_t Hand1;                                                                       // структуры для хранения ставок
     hand_t Hand2;
 
-    int lenght = open_file(NAME_FILE, hands_arr);
+    int lenght = file_to_arr(FILE_NAME, hands_arr);
     int indx = 0;
 
     while (indx < lenght)
@@ -143,7 +143,7 @@ int main(void)
     return 0;
 }
 
-int open_file(const char *name_file, char hands_arr[])
+int file_to_arr(const char *name_file, char hands_arr[])
 // функция открывает файл и копирует его содержимое в массив
 // параметры:   *name_file  - название / путь к файлу строкой "euler22text.txt"
 //              hands_arr[] - массив в который копируем
