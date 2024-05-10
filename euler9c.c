@@ -48,7 +48,7 @@
 #include <stdbool.h>
 #include <time.h>                                                       // for clock_t, clock(), CLOCKS_PER_SEC
 
-bool is_triple(int sq[], int a, int b, int c)
+text_t is_triple(int sq[], int a, int b, int c)
 // Функция проверяет, являются ли числа тройкой Пифагора (a^2 + b^2 == c^2)
 // параметры:   sq[]    - указатель на массив с уже вычисленными квадратами чисел
 //              a, b, c - проверяемые натуральные числа
@@ -57,7 +57,7 @@ bool is_triple(int sq[], int a, int b, int c)
     return sq[a] + sq[b] == sq[c];
 }
 
-bool is_correct(int a, int b, int c)
+text_t is_correct(int a, int b, int c)
 // Функция проверяет, являются ли числа Особой тройкой (a + b + c == 1000)
 // параметры:   a, b, c - проверяемые натуральные числа
 // return:      true    - если являются

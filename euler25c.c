@@ -46,7 +46,7 @@ typedef struct big_num
 int big_num_init(big_num_t *big_num, int num, int index, prior_t prior);
 int get_len_num(int num);
 int get_next_fib(big_num_t *fib_prev, big_num_t *fib_next);
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main(void)
 {
@@ -153,7 +153,7 @@ int get_next_fib(big_num_t *fib_prev, big_num_t *fib_next)
     return 0;
 }
 
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной

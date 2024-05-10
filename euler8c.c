@@ -109,7 +109,7 @@ typedef struct snake                                        // создаем с
     int len_snake;                                          // длина змеи
 } SNAKE;                                                    // для красоты меняем название типа данных struct snake -> SNAKE
 
-bool snake_growth(SNAKE *snake, char num_arr[])
+text_t snake_growth(SNAKE *snake, char num_arr[])
 // "змея" растет - увеличивает длину, пока не достигнет длины 13 чисел или не встретит ноль
 // параметры:	*snake      - указатель структуру - "змея"
 //              num_arr[]   - указатель на массив с числами
@@ -130,7 +130,7 @@ bool snake_growth(SNAKE *snake, char num_arr[])
     return true;                                            // "змея" успешно выросла до 13 чисел
 }
 
-bool snake_crawl(SNAKE *snake, char num_arr[])
+text_t snake_crawl(SNAKE *snake, char num_arr[])
 // "змея" ползет на один шаг, если не встретит ноль
 // параметры:	*snake      - указатель структуру - "змея"
 //              num_arr[]   - указатель на массив с числами
@@ -201,7 +201,7 @@ int main (void)
     
     char num_arr[LEN_ARR];
     long long answ = 0;
-    bool is_answ = false;                                   // флаг наличия ответа (отсутствия нуля в серии чисел)
+    text_t is_answ = false;                                   // флаг наличия ответа (отсутствия нуля в серии чисел)
 
     for(int i = 0; i < LEN_ARR; i++)                        // преобразуем строку в массив цифр   
         num_arr[i] = num_str[i] - 48;                       // символ '0' имеет код 48, '1' - 49 и т.д.

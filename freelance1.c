@@ -55,7 +55,7 @@ int get_divs(int arr[], int num)
     return 0;
 }
 
-bool is_answer(int arr[], long long D, long long A)
+text_t is_answer(int arr[], long long D, long long A)
 // функция для определения наличия ответа методом подстановки
 // параметры:	arr[]   - массив с коэффициентами функции
 //              d       - подставляемое значение делителя свободного коэффициента d
@@ -65,7 +65,7 @@ bool is_answer(int arr[], long long D, long long A)
     return (arr[0] * D * D * D) / (A * A * A) + (arr[1] * D * D) / (A * A) + arr[2] * D / A + arr[3] == 0;
 }
 
-int print_answ(int answ_ar[], bool *answ_fl, long long D, long long A)
+int print_answ(int answ_ar[], text_t *answ_fl, long long D, long long A)
 // функция для вывода ответа на экран
 // параметры:	answ_ar[]   - массив для хранения дробных ответов
 //              answ_ar[0]  - число сохраненых чисел
@@ -108,7 +108,7 @@ int main(void)
     char simb[] = {'A', 'B', 'C', 'D'};                         // названия коэффициентов
     float fl_arr[4] = {0};                                      // коэффициенты уравнения A*x^3 + B*x^2 + C*x + D = 0
     int int_arr[4] = {0};
-    bool answ_fl = false;                                       // флаг наличия ответа
+    text_t answ_fl = false;                                       // флаг наличия ответа
     int answ_arr[LEN_ARR] = {0};                                // массив для хранения ответов
     long long nod = 1;
 

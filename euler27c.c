@@ -40,10 +40,10 @@
 
 void *my_realloc(char *arr, int *len_arr, int len_add);
 int note_prime_arr(char *comp_arr, int len_arr, int start, int finish);
-bool is_composite(char comp_arr[], int len_arr, int num);
+text_t is_composite(char comp_arr[], int len_arr, int num);
 int note_composite(char comp_arr[], int len_arr, int prime, int start, int finish);
 int count_primes(char comp_arr[], int *len_arr, int a, int b);
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main(void)
 {
@@ -131,7 +131,7 @@ int note_prime_arr(char *comp_arr, int len_arr, int start, int finish)
     return 0;
 }
 
-bool is_composite(char comp_arr[], int len_arr, int num)
+text_t is_composite(char comp_arr[], int len_arr, int num)
 // функция принимает число и возвращает true - если число составное
 // параметры:	comp_arr[]          - массив с ранее вычисленными составными числами
 //              comp_arr[num] = 0   - число простое!
@@ -216,7 +216,7 @@ int count_primes(char comp_arr[], int *len_arr, int a, int b)
     return cnt;
 }
 
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной

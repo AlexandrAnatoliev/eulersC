@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <time.h>                                           // for clock_t, clock(), CLOCKS_PER_SEC
 
-bool is_palindrom(int num)
+text_t is_palindrom(int num)
 // функция определяет, является ли число палиндромом
 // параметры:	num     - проверяемое число
 // return:      true    - число является палиндромом

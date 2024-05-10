@@ -11,7 +11,7 @@
 #define LEN_ARR 10
 
 int count_digits(int dig_ar[], int num);
-bool compare(int dig_ar1[], int dig_ar2[]);
+text_t compare(int dig_ar1[], int dig_ar2[]);
 void clear_arr(int dig_ar[]);
 
 int main(void)
@@ -79,7 +79,7 @@ int count_digits(int dig_ar[], int num)
     return cnt;
 }
 
-bool compare(int dig_ar1[], int dig_ar2[])
+text_t compare(int dig_ar1[], int dig_ar2[])
 // функция сранивает соответствие цифр в двух числах (двух массивов)
 // параметры:	dig_ar1[]   - массив с посчитанными цифрами первого числа
 //              dig_ar2[]   - массив с посчитанными цифрами второго числа

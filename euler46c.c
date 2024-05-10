@@ -18,7 +18,7 @@
 #include <stdbool.h>
 #include <math.h>								        // для работы функции sqrt()
 
-bool is_simple(char prime_ar[], int num)
+text_t is_simple(char prime_ar[], int num)
 // функция принимает число и возвращает true - если число простое
 // параметры:	prime_ar[]  - массив с ранее вычисленными простыми числами
 //              num         - проверяемое число    
@@ -34,13 +34,13 @@ bool is_simple(char prime_ar[], int num)
 	return true;
 }
 
-bool is_goldbach(char prime_ar[], int num)
+text_t is_goldbach(char prime_ar[], int num)
 // функция принимает число и возвращает true - если это число Гольдбаха
 // параметры:	prime_ar[]  - массив с ранее вычисленными простыми числами
 //              num         - проверяемое число    
 // return:      true        - если это число Гольдбаха
 {
-    bool answ_fl = false;
+    text_t answ_fl = false;
     int sq_num_max = (sqrt(num / 2 + 1) + 1);           // выносим вычисление квадратного корня из цикла for
     for (int sq_num = 1; sq_num < sq_num_max; sq_num++) // чтобы он не вычислялся каждую итерацию цикла
         if(prime_ar[num - (2 * sq_num * sq_num)])
@@ -65,7 +65,7 @@ int add_primes(char prime_ar[], int len, int value)
 int main(void)
 {
 	int answ = 9;                                       // первое составное нечетное число
-    bool goldbach_fl = true;
+    text_t goldbach_fl = true;
 
     static char prime_arr[10000] = { 0 };		        // массив[простое число] = 1 - static писать обязательно!
     

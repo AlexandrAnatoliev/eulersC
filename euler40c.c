@@ -25,7 +25,7 @@ typedef struct big_num 		// структура "большое число"
 
 int big_num_init(big_t *big_num, int num);
 int big_num_increment(big_t *big_num);
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main(void)
 {
@@ -99,7 +99,7 @@ int big_num_increment(big_t *big_num)
 	return big_num->len;
 }
 
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // Функция для определения превышения переменной своего предельного значения
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной

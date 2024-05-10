@@ -27,7 +27,7 @@ typedef struct fraction // тип данных - дробь	(12 / 34)
 
 int fraction_init(fract_t *fraction, int num_tens, int num_ones, int den_tens, int den_ones);
 int siplify(int *numer, int *denom);
-bool is_non_trivial(fract_t *fraction, int numer, int denom);
+text_t is_non_trivial(fract_t *fraction, int numer, int denom);
 
 int main(void)
 {
@@ -116,7 +116,7 @@ int siplify(int *numer, int *denom)
 	return 0;
 }
 
-bool is_non_trivial(fract_t *fraction, int numer, int denom)
+text_t is_non_trivial(fract_t *fraction, int numer, int denom)
 // Функция для проверки не является ли дробь тривиальной
 // Параметры:	fraction	- дробь									(12/24)
 //				num_dig		- числитель	без повторяющейся цифры		(1)

@@ -12,7 +12,7 @@
 
 int get_even_len_palindrome(int num);
 int get_uneven_len_palindrome(int ones, int decs);
-bool is_bin_palindrome(int num);
+text_t is_bin_palindrome(int num);
 
 int main(void)
 {
@@ -89,7 +89,7 @@ int get_uneven_len_palindrome(int ones, int decs)
 	return palindrome; 						// 20402
 }
 
-bool is_bin_palindrome(int num)
+text_t is_bin_palindrome(int num)
 // Функция для проверки, является ли палиндромом число по основанию 2
 // Параметры:   num		- число (123321)
 // return:      true	- является

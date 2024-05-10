@@ -21,11 +21,11 @@
 
 int file_to_arr(const char *name_file, char text_arr[]);
 int parser_names(char text_arr[], int name_arr[], int lenght);
-bool compare_names(char text_arr[], int indx_name1, int indx_name2);
+text_t compare_names(char text_arr[], int indx_name1, int indx_name2);
 int copy_arrs(int receive_arr[], int sourse_arr[], int start_indx, int lenght);
 int merge_sort(char text_arr[], int name_arr[], int names);
 int get_name_score(char text_arr[], int indx_name);
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main()
 {
@@ -91,7 +91,7 @@ int parser_names(char text_arr[], int name_arr[], int lenght)
         return 0;                                               // выход за пределы массива text_arr[]
 
     int name_indx = 0;
-    bool start_name = false;                                    // флаг начала слова
+    text_t start_name = false;                                    // флаг начала слова
 
     for (int indx = 0; indx < lenght; indx++)
     {
@@ -115,7 +115,7 @@ int parser_names(char text_arr[], int name_arr[], int lenght)
     return name_indx;
 }
 
-bool compare_names(char text_arr[], int indx_name1, int indx_name2)
+text_t compare_names(char text_arr[], int indx_name1, int indx_name2)
 // функция сортирует два имени по алфавиту
 // параметры:   text_arr[]  - массив в который сохранены имена
 //              indx_name1  - индекс начала первого слова (ANNA)
@@ -241,7 +241,7 @@ int get_name_score(char text_arr[], int indx_name)
     return score;
 }
 
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной

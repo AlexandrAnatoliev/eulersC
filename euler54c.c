@@ -82,8 +82,8 @@ typedef struct hand
                             // T - десятка[10], J - валет[11], Q - дама[12], K - король[13], A - туз[14];
     char cnt_suits[5];      // храним масти по индексу
                             // S - пики[1], C - трефы[2], H - червы[3], D - бубны[4]
-    bool same_suits;        // пять карт одной масти
-    bool consecutive_cards; // пять карт подряд
+    text_t same_suits;        // пять карт одной масти
+    text_t consecutive_cards; // пять карт подряд
     char max_value;         // значение старшей карты
     char four_kind_value;   // значение четырех карт
     char three_kind_value;  // значение трех карт
@@ -95,7 +95,7 @@ int file_to_arr(const char *name_file, char text_arr[]);
 void hand_init(hand_t *Hand1);
 int get_hand(hand_t *Hand, char hands_arr[], int indx, char values_suits[]);
 comb_t get_comb(hand_t *Hand);
-bool compare_hands(hand_t *Hand1, hand_t *Hand2, comb_t comb);
+text_t compare_hands(hand_t *Hand1, hand_t *Hand2, comb_t comb);
 
 int main(void)
 {
@@ -287,7 +287,7 @@ comb_t get_comb(hand_t *Hand)
         return high_card;                                                       // Старшая карта: Карта наибольшего достоинства.
 }
 
-bool compare_hands(hand_t *Hand1, hand_t *Hand2, comb_t comb)
+text_t compare_hands(hand_t *Hand1, hand_t *Hand2, comb_t comb)
 // Функция сравнивает две ставки с одниаковыми комбинациями
 // параметры:   *Hand1  - ставка1
 //              *Hand2  - ставка2

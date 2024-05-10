@@ -22,7 +22,7 @@ typedef struct num_pow // структура "число^степень"
 int num_pow_next(pow_t *num_pow);
 int num_pow_init(pow_t *num_pow, int num, int power);
 int summ_digs(pow_t *num_pow);
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main(void)
 {
@@ -116,7 +116,7 @@ int summ_digs(pow_t *num_pow)
     return sum;
 }
 
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // Функция для определения превышения переменной своего предельного значения и вывода предупреждения
 // Параметры:   *name_func  - название функции
 //              input_value - значение переменной

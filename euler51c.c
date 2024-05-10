@@ -26,7 +26,7 @@
 #define START 101       // диапазон перебираемых чисел
 #define FINISH 1000
 
-bool is_composite(char comp_arr[], int num);
+text_t is_composite(char comp_arr[], int num);
 int note_composite(char comp_arr[], int prime, int finish);
 int get_cnt_replacement(char cnt_ar[], int len_replace, int len_num);
 int get_replacment(int len_replace, int num, int cnt_replace, int some);
@@ -74,7 +74,7 @@ int main(void)
     return 0;
 }
 
-bool is_composite(char comp_arr[], int num)
+text_t is_composite(char comp_arr[], int num)
 // функция принимает число и возвращает true - если число составное
 // параметры:	comp_arr[]          - массив с ранее вычисленными составными числами
 //              comp_arr[num] = 0   - число простое!
@@ -223,7 +223,7 @@ int count_primes(char comp_arr[], int len_replace, int num, int cnt_replace, int
     {
         replace = num % 10 + get_replacment(len_replace, num / 10, cnt_replace, some) * 10;
 
-        bool len_fl = replace / (int)pow(10, len_replace);  // отсекаем числа меньшей длины 000123 -> 123
+        text_t len_fl = replace / (int)pow(10, len_replace);  // отсекаем числа меньшей длины 000123 -> 123
 
         if (replace >= LEN_ARR)                             // проверка на выход числа за пределы массива
         {

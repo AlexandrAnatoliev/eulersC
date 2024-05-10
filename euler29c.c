@@ -22,9 +22,9 @@
 int get_fact(int num);
 int pow_num(int arr[], int num, int pow);
 int summ_fact(int arr[]);
-bool compare_nums(const int arr1[], const int arr2[]);
+text_t compare_nums(const int arr1[], const int arr2[]);
 int nullify_arr(int arr[], int len_arr);
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main(void)
 {
@@ -53,7 +53,7 @@ int main(void)
 
 			summ_fact(arr[cnt]); 							// суммируем номиналы множителей
 
-			bool flag = true;
+			text_t flag = true;
 			for (int j = 0; j < cnt; j++) 					// проверяем нет ли уже такого числа
 			{
 				if (prime_arr[base]) 						// степени простых чисел - уникальны, пропускаем их
@@ -129,7 +129,7 @@ int summ_fact(int arr[])
 	return arr[1];
 }
 
-bool compare_nums(const int arr1[], const int arr2[])
+text_t compare_nums(const int arr1[], const int arr2[])
 // Функция для сравнения  массивов
 // первый элемент массива - длина, если длины не совпадут, то дальше не проверяется
 // Параметры:	arr1	- первый массив
@@ -167,7 +167,7 @@ int nullify_arr(int arr[], int len_arr)
 	return 0;
 }
 
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной

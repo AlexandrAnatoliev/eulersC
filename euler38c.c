@@ -34,7 +34,7 @@
 #include <locale.h>
 
 int put_digits(char arr[], int num);
-bool is_pandigital(int num);
+text_t is_pandigital(int num);
 int get_concat_prod(int num);
 
 int main(void)
@@ -93,7 +93,7 @@ int put_digits(char arr[], int num)
 	return cnt;
 }
 
-bool is_pandigital(int num)
+text_t is_pandigital(int num)
 // Функция для определения возможности получить из данного числа панцифровое
 // Параметры:	num		- проверяемое число
 // return:		true	- объединенное произведение num и 1, 2... образует панцифровое число

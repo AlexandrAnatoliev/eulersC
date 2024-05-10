@@ -24,9 +24,9 @@ typedef struct factors                                      // создаем с
 
 int factors_init(factors_t *number);
 int mark_facrors(factors_t *number, int start, int finish);
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 int reduse_same_factors(factors_t *number1, factors_t *number2);
-bool is_answer(factors_t *numerator, factors_t *denominator);
+text_t is_answer(factors_t *numerator, factors_t *denominator);
 
 int main(void)
 {
@@ -94,7 +94,7 @@ int mark_facrors(factors_t *number, int start, int finish)
     return cnt;
 }
 
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной
@@ -151,7 +151,7 @@ int reduse_same_factors(factors_t *number1, factors_t *number2)
     return cnt;
 }
 
-bool is_answer(factors_t *numerator, factors_t *denominator)
+text_t is_answer(factors_t *numerator, factors_t *denominator)
 // функция перемножает множители числителя и делит на множители знаменателя
 // параметры:	fact_num    - числитель, состоит из ряда множителей
 //              denom_num   - знаменатель

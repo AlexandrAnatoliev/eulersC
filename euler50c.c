@@ -19,7 +19,7 @@
 
 #define LEN_ARR 1000000                                         // длина массивов - зависит от размера искомого числа
 
-bool is_composite(char comp_arr[], int num)
+text_t is_composite(char comp_arr[], int num)
 // функция принимает число и возвращает true - если число составное
 // параметры:	comp_arr[]          - массив с ранее вычисленными составными числами
 //              comp_arr[num] = 0   - число простое!

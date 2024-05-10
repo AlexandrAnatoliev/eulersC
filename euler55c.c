@@ -33,9 +33,9 @@
 #define LEN_NUM 30
 
 int num_increment(char start_num[]);
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 int get_next_num(const char num[], char next_num[]);
-bool is_palindrom(const char num[]);
+text_t is_palindrom(const char num[]);
 
 int main(void)
 {
@@ -92,7 +92,7 @@ int num_increment(char start_num[])
 	return start_num[0];
 }
 
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной
@@ -138,7 +138,7 @@ int get_next_num(const char num[], char next_num[])
 	return ptr;
 }
 
-bool is_palindrom(const char num[])
+text_t is_palindrom(const char num[])
 // Функция проверяет равенство цифр в массиве, сравнивая их от конца к началу и наоборот между собой
 // параметры:   num[]	- число (массив)
 // return:      true	- число - палиндром

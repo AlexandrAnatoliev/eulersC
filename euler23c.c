@@ -24,8 +24,8 @@
 #define LEN_ARR 28124
 
 int get_sum_divisors(int number);
-bool is_abundant(int number);
-bool is_sum_abudants(const char abudant_arr[], int number);
+text_t is_abundant(int number);
+text_t is_sum_abudants(const char abudant_arr[], int number);
 
 int main(void)
 {
@@ -76,14 +76,14 @@ int get_sum_divisors(int number)
     return sum_div;
 }
 
-bool is_abundant(int number)
+text_t is_abundant(int number)
 // Функция вернет true, если число избыточное
 // параметры:	number  - раскладываемое число
 {
     return get_sum_divisors(number) > number;
 }
 
-bool is_sum_abudants(const char abudant_arr[], int number)
+text_t is_sum_abudants(const char abudant_arr[], int number)
 // Функция возвращает true, если число может быть записано как сумма двух избыточных чисел.
 // параметры:	number          - раскладываемое число
 //              abudant_arr[]   - массив избыточных чисел

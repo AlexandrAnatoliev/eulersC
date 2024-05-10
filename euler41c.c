@@ -27,9 +27,9 @@ typedef struct pandig 										// структура "пан-цифровое �
 	int num;			  									// пан-цифровое число
 } pandig_t;
 
-bool pandig_init(pandig_t *pandig, int num);
+text_t pandig_init(pandig_t *pandig, int num);
 int pandig_decrement(pandig_t *pandig);
-bool is_simple(int num);
+text_t is_simple(int num);
 
 int main(void)
 {
@@ -40,7 +40,7 @@ int main(void)
 
 	int num_init = 987654321; 								// максимально возможное пан-цифровое число
 	int answ, div;
-	bool answ_fl = false;
+	text_t answ_fl = false;
 
 	pandig_t pandig;
 
@@ -73,7 +73,7 @@ int main(void)
 	return 0;
 }
 
-bool pandig_init(pandig_t *pandig, int num)
+text_t pandig_init(pandig_t *pandig, int num)
 // Функция для инициализации пан-цифрового числа
 // Параметры:	pandig	- пан-цифровое число (структура)
 //              num		- вносимое пан-цифровое число
@@ -167,7 +167,7 @@ int pandig_decrement(pandig_t *pandig)
 	return num;
 }
 
-bool is_simple(int num)
+text_t is_simple(int num)
 // Функция для определения простого числа
 // Параметры:	num		- число
 // return:		true	- если число простое

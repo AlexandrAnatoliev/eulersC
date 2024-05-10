@@ -20,7 +20,7 @@
 
 #define LEN_ARR 200000                                  // длина массивов - зависит от размера искомого числа
 
-bool is_simple(char prime_ar[], int num)
+text_t is_simple(char prime_ar[], int num)
 // функция принимает число и возвращает true - если число простое
 // параметры:	prime_ar[]  - массив с ранее вычисленными простыми числами
 //              num         - проверяемое число    
@@ -96,7 +96,7 @@ int count_prime_factor(char prime_ar[], int num, int cnt_break, int *len_prime_a
     return cnt;
 }
 
-bool is_diff_numbers(char prime_ar[], char factors_arr[], int add_num)
+text_t is_diff_numbers(char prime_ar[], char factors_arr[], int add_num)
 // функция раскладывает число на множители (2^2 преобразует в 4)
 // параметры:   prime_ar[]      - массив с ранее вычисленными простыми числами
 //              factors_arr[]   - массив в который заносятся множители числа

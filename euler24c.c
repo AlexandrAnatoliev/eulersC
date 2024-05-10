@@ -17,7 +17,7 @@
 
 int get_indx_arr(int indx_arr[], int count);
 int get_factorial(int factorial[], int number);
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 int show_permutation(int sort_arr[], int indx_arr[]);
 
 int main(void)
@@ -79,7 +79,7 @@ int get_factorial(int factorial[], int number)
     return factorial[number];
 }
 
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной

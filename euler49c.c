@@ -15,7 +15,7 @@
 
 #define LEN_ARR 100000                                          // длина массивов - зависит от размера искомого числа
 
-bool is_composite(char comp_arr[], int num)
+text_t is_composite(char comp_arr[], int num)
 // функция принимает число и возвращает true - если число составное
 // параметры:	comp_arr[]          - массив с ранее вычисленными составными числами
 //              comp_arr[num] = 0   - число простое!
@@ -121,7 +121,7 @@ int sort_arr(int arr[], int len_arr)
     return 0;
 }
 
-bool is_sequence(int arr[], int len_arr)
+text_t is_sequence(int arr[], int len_arr)
 // функция ищет в массиве арифметическую прогрессию
 // параметры:	arr[]   - указатель на массив чисел
 //              len_arr - количество чисел в массиве 
@@ -173,7 +173,7 @@ int main(void)
     int mult_cnt;                                               // счетчик перестановок: простые и неповторяющиеся числа
     int num = 1000;                                             // проверяем 4-значные числа
     int mult_num;
-    bool answ_fl = false;                                       // флаг наличия ответа
+    text_t answ_fl = false;                                       // флаг наличия ответа
     int answ_cnt = 0;                                           // счетчик ответов
 
     double time_spent = 0.0;                                    // для хранения времени выполнения кода

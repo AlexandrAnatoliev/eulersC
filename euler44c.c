@@ -21,7 +21,7 @@ int get_pentagon(int num)
     return (num * (3 * num - 1)) / 2;
 }
 
-bool is_answer(char arr[], int pent1, int pent2)
+text_t is_answer(char arr[], int pent1, int pent2)
 // функция проверяет выполнение условий задачи
 // параметры:	arr[]   - массив для хранения пятиугольных чисел по индексу
 //              pent1   - пятиугольное число 1 

@@ -14,9 +14,9 @@
 #define LEN_ARR 1000000
 
 int note_prime_arr(char *prime_arr, int finish);
-bool is_composite(char prime_arr[], int num);
+text_t is_composite(char prime_arr[], int num);
 int note_composite(char prime_arr[], int prime, int finish);
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
 
 int main(void)
 {
@@ -33,7 +33,7 @@ int main(void)
 		if (prime_arr[num] == 0) 									// если простое число
 		{
 			int circ_num = num;
-			bool is_answ_fl = true;
+			text_t is_answ_fl = true;
 			int fact = 1;
 
 			// отсекаем числа имеющие в своем составе четные цифры
@@ -93,7 +93,7 @@ int note_prime_arr(char *prime_arr, int finish)
 	return 0;
 }
 
-bool is_composite(char prime_arr[], int num)
+text_t is_composite(char prime_arr[], int num)
 // функция принимает число и возвращает true - если число составное
 // параметры:	prime_arr[]      	- массив с вычисленными простыми и составными числами
 //              prime_arr[num] = 0	- число простое!
@@ -136,7 +136,7 @@ int note_composite(char prime_arr[], int prime, int finish)
 	return 0;
 }
 
-bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной

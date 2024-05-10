@@ -49,11 +49,11 @@ typedef struct pangigital
 	sub_t str_arr[8];	  // массив подстрок [d1d2d3, d2d3d4,...,d8d9d10]
 } pandig_t;
 
-bool sub_div_init(sub_t* sub_div, name_t name, int num);
-bool pandig_init(pandig_t* pandig);
+text_t sub_div_init(sub_t* sub_div, name_t name, int num);
+text_t pandig_init(pandig_t* pandig);
 int get_next_sub_str(pandig_t* pandig, sub_t* sub_div);
-bool put_digs(pandig_t* pandig, sub_t* sub_div);
-bool clear_digs(pandig_t* pandig, sub_t* sub_div);
+text_t put_digs(pandig_t* pandig, sub_t* sub_div);
+text_t clear_digs(pandig_t* pandig, sub_t* sub_div);
 
 int main(void)
 {
@@ -113,7 +113,7 @@ int main(void)
 	return 0;
 }
 
-bool sub_div_init(sub_t* sub_div, name_t name, int num)
+text_t sub_div_init(sub_t* sub_div, name_t name, int num)
 {
 	int div_arr[] = { 1, 2, 3, 5, 7, 11, 13, 17 };
 
@@ -130,7 +130,7 @@ bool sub_div_init(sub_t* sub_div, name_t name, int num)
 	return true;
 }
 
-bool pandig_init(pandig_t* pandig)
+text_t pandig_init(pandig_t* pandig)
 {
 	for (int i = 0; i < PANDIG; i++)
 	{
@@ -207,7 +207,7 @@ int get_next_sub_str(pandig_t* pandig, sub_t* sub_div)
 	return 0;
 }
 
-bool put_digs(pandig_t* pandig, sub_t* sub_div)
+text_t put_digs(pandig_t* pandig, sub_t* sub_div)
 {
 	for (int i = 0, j = sub_div->name + 2; i < SUB_DIV; i++, j--)
 	{
@@ -218,7 +218,7 @@ bool put_digs(pandig_t* pandig, sub_t* sub_div)
 	return true;
 }
 
-bool clear_digs(pandig_t* pandig, sub_t* sub_div)
+text_t clear_digs(pandig_t* pandig, sub_t* sub_div)
 {
 	for (int i = 0; i < SUB_DIV; i++)
 	{

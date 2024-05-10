@@ -52,7 +52,7 @@ int main(void)
 
 	text = open_file_malloc_ar(FILE_NAME);
 
-	bool start_word_fl = false; 							// флаг начала слова
+	text_t start_word_fl = false; 							// флаг начала слова
 	for (int i = 0; i < text.lenght; i++)
 	{
 		if (text.arr[i] == '\"')

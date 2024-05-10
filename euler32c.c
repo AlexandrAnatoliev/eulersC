@@ -18,8 +18,8 @@
 #define LEN_ARR 10	   										// длина массива цифрами - берем с запасом
 #define LEN_CASH 10000 										// длина массива для сохранения ответов
 
-bool increase_indx_num(int indx_num[]);
-bool get_pandig_num(int pandig_num[], int indx_num[]);
+text_t increase_indx_num(int indx_num[]);
+text_t get_pandig_num(int pandig_num[], int indx_num[]);
 
 int main(void)
 {
@@ -37,7 +37,7 @@ int main(void)
 		get_pandig_num(pandig_num, indx_num);
 
 		int num1 = 0;
-		bool is_answer = false; 							// флаг наличия ответа
+		text_t is_answer = false; 							// флаг наличия ответа
 
 		for (int ptr_num1 = 1, fact1 = 1; ptr_num1 < LEN_ARR - 2; ptr_num1++, fact1 *= 10) // 1 т.к. ноль не используем
 		{
@@ -83,7 +83,7 @@ int main(void)
 	return 0;
 }
 
-bool increase_indx_num(int indx_num[])
+text_t increase_indx_num(int indx_num[])
 // Функция для увеличения промежуточного числа на единицу
 // Параметры:	indx_num    - массив c индексами
 // return:      false       - при достижении максимально возможного числа
@@ -109,7 +109,7 @@ bool increase_indx_num(int indx_num[])
 	return true;
 }
 
-bool get_pandig_num(int pandig_num[], int indx_num[])
+text_t get_pandig_num(int pandig_num[], int indx_num[])
 // Функция для вычисления пан-цифрового числа по массиву с индексами перестановок
 // Параметры:	indx_num        - массив c индексами
 //              pandigital_num  - массив с панцифровым числом
