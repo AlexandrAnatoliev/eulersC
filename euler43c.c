@@ -27,6 +27,12 @@ typedef enum name           // структура "имена подстрок"
     d1d2d3, d2d3d4, d3d4d5, d4d5d6, d5d6d7, d6d7d8, d7d8d9, d8d9d10
 } name_t;
 
+typedef struct text
+{
+    char *arr;          // ссылка на массив
+    int lenght;         // длина массива
+} text_t;
+
 typedef struct sub_string   // структура "подстрока"
 {
     char arr[SUB_DIV];      // массив цифр числа
@@ -42,11 +48,11 @@ typedef struct pangigital   // структура "пан-цифровое чи�
     sub_t str_arr[8];       // массив подстрок [d1d2d3, d2d3d4,...,d8d9d10]
 } pandig_t;
 
-text_t sub_div_init(sub_t *sub_div, name_t name, int num);
-text_t pandig_init(pandig_t *pandig);
+bool sub_div_init(sub_t *sub_div, name_t name, int num);
+bool pandig_init(pandig_t *pandig);
 int get_next_sub_str(pandig_t *pandig, sub_t *sub_div);
-text_t put_digs(pandig_t *pandig, sub_t *sub_div);
-text_t clear_digs(pandig_t *pandig, sub_t *sub_div);
+bool put_digs(pandig_t *pandig, sub_t *sub_div);
+bool clear_digs(pandig_t *pandig, sub_t *sub_div);
 
 int main(void)
 {
@@ -105,7 +111,7 @@ int main(void)
     return 0;
 }
 
-text_t sub_div_init(sub_t *sub_div, name_t name, int num)
+bool sub_div_init(sub_t *sub_div, name_t name, int num)
 // Функция для задания начальных значения подстроке
 // Параметры:	sub_div - структура "подстрока"
 //              name    - имя подстроки
@@ -127,7 +133,7 @@ text_t sub_div_init(sub_t *sub_div, name_t name, int num)
     return true;
 }
 
-text_t pandig_init(pandig_t *pandig)
+bool pandig_init(pandig_t *pandig)
 // Функция для задания начальных значения пан-цифровому числу
 // Параметры:	pandig - структура "пан-цифровое число"
 // return:      true    - успешная инициализация структуры
@@ -208,7 +214,7 @@ int get_next_sub_str(pandig_t *pandig, sub_t *sub_div)
     return 0;
 }
 
-text_t put_digs(pandig_t *pandig, sub_t *sub_div)
+bool put_digs(pandig_t *pandig, sub_t *sub_div)
 // Функция для занесения значений из подстроки в пан-цифровое число
 // Параметры:	pandig - структура "пан-цифровое число"
 //              sub_div - структура "подстрока"
@@ -223,7 +229,7 @@ text_t put_digs(pandig_t *pandig, sub_t *sub_div)
     return true;
 }
 
-text_t clear_digs(pandig_t *pandig, sub_t *sub_div)
+bool clear_digs(pandig_t *pandig, sub_t *sub_div)
 // Функция для удаления значений подстроки из пан-цифрового числа
 // Параметры:	pandig - структура "пан-цифровое число"
 //              sub_div - структура "подстрока"
