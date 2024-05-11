@@ -23,7 +23,7 @@
 #include <time.h>                                               // for clock_t, clock(), CLOCKS_PER_SEC
 #include <locale.h>                                             // русский язык в printf()
 
-text_t is_prime(int num);
+bool is_prime(int num);
 
 int main(void)
 {
@@ -64,7 +64,7 @@ int main(void)
     return 0;
 }
 
-text_t is_prime(int num)
+bool is_prime(int num)
 // Функция для определения простого числа
 // Параметры:	num     - проверяемое число
 // return:      true    - если число составное!
