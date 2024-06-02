@@ -16,11 +16,11 @@
 
 void *my_realloc(char *arr, int *len_arr, int len_add);
 int note_prime_arr(char prime_arr[], int len_arr, int start, int finish);
-text_t is_composite(char prime_arr[], int len_arr, int num);
+bool is_composite(char prime_arr[], int len_arr, int num);
 int note_composite(char prime_arr[], int len_arr, int prime, int start, int finish);
-text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
-text_t del_right_num(char prime_arr[], int num);
-text_t del_left_num(char prime_arr[], int num);
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value);
+bool del_right_num(char prime_arr[], int num);
+bool del_left_num(char prime_arr[], int num);
 
 int main(void)
 {
@@ -121,7 +121,7 @@ int note_prime_arr(char prime_arr[], int len_arr, int start, int finish)
 	return 0;
 }
 
-text_t is_composite(char prime_arr[], int len_arr, int num)
+bool is_composite(char prime_arr[], int len_arr, int num)
 // Функция для определения составного числа
 // Параметры:	prime_arr[]       	- массив с ранее вычисленными составными числами
 //              prime_arr[num] = 0	- число простое!
@@ -172,7 +172,7 @@ int note_composite(char prime_arr[], int len_arr, int prime, int start, int fini
 	return 0;
 }
 
-text_t more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
+bool more_limit(const char *name_func, const char *name_input, int input_value, const char *name_limit, int limit_value)
 // функция, которая определяет превышение переменной своего предельного значения и выводит предупреждение
 // параметры:   *name_func  - название функции
 //              input_value - значение переменной
@@ -190,7 +190,7 @@ text_t more_limit(const char *name_func, const char *name_input, int input_value
 	return false;
 }
 
-text_t del_right_num(char prime_arr[], int num)
+bool del_right_num(char prime_arr[], int num)
 // Функция, которая откидывает числа справа по одному, проверяет простые ли они
 // Параметры:	prime_arr[]	- массив простых чисел (0 - простое)
 //				num 		- проверяемое число
@@ -207,7 +207,7 @@ text_t del_right_num(char prime_arr[], int num)
 	return true;
 }
 
-text_t del_left_num(char prime_arr[], int num)
+bool del_left_num(char prime_arr[], int num)
 // Функция, которая откидывает числа слева по одному, проверяет простые ли они
 // Параметры:	prime_arr[]	- массив простых чисел (0 - простое)
 //				num 		- проверяемое числоо

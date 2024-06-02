@@ -139,7 +139,7 @@ text_t open_file_malloc_ar(const char *name_file)
     while (fgets(txt.arr, txt.lenght, file) != NULL)    // до конца файла
         fputs(txt.arr, file);                           // копируем содержимое файла в массив (ставит в конце ноль!)
 
-    fseek(file, -1, SEEK_END);                          // fputs() ставит в последнюю ячейку ноль '\000'
+    fseek(file, -1, SEEK_END);                          // fgets() ставит в последнюю ячейку ноль '\000'
     txt.arr[txt.lenght - 1] = fgetc(file);              // заменяем ноль последним символом файла перед EOF
 
     fclose(file);                                       // закрываем файл
